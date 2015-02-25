@@ -1,0 +1,10 @@
+{
+    "name": "webcitron/subframe",
+    "authors": [
+        {
+            "name": "Webcitron - Adam Mackiewicz",
+            "email": "a.mackiewicz@webcitron.eu"
+        }
+    ],
+    "require": {}
+}
