@@ -1,4 +1,5 @@
-<?php
+<?php namespace Webcitron\Subframe\Core;
+
 abstract class Url {
     
     public static function route() {

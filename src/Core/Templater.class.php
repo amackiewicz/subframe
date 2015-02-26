@@ -1,4 +1,4 @@
-<?php
+<?php namespace Webcitron\Subframe\Core;
 
 class Templater {
     

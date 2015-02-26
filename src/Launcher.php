@@ -1,6 +1,6 @@
 <?php
 /** some test */
-$objSubframe = new Subframe();
+$objSubframe = new \Webcitron\Subframe\Core\Subframe();
 $objApp = $objSubframe->getApp();
 $objResponse = $objApp->launch();
 echo $objResponse;

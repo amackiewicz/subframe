@@ -1,4 +1,5 @@
-<?php
+<?php namespace Webcitron\Subframe\Core;
+
 class Page {
     
     public $strPageName = '';

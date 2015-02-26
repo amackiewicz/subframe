@@ -1,4 +1,5 @@
-<?php
+<?php namespace Webcitron\Subframe\Core;
+
 class Response {
     
     public $strContent;
