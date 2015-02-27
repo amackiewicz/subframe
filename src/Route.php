@@ -1,4 +1,7 @@
-<?php namespace Webcitron\Subframe\Core;
+<?php namespace webcitron\Subframe;
+
+use webcitron\Subframe\Router;
+use webcitron\Subframe\Application;
 
 class Route {
     
@@ -14,23 +17,37 @@ class Route {
         $this->strRouteName = $strRouteName;
     }
     
+    
+    public static function add($strRouteName, $strUri, $strControllerAction) {
+        $objRouter = Router::getInstance();
+        $arrControllerActionTokens = explode('/', $strControllerAction);
+        
+        $objRoute = new Route($arrControllerActionTokens[0], $arrControllerActionTokens[1], $strRouteName);
+        $objRoute->setUri($strUri);
+        $objRoute->recognizeSetParams($strUri);
+        $objRouter->arrRoutes[$strRouteName] = $objRoute;
+    }
+    
+    
+    
     public function launch() {
         require APP_DIR.'/controllers/'.$this->strControllerName.'.class.php';
         $objController = new $this->strControllerName;
         $objController->strControllerName = $this->strControllerName;
-        $objController->strView = strtolower($this->strControllerName).'/'.$this->strActionName;
-        $objController->strLayout = 'default';
-        $objActionMethod = new ReflectionMethod($this->strControllerName, $this->strActionName);
+//        $objController->strView = strtolower($this->strControllerName).'/'.$this->strActionName;
+//        $objController->strLayout = 'default';
+        $objActionMethod = new \ReflectionMethod($this->strControllerName, $this->strActionName);
         $arrRequestParams = Request::getParams();
-//        if (empty($arrRequestParams)) {
-//            $objActionMethod->invoke($objController);
-//        } else {
-            $objActionMethod->invokeArgs($objController, $arrRequestParams);
-//        }
-//        echo $this->strActionName .' - '.;
+//        echo 'REQUEST PARAMS:<pre>';
+//        print_r($arrRequestParams);
+//        echo '</pre>';
+//       exit();
+//        echo '<pre>';
+//        print_r($objController);
 //        exit();
+        $objResponse = $objActionMethod->invokeArgs($objController, $arrRequestParams);
         
-        return $objController;
+        return $objResponse;
     }
     
     public function buildUri($arrParams = array()) {
@@ -51,6 +68,8 @@ class Route {
 //            exit();
             $strResult = str_replace($arrPatterns, $arrReplaces, $this->strUri);
         }
+        
+        $strResult = sprintf('%s%s', Application::url(), $strResult);
         return $strResult;
     }
     

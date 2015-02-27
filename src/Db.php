@@ -1,17 +1,44 @@
-<?php namespace Webcitron\Subframe\Core;
+<?php namespace webcitron\Subframe;
 
-class Router {
+class Db {
     
-    private static $objInstance = null;
-    public $arrRoutes = array();
+    private static $arrInstances = [];
+    public $objPdo = null;
+    private static $arrConnections = [];
     
-    private function __construct() {}
+    private function __construct($strConnectionName) {
+        require APP_DIR.'/config/database.php';
+        $arrConnection = self::$arrConnections[$strConnectionName];
+        $strDsn = sprintf(
+            "pgsql:host=%s;dbname=%s;user=%s;password=%s",
+            $arrConnection['server'],
+            $arrConnection['db'],
+            $arrConnection['auth'][0],
+            $arrConnection['auth'][1]
+        );
+        $this->objPdo = new \PDO($strDsn);
+        $this->objPdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->objPdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
+        $this->objPdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+    }
     
-    public static function getInstance() {
-        if (self::$objInstance === null) {
-            self::$objInstance = new Router();
+    public static function addConnection($strType, $strServer, $strDbName, $arrAuth, $strConnectionName = '') {
+        if (empty($strConnectionName)) {
+            $strConnectionName = 'default';
         }
-        return self::$objInstance;
+        self::$arrConnections[$strConnectionName] = array(
+            'type' => $strType, 
+            'server' => $strServer, 
+            'db' => $strDbName, 
+            'auth' => $arrAuth
+        );
+    }
+    
+    public static function getInstance($strConnectionName = 'default') {
+        if (!isset(self::$arrInstances[$strConnectionName])) {
+            self::$arrInstances[$strConnectionName] = new Db($strConnectionName);
+        }
+        return self::$arrInstances[$strConnectionName]->objPdo;
     }
     
     public function loadRoutes () {

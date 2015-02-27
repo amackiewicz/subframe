@@ -1,36 +1,30 @@
-<?php namespace Webcitron\Subframe\Core;
+<?php namespace webcitron\Subframe;
 
-class Controller {
+class Page {
     
-    public $strControllerName = '';
-    public $strView = '';
+    public $strPageName = '';
     public $strLayout = '';
-//    private $strView = '';
-//    public $arrBoxes = array();
-    
-    public function withArgs() {
-        $arrArgs = Request::args();
-        return !empty($arrArgs);
-    }
+    private $strView = '';
+    public $arrBoxes = array();
     
     public function setLayout ($strLayout) {
         $this->strLayout = $strLayout;
     }
     
-//    public function setView ($strView) {
-//        $this->strView = $strView;
-//    }
+    public function setView ($strView) {
+        $this->strView = $strView;
+    }
     
-//    public function addBox($strBoxId, $strViewContainer) {
-//        if (!isset($this->arrBoxes[$strViewContainer])) {
-//            $this->arrBoxes[$strViewContainer] = array();
-//        }
-//        $this->arrBoxes[$strViewContainer][] = $strBoxId;
-//    }
+    public function addBox($strBoxId, $strViewContainer) {
+        if (!isset($this->arrBoxes[$strViewContainer])) {
+            $this->arrBoxes[$strViewContainer] = array();
+        }
+        $this->arrBoxes[$strViewContainer][] = $strBoxId;
+    }
     
-//    public function getView() {
-//        return $this->strView;
-//    }
+    public function getView() {
+        return $this->strView;
+    }
     
 //    public function render () {
 //        

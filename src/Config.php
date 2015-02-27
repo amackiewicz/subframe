@@ -1,4 +1,4 @@
-<?php namespace Webcitron\Subframe\Core;
+<?php namespace webcitron\Subframe;
 
 class Config {
     
@@ -19,11 +19,28 @@ class Config {
         $objConfig->set('templater', $strTemplater);
     }
     
+    public static function addAppUrl($strUrl) {
+        $objConfig = Config::getInstance();
+        $objConfig->add('appUrls', $strUrl);
+    }
+    
+    public static function addAppDevUrl($strUrl) {
+        $objConfig = Config::getInstance();
+        $objConfig->add('appDevUrls', $strUrl);
+    }
+    
     public function set($strOption, $strValue) {
         $this->arrOptions[$strOption] = $strValue;
     }
     
-    public static function get($strConfigName, $strOption) {
+    public function add($strOption, $strValue) {
+        if (!isset($this->arrOptions[$strOption])) {
+            $this->arrOptions[$strOption] = array();
+        }
+        $this->arrOptions[$strOption][] = $strValue;
+    }
+    
+    public static function get($strOption, $strConfigName = 'core') {
         $objConfig = self::getInstance($strConfigName);
         return $objConfig->arrOptions[$strOption];
         

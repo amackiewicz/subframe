@@ -1,6 +1,11 @@
-<?php
+<?php namespace webcitron\Subframe;
 
-$objSubframe = new \Webcitron\Subframe\Core\Subframe();
-$objApp = $objSubframe->getApp();
-$objResponse = $objApp->launch();
-echo $objResponse;
+class Launcher {
+    public function __get($strTrash) {
+        $objSubframe = new Subframe();
+        $objApp = $objSubframe->getApp();
+        $objResponse = $objApp->launch();
+        echo $objResponse;
+    }
+}
+

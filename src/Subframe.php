@@ -1,4 +1,4 @@
-<?php namespace Webcitron\Subframe\Core;
+<?php namespace webcitron\Subframe;
 
 class Subframe
 {

@@ -1,4 +1,4 @@
-<?php namespace Webcitron\Subframe\Core;
+<?php namespace webcitron\Subframe;
 
 class Request {
     
@@ -26,7 +26,17 @@ class Request {
     
     public static function getParams () {
         $objRequest = Request::getInstance();
-        return $objRequest->arrParams;
+//        $arrReturn = $objRequest->arrParams;
+        $arrReturn = array_map(function ($mulParamValue) {
+            if (is_numeric($mulParamValue)) {
+                $mulOutput = intval($mulParamValue);
+            } else {
+                $mulOutput = $mulParamValue;
+            }
+            return $mulOutput;
+        }, $objRequest->arrParams);
+//        var_dump($arrReturn);
+        return $arrReturn;
     }
     
     public static function setParams($arrParams) {
@@ -39,10 +49,25 @@ class Request {
         $objRequest->arrServer = filter_input_array(INPUT_SERVER);
         $objRequest->arrArgs = filter_input_array(INPUT_POST);
         
+        if (!empty($objRequest->arrArgs)) {
+            $objRequest->arrArgs = array_map(function($mulElement) {
+                $mulOutput = $mulElement;
+                if (is_string($mulOutput)) {
+                    $mulOutput = trim($mulOutput);
+                }
+                return $mulOutput;
+            }, $objRequest->arrArgs);
+        }
+        
         $_POST = $_SERVER = array();
     }
     
     private function __construct() {}
+    
+    public function domain() {
+        $strResult = sprintf('%s://%s', $this->arrServer['REQUEST_SCHEME'], $this->arrServer['SERVER_NAME']);
+        return $strResult;
+    }
     
     public function getUri() {
         return $this->arrServer['REQUEST_URI'];

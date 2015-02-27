@@ -1,4 +1,4 @@
-<?php namespace Webcitron\Subframe\Core;
+<?php namespace webcitron\Subframe;
 
 class Templater {
     
@@ -6,13 +6,13 @@ class Templater {
     
     public function __construct()
     {
-        $strTemplaterName = Config::get('core', 'templater');
+        $strTemplaterName = Config::get('templater');
         $this->objSpecifiedTemplater = new $strTemplaterName;
     }
     
     public static function createSpecifiedTemplater($strTemplaterName) {
-        $strClassName = 'templater'.ucfirst($strTemplaterName);
-        $objTemplater = new $strClassName;
+//        $strClassName = 'Templater'.ucfirst($strTemplaterName);
+        $objTemplater = TemplaterBlitz::getInstance();
         return $objTemplater;
     }
     

@@ -7,10 +7,6 @@
             "email": "a.mackiewicz@webcitron.eu"
         }
     ],
-    "require": {}, 
-    "autoload": {
-        "psr-4": {
-            "webcitron\\Subframe\\": "src"
-        }
+    "require": {
     }
 }
