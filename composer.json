@@ -7,7 +7,14 @@
             "email": "a.mackiewicz@webcitron.eu"
         }
     ],
+    "repositories": [
+       {
+           "type": "vcs",
+           "url": "https://github.com/webcitron/subframe.git"
+       }
+   ], 
     "require": {
+        
     },
     "autoload": {
         "psr-4": {
