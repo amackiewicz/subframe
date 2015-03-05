@@ -8,11 +8,11 @@
         }
     ],
     "repositories": [
-       {
-           "type": "vcs",
-           "url": "https://github.com/webcitron/subframe.git"
-       }
-   ], 
+        {
+            "type": "vcs",
+            "url": "https://github.com/webcitron/subframe.git"
+        }
+    ], 
     "require": {
         
     },

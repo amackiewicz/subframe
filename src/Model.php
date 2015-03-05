@@ -13,6 +13,7 @@ class Model {
     
     public function isEmpty() {
         echo '1';
+        echo '2';
         return empty($this->id);
     }
     
