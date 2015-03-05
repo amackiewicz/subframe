@@ -4,30 +4,10 @@ use webcitron\Subframe\Db;
 
 class Model {
     
-//    protected  $strChildClassName = '';
-    
-//    public function __construct () {
-////        $this->strChildClassName = get_called_class();
-//    }
-    
     
     public function isEmpty() {
-        echo '1';
-        echo '2';
         return empty($this->id);
     }
-    
-//    public function save() {
-//        $objDb = Db::getInstance();
-//        $strCallerClass = get_called_class();
-//        $arrFields = array();
-//        $strQ = "INSERT INTO %s ( %s ) VALUES ( %s )";
-//        foreach ($this as $k => $v) {
-//            echo $k.' -> '.$v.', ';
-//        }
-//        exit();
-//        
-//    }
     
     public static function get ($mulKey, $strValue = '', $arrFields = array()) {
         $objDb = Db::getInstance();
