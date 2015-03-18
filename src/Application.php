@@ -29,7 +29,6 @@ class Application
         $this->loadConfig();
         $this->objRouter = Router::getInstance();
         $this->objRouter->loadRoutes();
-
         $this->objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
 
         Request::read();
@@ -47,9 +46,10 @@ class Application
         self::$strCurrentAppUrl = $this->currentAppUrl();
         
         $objCurrentRoute = $this->objRouter->dispath();
-
         $objResponse = $objCurrentRoute->launch();
-        $objResponse->output();
+        if (!empty($objResponse)) {
+            $objResponse->output();
+        }
 //        echo $objResponse;
 //        $strOutput = $this->objTemplater->renderController($objController);
 //

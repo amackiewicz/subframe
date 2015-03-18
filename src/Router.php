@@ -40,7 +40,7 @@ class Router {
             $strPattern = str_replace('/', '\/', $strPattern);
             $strPattern = str_replace('.', '\.', $strPattern);
             $strPattern = str_replace('-', '\-', $strPattern);
-            $strPattern = sprintf('%s', preg_replace('/\{[^}]+\}/', '([^\/]+)', $strPattern)); 
+            $strPattern = sprintf('^%s$', preg_replace('/\{[^}]+\}/', '([^\/]+)', $strPattern)); 
             $strPattern = '/'.$strPattern.'/';
 //            echo $strUri .' -> '.$strPattern.'<br />';
             $numPregMatchResult = @preg_match($strPattern, $strUri, $arrHits);

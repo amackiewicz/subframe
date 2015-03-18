@@ -38,15 +38,13 @@ class Route {
 //        $objController->strLayout = 'default';
         $objActionMethod = new \ReflectionMethod($this->strControllerName, $this->strActionName);
         $arrRequestParams = Request::getParams();
-//        echo 'REQUEST PARAMS:<pre>';
-//        print_r($arrRequestParams);
-//        echo '</pre>';
-//       exit();
+        
+        $objResponse = $objActionMethod->invokeArgs($objController, $arrRequestParams);
 //        echo '<pre>';
 //        print_r($objController);
+//        print_r($objActionMethod);
+//        print_r($objResponse);
 //        exit();
-        $objResponse = $objActionMethod->invokeArgs($objController, $arrRequestParams);
-        
         return $objResponse;
     }
     
