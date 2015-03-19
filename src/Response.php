@@ -30,5 +30,10 @@ class Response {
         return $objResponse;
     }
     
+    public static function jsonRpc($arrData) {
+        $objResponse = Response\JsonRpc::getInstance();
+        $objResponse->setData($arrData);
+        return $objResponse;
+    }
     
 }

@@ -18,6 +18,9 @@ class Image extends \webcitron\Subframe\Response{
         return self::$objInstance;
     }
     
+    public function render () {
+        
+    }
     
     public function output()
     {

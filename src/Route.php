@@ -31,12 +31,12 @@ class Route {
     
     
     public function launch() {
-        require APP_DIR.'/controllers/'.$this->strControllerName.'.class.php';
-        $objController = new $this->strControllerName;
+        $strController = sprintf('controller\%s', $this->strControllerName);
+        $objController = new $strController();
         $objController->strControllerName = $this->strControllerName;
 //        $objController->strView = strtolower($this->strControllerName).'/'.$this->strActionName;
 //        $objController->strLayout = 'default';
-        $objActionMethod = new \ReflectionMethod($this->strControllerName, $this->strActionName);
+        $objActionMethod = new \ReflectionMethod($strController, $this->strActionName);
         $arrRequestParams = Request::getParams();
         
         $objResponse = $objActionMethod->invokeArgs($objController, $arrRequestParams);

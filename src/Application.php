@@ -48,7 +48,7 @@ class Application
         $objCurrentRoute = $this->objRouter->dispath();
         $objResponse = $objCurrentRoute->launch();
         if (!empty($objResponse)) {
-            $objResponse->output();
+            $objResponse->output($objCurrentRoute);
         }
 //        echo $objResponse;
 //        $strOutput = $this->objTemplater->renderController($objController);

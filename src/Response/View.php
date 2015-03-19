@@ -14,7 +14,10 @@ class View extends \webcitron\Subframe\Response /*implements \webcitron\Subframe
         } else {
             $arrDebugBacktrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 4);
             $arrCallingControllerAction = array_pop($arrDebugBacktrace);
-            $this->strView = sprintf('%s/%s', strtolower($arrCallingControllerAction['class']), $arrCallingControllerAction['function']);
+            
+            $arrCallerClassTokens = explode('\\', $arrCallingControllerAction['class']);
+            $strCallerControllerName = array_pop($arrCallerClassTokens);
+            $this->strView = sprintf('%s/%s', strtolower($strCallerControllerName), $arrCallingControllerAction['function']);
         }
     }
     
@@ -30,17 +33,21 @@ class View extends \webcitron\Subframe\Response /*implements \webcitron\Subframe
         $this->strView = $strViewName;
     }
     
-    public function output()
-    {
+    public function render($objCurrentRoute) {
         $strLayoutName = 'default';
         $strViewName = $this->strView;
         $arrData = $this->arrData;
         $arrMetaData = $this->arrMetaData;
         
         $objTemplater = \webcitron\Subframe\Application::getInstance()->objTemplater;
-        $strOutput = $objTemplater->renderResponseView($strLayoutName, $strViewName, $arrData, $arrMetaData);
+        $strOutput = $objTemplater->renderResponseView($objCurrentRoute, $strLayoutName, $strViewName, $arrData, $arrMetaData);
         
-        echo $strOutput;
+        return $strOutput;
+    }
+    
+    public function output($objCurrentRoute)
+    {
+        echo $this->render($objCurrentRoute);
     }
     
 }

@@ -18,9 +18,16 @@ class TemplaterBlitz
         return self::$objInstance;
     }
     
-    public function renderResponseView($strLayoutName, $strViewName, $arrViewData, $arrMetaData = array()) {
+    public function renderResponseView($objCurrentRoute, $strLayoutName, $strViewName, $arrViewData, $arrMetaData = array()) {
         $this->arrMetaData = $arrMetaData;
-        $strLayout = $this->objBlitz->include(APP_DIR.'/layouts/'.$strLayoutName.'.tpl', $arrViewData);
+        $arrLayoutData = array_merge(
+            $arrViewData, 
+            array(
+                'strController' => $objCurrentRoute->strControllerName, 
+                'strAction' => $objCurrentRoute->strActionName
+            )
+        );
+        $strLayout = $this->objBlitz->include(APP_DIR.'/layouts/'.$strLayoutName.'.tpl', $arrLayoutData);
         $strView = $this->objBlitz->include(APP_DIR.'/views/'.$strViewName.'.tpl', $arrViewData);
 
         $strOutput = str_replace('[[#placeholder:page#]]', $strView, $strLayout);
