@@ -11,7 +11,8 @@ class Model {
     
     public static function get ($mulKey, $strValue = '', $arrFields = array()) {
         $objDb = Db::getInstance();
-        $strCallerClass = get_called_class();
+        $arrCallerClassTokens = explode('\\', get_called_class());
+        $strCallerClass = array_pop($arrCallerClassTokens);
         $strQ = sprintf("SELECT %s FROM %s WHERE %s = :search_value", join(', ', $arrFields), strtolower($strCallerClass), $mulKey);
         $objSth = $objDb->prepare($strQ);
         $objSth->execute(array(
