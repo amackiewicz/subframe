@@ -6,6 +6,7 @@ class View extends \webcitron\Subframe\Response /*implements \webcitron\Subframe
     
     public static $objInstance = null;
     private  $strView = '';
+    private $strLayoutName = 'default';
     
     private function __construct($strViewName)
     {
@@ -33,12 +34,16 @@ class View extends \webcitron\Subframe\Response /*implements \webcitron\Subframe
         $this->strView = $strViewName;
     }
     
+    public function setLayout ($strLayoutName) {
+        $this->strLayoutName = $strLayoutName;
+        return $this;
+    }
+    
     public function render($objCurrentRoute) {
-        $strLayoutName = 'default';
+        $strLayoutName = $this->strLayoutName;
         $strViewName = $this->strView;
         $arrData = $this->arrData;
         $arrMetaData = $this->arrMetaData;
-        
         $objTemplater = \webcitron\Subframe\Application::getInstance()->objTemplater;
         $strOutput = $objTemplater->renderResponseView($objCurrentRoute, $strLayoutName, $strViewName, $arrData, $arrMetaData);
         
