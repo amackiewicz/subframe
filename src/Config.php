@@ -41,8 +41,12 @@ class Config {
     }
     
     public static function get($strOption, $strConfigName = 'core') {
+        $arrReturn = null;
         $objConfig = self::getInstance($strConfigName);
-        return $objConfig->arrOptions[$strOption];
+        if (isset($objConfig->arrOptions[$strOption])) {
+            $arrReturn = $objConfig->arrOptions[$strOption];
+        }
+        return $arrReturn;
         
     }
     

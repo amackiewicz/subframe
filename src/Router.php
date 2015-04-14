@@ -1,21 +1,24 @@
 <?php namespace webcitron\Subframe;
 
+
 class Router {
     
     private static $objInstance = null;
     public $arrRoutes = array();
+    public $boolRoutesLoaded = false;
     
     private function __construct() {}
     
     public static function getInstance() {
         if (self::$objInstance === null) {
             self::$objInstance = new Router();
+            self::$objInstance->loadRoutes();
         }
         return self::$objInstance;
     }
     
     public function loadRoutes () {
-        require APP_DIR.'/config/routes.php';
+        require Application::getInstance()->strDirectory.'/config/routes.php';
     }
     
     public function dispath () {

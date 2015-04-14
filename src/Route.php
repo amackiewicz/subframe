@@ -5,24 +5,24 @@ use webcitron\Subframe\Application;
 
 class Route {
     
-    public $strControllerName  = '';
-    public $strActionName = '';
+//    public $strControllerName  = '';
+//    public $strActionName = '';
     public $strUri = '';
     public $strRouteName = '';
     public $arrParams = array();
     
-    public function __construct($strControllerName, $strActionName, $strRouteName = '') {
-        $this->strControllerName = $strControllerName;
-        $this->strActionName = $strActionName;
+    public function __construct($strRouteName = '') {
+//        $this->strControllerName = $strControllerName;
+//        $this->strActionName = $strActionName;
         $this->strRouteName = $strRouteName;
     }
     
     
-    public static function add($strRouteName, $strUri, $strControllerAction) {
+    public static function add($strRouteName, $strUri) {
         $objRouter = Router::getInstance();
-        $arrControllerActionTokens = explode('/', $strControllerAction);
+//        $arrControllerActionTokens = explode('/', $strControllerAction);
         
-        $objRoute = new Route($arrControllerActionTokens[0], $arrControllerActionTokens[1], $strRouteName);
+        $objRoute = new Route($strRouteName);
         $objRoute->setUri($strUri);
         $objRoute->recognizeSetParams($strUri);
         $objRouter->arrRoutes[$strRouteName] = $objRoute;

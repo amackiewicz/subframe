@@ -17,11 +17,18 @@ class Response {
         return $objResponse;
     }
     
+    
     public function meta($arrMetaData) {
         $this->arrMetaData = $arrMetaData;
         return $this;
     }
         
+    public static function html($strHtmlContent, $arrViewData = array()) {
+        $objResponse = new Response\Html();
+        $objResponse->setContent($strHtmlContent);
+        $objResponse->setData($arrViewData);
+        return $objResponse;
+    }
     
     public static function image($arrParams) {
         $strContent = $arrParams['strContent'];

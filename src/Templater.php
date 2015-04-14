@@ -1,5 +1,7 @@
 <?php namespace webcitron\Subframe;
 
+use webcitron\Subframe\Templater\Blitz;
+
 class Templater {
     
     private $objSpecifiedTemplater = null;
@@ -18,7 +20,7 @@ class Templater {
 //        echo $strTemplaterName;
 //        exit();
 //        $strTemplaterClassName = sprintf('Templater%s', ucfirst($strTemplaterName));
-        $objTemplater = TemplaterBlitz::getInstance();
+        $objTemplater = Blitz::getInstance();
         return $objTemplater;
     }
     

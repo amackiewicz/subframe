@@ -1,5 +1,7 @@
 <?php namespace webcitron\Subframe;
 
+use webcitron\Subframe\Application;
+
 class Db {
     
     private static $arrInstances = [];
@@ -7,7 +9,8 @@ class Db {
     private static $arrConnections = [];
     
     private function __construct($strConnectionName) {
-        require APP_DIR.'/config/database.php';
+        $objApplication = Application::getInstance();
+        require $objApplication->strDirectory.'/config/database.php';
         $arrConnection = self::$arrConnections[$strConnectionName];
         $strDsn = sprintf(
             "pgsql:host=%s;dbname=%s;user=%s;password=%s",

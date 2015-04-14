@@ -5,6 +5,7 @@ class Box {
     public $strBoxName;
     public $strActionName;
     public $strView;
+    public $boolRunJavaScript = false;
     
     public function setView ($strView) {
         $this->strView = $strView;
@@ -16,6 +17,10 @@ class Box {
         $strOutput = $strView;
         return $strOutput;
         
+    }
+    
+    public function runJavaScript($boolRun = true) {
+        $this->boolRunJavaScript = $boolRun;
     }
     
 }

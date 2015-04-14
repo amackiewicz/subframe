@@ -3,18 +3,20 @@
 use \webcitron\Subframe\Router;
 use \webcitron\Subframe\Templater;
 use \webcitron\Subframe\Request;
-use \webcitron\Subframe\Response;
+use \webcitron\Subframe\Board;
 use \webcitron\Subframe\Config;
 
 class Application
 {
     public static $objInstance = null;
     private $objRouter = null;
-//    private $objRequest = null;
     public $objTemplater = null;
     private static $strEnvironment = '';
-    
     private static $strCurrentAppUrl = '';
+    
+    public $strName = '';
+    public $strDirectory = '';
+    public $strApplicationClassesPrefix = '';
 
     public static function getInstance()
     {
@@ -26,30 +28,56 @@ class Application
 
     private function __construct()
     {
-        $this->loadConfig();
-        $this->objRouter = Router::getInstance();
-        $this->objRouter->loadRoutes();
-        $this->objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
-
         Request::read();
+        $this->recognize();
+        $this->loadConfig();
     }
     
-    
+    private function recognize() {
+        $arrDirectoriesToSkip = array('.', '..', 'backend', 'scripts');
+        $objHandle = opendir(APP_DIR);
+        if ($objHandle !== false) {
+            while (false !== ($strResource = readdir($objHandle))) {
+                $strConfigFilePath = sprintf('%s/%s/config/app.php', APP_DIR, $strResource);
+                if (in_array($strResource, $arrDirectoriesToSkip) || !is_dir(APP_DIR.'/'.$strResource) || !file_exists($strConfigFilePath)) {
+                    continue;
+                }
+                
+                require $strConfigFilePath;
+                if(!empty($this->currentAppUrl())) {
+                    $this->strName = $strResource;
+                    $this->strDirectory = sprintf('%s/%s', APP_DIR, $this->strName);
+                    $this->strApplicationClassesPrefix = '\\'.$this->strName;
+                    break;
+                }
+            }
+            closedir($objHandle);
+        }
+    }
 
     private function loadConfig()
     {
-        require APP_DIR.'/config/app.php';
+        require $this->strDirectory.'/config/app.php';
     }
 
     public function launch()
     {
+        $this->objRouter = Router::getInstance();
+//        $this->objRouter->loadRoutes();
+        $this->objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
         self::$strCurrentAppUrl = $this->currentAppUrl();
         
         $objCurrentRoute = $this->objRouter->dispath();
-        $objResponse = $objCurrentRoute->launch();
-        if (!empty($objResponse)) {
-            $objResponse->output($objCurrentRoute);
-        }
+        $objResponse = Board::launch($objCurrentRoute->strRouteName);
+//        $objBoard->launch();
+        return $objResponse;
+//        echo '<pre>';
+//        print_r($objResponse);
+//        exit();
+//        $objResponse = $objCurrentRoute->launch();
+//        if (!empty($objResponse)) {
+//            $objResponse->output($objCurrentRoute);
+//        }
 //        echo $objResponse;
 //        $strOutput = $this->objTemplater->renderController($objController);
 //
@@ -79,7 +107,7 @@ class Application
         }
         
         $arrAppDevUrls = Config::get('appDevUrls');
-        foreach ($arrAppUrls as $strAppUrl) {
+        foreach ($arrAppDevUrls as $strAppUrl) {
             if ($strAppUrl === $strRequestDomain) {
                 $strResult = $strRequestDomain;
                 self::$strEnvironment = 'DEVELOPMENT';

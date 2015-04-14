@@ -45,6 +45,7 @@ class View extends \webcitron\Subframe\Response /*implements \webcitron\Subframe
         $arrData = $this->arrData;
         $arrMetaData = $this->arrMetaData;
         $objTemplater = \webcitron\Subframe\Application::getInstance()->objTemplater;
+        echo 'render';
         $strOutput = $objTemplater->renderResponseView($objCurrentRoute, $strLayoutName, $strViewName, $arrData, $arrMetaData);
         
         return $strOutput;

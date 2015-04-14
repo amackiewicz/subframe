@@ -1,6 +1,8 @@
-<?php namespace webcitron\Subframe;
+<?php namespace webcitron\Subframe\Templater;
 
-class TemplaterBlitz
+use webcitron\Subframe\Application;
+
+class Blitz
 {
     private static $objInstance = null;
     private $objBlitz = null;
@@ -13,10 +15,18 @@ class TemplaterBlitz
     
     public static function getInstance() {
         if (self::$objInstance === null) {
-            self::$objInstance = new TemplaterBlitz();
+            self::$objInstance = new Blitz();
         }
         return self::$objInstance;
     }
+    
+    public function getTemplateFileContent ($strFilePath, $arrViewData = array()) {
+         $strTemplateFileContent = $this->objBlitz->include($strFilePath.'.tpl', $arrViewData);
+        
+        return $strTemplateFileContent;
+    }
+    
+    // -----
     
     public function renderResponseView($objCurrentRoute, $strLayoutName, $strViewName, $arrViewData, $arrMetaData = array()) {
         $this->arrMetaData = $arrMetaData;
@@ -113,8 +123,16 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return \webcitron\Subframe\Url::route($strRouteName, $arrParams);
     }
     
+    public static function renderHeadAddons () {
+        $strHeadAddons = '';
+        $objJsController = \webcitron\Subframe\JsController::getInstance();
+        $strHeadAddons = $objJsController->render();
+        
+        return $strHeadAddons;
+    }
+    
     public static function metaData($strKey, $strWrapper = '', $boolNeedEscaping = true) {
-        $objTemplaterBlitz = TemplaterBlitz::getInstance();
+        $objTemplaterBlitz = Blitz::getInstance();
         $strReturn = $objTemplaterBlitz->getMetaData($strKey);
         if (!empty($strWrapper)) {
             if (empty($strReturn)) {
