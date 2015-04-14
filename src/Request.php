@@ -49,6 +49,12 @@ class Request {
         $objRequest->arrServer = filter_input_array(INPUT_SERVER);
         $objRequest->arrArgs = filter_input_array(INPUT_POST);
         
+        echo '<Pre>';
+        print_r($_SERVER);
+        print_r(filter_input_array(INPUT_SERVER));
+        print_r($objRequest->arrServer);
+        exit();
+        
         if (!empty($objRequest->arrArgs)) {
             $objRequest->arrArgs = array_map(function($mulElement) {
                 $mulOutput = $mulElement;
