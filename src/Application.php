@@ -44,7 +44,8 @@ class Application
                 }
                 
                 require $strConfigFilePath;
-                if(!empty($this->currentAppUrl())) {
+                $strCurrentAppUrl = $this->currentAppUrl();
+                if(!empty($strCurrentAppUrl)) {
                     $this->strName = $strResource;
                     $this->strDirectory = sprintf('%s/%s', APP_DIR, $this->strName);
                     $this->strApplicationClassesPrefix = '\\'.$this->strName;
