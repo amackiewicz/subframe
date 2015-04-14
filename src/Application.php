@@ -99,20 +99,24 @@ class Application
         $strRequestDomain = $objRequest->domain();
         
         $arrAppUrls = Config::get('appUrls');
-        foreach ($arrAppUrls as $strAppUrl) {
-            if ($strAppUrl === $strRequestDomain) {
-                $strResult = $strRequestDomain;
-                self::$strEnvironment = 'PRODUCTION';
-                break;
+        if (!empty($arrAppUrls)) {
+            foreach ($arrAppUrls as $strAppUrl) {
+                if ($strAppUrl === $strRequestDomain) {
+                    $strResult = $strRequestDomain;
+                    self::$strEnvironment = 'PRODUCTION';
+                    break;
+                }
             }
         }
         
         $arrAppDevUrls = Config::get('appDevUrls');
-        foreach ($arrAppDevUrls as $strAppUrl) {
-            if ($strAppUrl === $strRequestDomain) {
-                $strResult = $strRequestDomain;
-                self::$strEnvironment = 'DEVELOPMENT';
-                break;
+        if (!empty($arrAppDevUrls)) {
+            foreach ($arrAppDevUrls as $strAppUrl) {
+                if ($strAppUrl === $strRequestDomain) {
+                    $strResult = $strRequestDomain;
+                    self::$strEnvironment = 'DEVELOPMENT';
+                    break;
+                }
             }
         }
         
