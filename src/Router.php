@@ -7,6 +7,8 @@ class Router {
     public $arrRoutes = array();
     public $boolRoutesLoaded = false;
     
+    private static $objCurrentRoute = null;
+    
     private function __construct() {}
     
     public static function getInstance() {
@@ -17,6 +19,10 @@ class Router {
         return self::$objInstance;
     }
     
+    public static function getCurrentRoute () {
+        return self::$objCurrentRoute;
+    }
+    
     public function loadRoutes () {
         require Application::getInstance()->strDirectory.'/config/routes.php';
     }
@@ -24,8 +30,8 @@ class Router {
     public function dispath () {
         $objRequest = Request::getInstance();
         $strCurrentUri = $objRequest->getUri();
-        $objCurrentRoute = $this->findRoute($strCurrentUri);
-        return $objCurrentRoute;
+        self::$objCurrentRoute = $this->findRoute($strCurrentUri);
+        return self::$objCurrentRoute;
     }
     
     private function findRoute ($strUri) {
@@ -43,22 +49,33 @@ class Router {
             $strPattern = str_replace('/', '\/', $strPattern);
             $strPattern = str_replace('.', '\.', $strPattern);
             $strPattern = str_replace('-', '\-', $strPattern);
+//            echo str_replace(array('\/', '\-', '\.'), array('/', '-', '.'), $strPattern) .' -> ';
             $strPattern = sprintf('^%s$', preg_replace('/\{[^}]+\}/', '([^\/]+)', $strPattern)); 
+//            echo str_replace(array('\/', '\-', '/.'), array('/', '-', '.'), $strPattern).'<br />';
             $strPattern = '/'.$strPattern.'/';
 //            echo $strUri .' -> '.$strPattern.'<br />';
             $numPregMatchResult = @preg_match($strPattern, $strUri, $arrHits);
 //            echo '<pre>'.$numPregMatchResult;
 //            print_r($arrHits);
 //            echo '</pre>';
+//            exit();
             if ($numPregMatchResult === 1) {
+//                echo 'OK';
+//                exit();
                 if (!empty($arrHits)) {
+                    $arrFilteredHits = array();
 //                    echo '<pre>';
 //                    print_r($arrHits);
-                    array_shift($arrHits);
-//                    print_r($arrHits);
-//                    echo '</pre>';
 //                    exit();
-                    Request::setParams($arrHits);
+                    for ($numHit = 1; $numHit<count($arrHits); $numHit+=2) {
+                        $arrFilteredHits[] = $arrHits[$numHit];
+                    }
+//                    echo '<pre>';
+//                    print_r($arrFilteredHits);
+//                    array_shift($arrHits);
+//                    print_r($arrHits);
+//                    exit();
+                    Request::setParams($arrFilteredHits);
                 }
                 break;
             }

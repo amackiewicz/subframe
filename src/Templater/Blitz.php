@@ -152,4 +152,9 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return $strBaseUrl;
     }
     
+    public function pagination ($strPaginationName, $boolExtended = true) {
+        $objPagination = \backend\classes\Pagination::get($strPaginationName);
+        return $objPagination->render($boolExtended);
+    }
+    
 }

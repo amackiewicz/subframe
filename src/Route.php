@@ -49,6 +49,12 @@ class Route {
     }
     
     public function buildUri($arrParams = array()) {
+        
+        
+//        echo '<pre>';
+//        print_r($arrParams);
+////        print_r($arrParams);
+//        echo '</pre>';
         $strResult = '';
         if (empty($this->arrParams)) {
             $strResult = $this->strUri;
@@ -58,13 +64,33 @@ class Route {
                 
             }, $this->arrParams);
             $arrReplaces = $arrParams;
+
+            $strCurrentUri = $this->strUri;
+            if (count($arrPatterns) > count($arrReplaces)) {
+                $numStartRemovingFrom = count($arrPatterns) - count($arrReplaces);
+                for ($numPatternNo=$numStartRemovingFrom; $numPatternNo<count($arrPatterns); $numPatternNo++) {
+//                    echo sprintf('(%s/)?', $arrPatterns[$numPatternNo]) .'->'.$strCurrentUri.'<br />';
+                    $strCurrentUri = str_replace(
+                        sprintf('(%s/)?', $arrPatterns[$numPatternNo]), 
+                        '', 
+                        $strCurrentUri
+                    );
+                }
+                
+            } else if (count($arrPatterns) === count($arrReplaces)) {
+                $strCurrentUri = str_replace(
+                    array('(', ')', '?'), 
+                    '', 
+                    $strCurrentUri
+                );
+
+            }
 //            echo '<pre>';
 //            print_r($arrPatterns);
 //            print_r($arrReplaces);
-//            print_r($arrParams);
-//            print_r($this);
-//            exit();
-            $strResult = str_replace($arrPatterns, $arrReplaces, $this->strUri);
+//            echo $strCurrentUri.'x';
+//            echo '</pre>';
+            $strResult = str_replace($arrPatterns, $arrReplaces, $strCurrentUri);
         }
         
         $strResult = sprintf('%s%s', Application::url(), $strResult);

@@ -69,6 +69,8 @@ class Application
         self::$strCurrentAppUrl = $this->currentAppUrl();
         
         $objCurrentRoute = $this->objRouter->dispath();
+        
+        $arrRequestParams = Request::getParams();
         $objResponse = Board::launch($objCurrentRoute->strRouteName);
 //        $objBoard->launch();
         return $objResponse;
