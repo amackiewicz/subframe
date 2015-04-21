@@ -11,4 +11,10 @@ class Redirect {
         exit();
     }
     
+    public static function url ($strUrl, $numCode = 301) {
+        $strHeader = sprintf('Location: %s', $strUrl);
+        header($strHeader, true, $numCode);
+        exit();
+    }
+    
 }

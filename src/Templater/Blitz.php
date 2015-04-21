@@ -124,10 +124,9 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     }
     
     public static function renderHeadAddons () {
-        $strHeadAddons = '';
         $objJsController = \webcitron\Subframe\JsController::getInstance();
-        $strHeadAddons = $objJsController->render();
-        
+        $objApplication = Application::getInstance();
+        $strHeadAddons = $objJsController->render($objApplication->strName);
         return $strHeadAddons;
     }
     

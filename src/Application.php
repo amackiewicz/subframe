@@ -61,12 +61,14 @@ class Application
         require $this->strDirectory.'/config/app.php';
     }
 
+    public function init () {
+        $this->objRouter = Router::getInstance();
+        self::$strCurrentAppUrl = $this->currentAppUrl();
+    }
+    
     public function launch()
     {
-        $this->objRouter = Router::getInstance();
-//        $this->objRouter->loadRoutes();
         $this->objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
-        self::$strCurrentAppUrl = $this->currentAppUrl();
         
         $objCurrentRoute = $this->objRouter->dispath();
         
@@ -99,7 +101,6 @@ class Application
         
         $objRequest = Request::getInstance();
         $strRequestDomain = $objRequest->domain();
-        
         $arrAppUrls = Config::get('appUrls');
         if (!empty($arrAppUrls)) {
             foreach ($arrAppUrls as $strAppUrl) {
