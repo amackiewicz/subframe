@@ -6,7 +6,8 @@ class Layout {
     
     public $arrPlaceholderBoxes = array();
     
-    final public function render () {
+    final public function render ($arrLayoutData = array()) {
+        
         $arrBoxesResponseContents = array();
         foreach ($this->arrPlaceholderBoxes as $strPlaceholderName => $arrBoxes) {
             $arrBoxesResponseContents[$strPlaceholderName] = array();
@@ -22,7 +23,7 @@ class Layout {
         $strLayoutPath = sprintf('%s/layout/view/%s', Application::getInstance()->strDirectory, $strLayoutName);
         
         $objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
-        $strLayoutContent = $objTemplater->getTemplateFileContent($strLayoutPath);
+        $strLayoutContent = $objTemplater->getTemplateFileContent($strLayoutPath, $arrLayoutData);
         
         foreach ($this->arrPlaceholderBoxes as $strPlaceholderName => $arrBoxes) {
             $strLayoutContent = str_replace(
