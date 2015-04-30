@@ -2,10 +2,14 @@
 
 class Launcher {
     public function __get($strTrash) {
-        $objSubframe = new Subframe();
-        $objApp = $objSubframe->getApp();
-        $objApp->init();
-        if ($strTrash !== 'jsonrpc_black_magic') {
+        if ($strTrash === 'jsonrpc_black_magic') {
+            $objSubframe = new Subframe();
+            $objApp = $objSubframe->getApp();
+            $objApp->init();
+        } else {
+            $objSubframe = new Subframe();
+            $objApp = $objSubframe->getApp();
+            $objApp->init();
             $objResponse = $objApp->launch();
             echo $objResponse;
         }

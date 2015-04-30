@@ -9,7 +9,20 @@ class Model {
         return empty($this->id);
     }
     
+    public static function rpc ($mulValue) {
+        $arrReturn = array(
+            'result' => $mulValue
+        );
+        return $arrReturn;
+    }
+    
     public static function get ($mulKey, $strValue = '', $arrFields = array()) {
+        if (empty($arrFields)) {
+            exit('przekaz w 3 parametrze tablice pol ktore chcesz wyciagnac z bazy (system nie dopuszcza uzycia *)');
+        }
+        if (in_array('*', $arrFields)) {
+            exit('Nie można wybierać po *');
+        }
         $objDb = Db::getInstance();
         $arrCallerClassTokens = explode('\\', get_called_class());
         $strCallerClass = array_pop($arrCallerClassTokens);

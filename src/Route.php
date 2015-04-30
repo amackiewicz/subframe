@@ -8,24 +8,43 @@ class Route {
 //    public $strControllerName  = '';
 //    public $strActionName = '';
     public $strUri = '';
+    public $strRouteFullName = '';
     public $strRouteName = '';
+    public $strMethodName = '';
     public $arrParams = array();
     
     public function __construct($strRouteName = '') {
 //        $this->strControllerName = $strControllerName;
 //        $this->strActionName = $strActionName;
         $this->strRouteName = $strRouteName;
+//        $this->strRouteFullName = $strRouteName;
     }
     
     
-    public static function add($strRouteName, $strUri) {
+    public static function add($strRouteFullName, $strUri) {
         $objRouter = Router::getInstance();
 //        $arrControllerActionTokens = explode('/', $strControllerAction);
         
+        $arrRouteMethod = explode('::', $strRouteFullName);
+        if (count($arrRouteMethod) == 2) {
+            $strRouteName = $arrRouteMethod[0];
+            $strRouteMethod = $arrRouteMethod[1];
+        } else {
+            $strRouteName = $arrRouteMethod[0];
+            $strRouteMethod = 'index';
+        }
+        
         $objRoute = new Route($strRouteName);
         $objRoute->setUri($strUri);
+        $objRoute->setMethod($strRouteMethod);
         $objRoute->recognizeSetParams($strUri);
-        $objRouter->arrRoutes[$strRouteName] = $objRoute;
+        $objRoute->strRouteFullName = $strRouteFullName;
+        
+        $objRouter->arrRoutes[$strRouteFullName] = $objRoute;
+    }
+    
+    public static function addReversed ($strUri, $mulRoute) {
+        return self::add($mulRoute, $strUri);
     }
     
     
@@ -99,6 +118,10 @@ class Route {
     
     public function setUri($strUri) {
         $this->strUri = $strUri;
+    }
+    
+    public function setMethod($strMethodName) {
+        $this->strMethodName = $strMethodName;
     }
     
     public function recognizeSetParams($strUri) {

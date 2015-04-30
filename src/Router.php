@@ -43,7 +43,17 @@ class Router {
 //        @preg_match_all("/\/p\/([^\/]+)\/([^\/]+)\.jpg/", '/p/again-the-duty-is-assigned-by-the-queen-and/65.jpg', $m);
 //        echo '<pre>';
 //        print_r($m);
+//        
+//        
+//        
 //        echo '</pre>';
+//        $pat = "/^\/([^\/]+)\/$/";
+//        $a = preg_match($pat, "/test/", $h);
+//        echo '<Pre>';
+//        print_r($a);
+//        print_r($h);
+//        exit();
+        
         foreach ($this->arrRoutes as $objRoute) {
             $strPattern = $objRoute->strUri;
             $strPattern = str_replace('/', '\/', $strPattern);
@@ -67,7 +77,7 @@ class Router {
 //                    echo '<pre>';
 //                    print_r($arrHits);
 //                    exit();
-                    for ($numHit = 1; $numHit<count($arrHits); $numHit+=2) {
+                    for ($numHit = 1; $numHit<count($arrHits); $numHit++) {
                         $arrFilteredHits[] = $arrHits[$numHit];
                     }
 //                    echo '<pre>';

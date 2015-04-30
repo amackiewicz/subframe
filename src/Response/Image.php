@@ -18,8 +18,16 @@ class Image extends \webcitron\Subframe\Response{
         return self::$objInstance;
     }
     
+    public function __toString()
+    {
+        return $this->render();
+    }
+    
     public function render () {
-        
+        header("Status: 200 OK");
+        header("Content-Type: image/jpeg");
+        header("Content-Length: " . strlen($this->arrData['strImageContents']));
+        return $this->arrData['strImageContents'];
     }
     
     public function output()

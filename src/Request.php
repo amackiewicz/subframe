@@ -16,7 +16,7 @@ class Request {
     
     public static function arg($strArgName) {
         $objRequest = Request::getInstance();
-        return $objRequest->arrArgs[$strArgName];
+        return trim($objRequest->arrArgs[$strArgName]);
     }
     
     public static function args() {
