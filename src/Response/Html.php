@@ -1,5 +1,6 @@
 <?php namespace webcitron\Subframe\Response;
 
+use webcitron\Subframe\Request;
 
 class Html extends \webcitron\Subframe\Response{
     
@@ -10,6 +11,20 @@ class Html extends \webcitron\Subframe\Response{
     }
     
     public function __toString() {
+        if ($this->numCode > 0) {
+            switch ($this->numCode) {
+                case 404:
+                    $objRequest = Request::getInstance();
+                    header(sprintf(
+                        "%s 404 Not Found", 
+                        $objRequest->protocol()
+                    )); 
+                    break;
+                default:
+                    exit('unexcepted response header code');
+                    break;
+            }
+        }
         return $this->strContent;
     }
     

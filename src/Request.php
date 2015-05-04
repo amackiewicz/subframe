@@ -75,4 +75,8 @@ class Request {
         return $this->arrServer['REQUEST_URI'];
     }
     
+    public function protocol() {
+        return $this->arrServer['SERVER_PROTOCOL'];
+    }
+    
 }

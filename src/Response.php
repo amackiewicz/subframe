@@ -6,6 +6,7 @@ class Response {
     
     public $arrData = array();
     public $arrMetaData = array();
+    public $numCode = 0;
     
     public function setData($arrData) {
         $this->arrData = $arrData;
@@ -21,6 +22,10 @@ class Response {
     public function meta($arrMetaData) {
         $this->arrMetaData = $arrMetaData;
         return $this;
+    }
+    
+    public function setStatus ($numStatusCode) {
+        $this->numCode = $numStatusCode;
     }
         
     public static function html($strHtmlContent, $arrViewData = array()) {
