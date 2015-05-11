@@ -159,7 +159,12 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     }
     
     public static function prettyDate ($mulDateTime) {
-        $numTimestamp = strtotime($mulDateTime);
+        echo 'x'.intval($mulDateTime).'x'.$mulDateTime.'x';
+        if (intval($mulDateTime) === $mulDateTime) {
+            $numTimestamp = $mulDateTime;
+        } else {
+            $numTimestamp = strtotime($mulDateTime);
+        }
         $numNow = time();
         $strReturn = '';
         if (date('Ymd', $numTimestamp) === date('Ymd', $numNow)) {
