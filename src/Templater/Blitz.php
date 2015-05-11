@@ -158,6 +158,20 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return $strBaseUrl;
     }
     
+    public static function prettyDate ($mulDateTime) {
+        $numTimestamp = strtotime($mulDateTime);
+        $numNow = time();
+        $strReturn = '';
+        if (date('Ymd', $numTimestamp) === date('Ymd', $numNow)) {
+            $strReturn = 'dzisiaj';
+        } else if (date('Ymd', $numTimestamp) === date('Ymd', $numNow-(60*60*24))) {
+            $strReturn = 'wczoraj';
+        } else {
+            $strReturn = date('d.m.Y', $numTimestamp);
+        }
+        return $strReturn;
+    }
+    
     public function pagination ($strPaginationName, $boolExtended = true) {
         $objPagination = \backend\classes\Pagination::get($strPaginationName);
         return $objPagination->render($boolExtended);
