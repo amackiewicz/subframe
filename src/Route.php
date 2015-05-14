@@ -47,6 +47,9 @@ class Route {
         return self::add($mulRoute, $strUri);
     }
     
+    public function getParams () {
+        return $this->arrParams;
+    }
     
     
     public function launch() {
@@ -86,7 +89,8 @@ class Route {
 
             $strCurrentUri = $this->strUri;
             if (count($arrPatterns) > count($arrReplaces)) {
-                $numStartRemovingFrom = count($arrPatterns) - count($arrReplaces);
+                
+                $numStartRemovingFrom = count($arrPatterns) + (count($arrReplaces) - count($arrPatterns));
                 for ($numPatternNo=$numStartRemovingFrom; $numPatternNo<count($arrPatterns); $numPatternNo++) {
 //                    echo sprintf('(%s/)?', $arrPatterns[$numPatternNo]) .'->'.$strCurrentUri.'<br />';
                     $strCurrentUri = str_replace(
