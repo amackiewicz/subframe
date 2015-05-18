@@ -27,16 +27,17 @@ class Request {
     public static function getParams () {
         $objRequest = Request::getInstance();
 //        $arrReturn = $objRequest->arrParams;
-        $arrReturn = array_map(function ($mulParamValue) {
-            if (is_numeric($mulParamValue)) {
-                $mulOutput = intval($mulParamValue);
-            } else {
-                $mulOutput = $mulParamValue;
-            }
-            return $mulOutput;
-        }, $objRequest->arrParams);
-//        var_dump($arrReturn);
-        return $arrReturn;
+//        $arrReturn = array_map(function ($mulParamValue) {
+//            if (is_numeric($mulParamValue)) {
+//                $mulOutput = intval($mulParamValue);
+//            } else {
+//                $mulOutput = $mulParamValue;
+//            }
+//            return $mulOutput;
+//        }, $objRequest->arrParams);
+////        var_dump($arrReturn);
+//        return $arrReturn;
+        return $objRequest->arrParams;
     }
     
     public static function setParams($arrParams) {

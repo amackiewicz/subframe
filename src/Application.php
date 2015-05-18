@@ -71,8 +71,12 @@ class Application
         $this->objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
         
         $objCurrentRoute = $this->objRouter->dispath();
-        $arrRequestParams = Request::getParams();
-        $objResponse = Board::launch($objCurrentRoute->strRouteName, $objCurrentRoute->strMethodName);
+//        $arrRequestParams = Request::getParams();
+        if (empty($objCurrentRoute)) {
+            $objResponse = Board::launch('Error', 'notFound');
+        } else {
+            $objResponse = Board::launch($objCurrentRoute->strRouteName, $objCurrentRoute->strMethodName);
+        }
 //        $objBoard->launch();
         return $objResponse;
 //        echo '<pre>';

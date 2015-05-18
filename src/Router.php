@@ -53,7 +53,7 @@ class Router {
 //        print_r($a);
 //        print_r($h);
 //        exit();
-        
+        $objRecognizedRoute = null;
         foreach ($this->arrRoutes as $objRoute) {
             $strPattern = $objRoute->strUri;
             $strPattern = str_replace('/', '\/', $strPattern);
@@ -87,15 +87,16 @@ class Router {
 //                    exit();
                     Request::setParams($arrFilteredHits);
                 }
+                $objRecognizedRoute = $objRoute;
                 break;
             }
         }
         
-        if (empty($objRoute)) {
-            echo "ERROR! ".__FILE__.'::'.__FUNCTION__.'#'.__LINE__;
-            exit();
-        }
-        return $objRoute;
+//        if (empty($objRecognizedRoute)) {
+//            echo "ERROR! ".__FILE__.'::'.__FUNCTION__.'#'.__LINE__;
+//            exit();
+//        }
+        return $objRecognizedRoute;
     }
     
     
