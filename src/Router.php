@@ -34,7 +34,7 @@ class Router {
         return self::$objCurrentRoute;
     }
     
-    private function findRoute ($strUri) {
+    public function findRoute ($strUri, $boolDebug = false) {
         $objRoute = null;
         $arrHits = array();
         
@@ -65,19 +65,22 @@ class Router {
             $strPattern = '/'.$strPattern.'/';
 //            echo $strUri .' -> '.$strPattern.'<br />';
             $numPregMatchResult = @preg_match($strPattern, $strUri, $arrHits);
-//            echo '<pre>'.$numPregMatchResult;
-//            print_r($arrHits);
-//            echo '</pre>';
-//            exit();
+            if ($boolDebug === true) {
+                echo '<pre>'.$numPregMatchResult;
+                print_r($arrHits);
+                echo '</pre>';
+            }
             if ($numPregMatchResult === 1) {
-//                echo 'OK';
+             
 //                exit();
                 if (!empty($arrHits)) {
                     $arrFilteredHits = array();
-//                    echo '<pre>';
-//                    print_r($arrHits);
-//                    exit();
-                    for ($numHit = 1; $numHit<count($arrHits); $numHit++) {
+                    if ($boolDebug === true) {
+                        echo '<pre>';
+                        print_r($arrHits);
+                        echo '</pre>';
+                    }
+                    for ($numHit = 1; $numHit<count($arrHits); $numHit+=2) {
                         $arrFilteredHits[] = $arrHits[$numHit];
                     }
 //                    echo '<pre>';
