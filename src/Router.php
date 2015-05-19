@@ -80,15 +80,20 @@ class Router {
                         print_r($arrHits);
                         echo '</pre>';
                     }
-                    for ($numHit = 1; $numHit<count($arrHits); $numHit+=2) {
-                        $arrFilteredHits[] = $arrHits[$numHit];
-                    }
+                    
+//                    for ($numHit = 1; $numHit<count($arrHits); $numHit+=2) {
+//                        $arrFilteredHits[] = $arrHits[$numHit];
+//                    }
+                    array_shift($arrHits);
+//                    Request::setParams($arrFilteredHits);
+                    
+                    Request::setParams($arrHits);
 //                    echo '<pre>';
 //                    print_r($arrFilteredHits);
-//                    array_shift($arrHits);
+//                    
 //                    print_r($arrHits);
 //                    exit();
-                    Request::setParams($arrFilteredHits);
+                    
                 }
                 $objRecognizedRoute = $objRoute;
                 break;
