@@ -19,6 +19,7 @@ class Db {
             $arrConnection['auth'][0],
             $arrConnection['auth'][1]
         );
+        
         $this->objPdo = new \PDO($strDsn);
         $this->objPdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $this->objPdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
@@ -41,6 +42,7 @@ class Db {
         if (!isset(self::$arrInstances[$strConnectionName])) {
             self::$arrInstances[$strConnectionName] = new Db($strConnectionName);
         }
+        
         return self::$arrInstances[$strConnectionName]->objPdo;
     }
     

@@ -8,15 +8,26 @@ use \webcitron\Subframe\Config;
 
 class Application
 {
+    
+    const ENVIRONMENT_PRODUCTION = 1;
+    const ENVIRONMENT_RC = 2;
+    const ENVIRONMENT_NIGHTLY = 3;
+    const ENVIRONMENT_DEV = 4;
+    
     public static $objInstance = null;
     private $objRouter = null;
     public $objTemplater = null;
+    
+    private static $numCurrentEnvironment = 0;
     private static $strEnvironment = '';
+    
     private static $strCurrentAppUrl = '';
     
     public $strName = '';
     public $strDirectory = '';
     public $strApplicationClassesPrefix = '';
+    
+    private $arrWorkingEnvironments = array();
 
     public static function getInstance()
     {
@@ -24,6 +35,26 @@ class Application
             self::$objInstance = new Application();
         }
         return self::$objInstance;
+    }
+    
+    public static function currentEnvironment () {
+        return self::$numCurrentEnvironment;
+    }
+    
+    public function addEnvironment ($numEnvironment, $mulUrls) {
+        if (is_array($mulUrls)) {
+            $arrUrls = $mulUrls;
+        } else if (is_string($mulUrls)) {
+            $arrUrls = array($mulUrls);
+        }
+        
+        $objConfig = Config::getInstance('_appUrlsByEnvironment');
+        $strConfigIndex = sprintf('environment::%d', $numEnvironment);
+//        $objConfig->delete($strConfigIndex);
+        foreach ($arrUrls as $strUrl) {
+            $objConfig->add($strConfigIndex, $strUrl);
+        }
+        $this->arrWorkingEnvironments[] = $numEnvironment;
     }
 
     private function __construct()
@@ -42,7 +73,8 @@ class Application
                 if (in_array($strResource, $arrDirectoriesToSkip) || !is_dir(APP_DIR.'/'.$strResource) || !file_exists($strConfigFilePath)) {
                     continue;
                 }
-                
+                Config::deleteConfig('_appUrlsByEnvironment');
+//                echo $strConfigFilePath.PHP_EOL;
                 require $strConfigFilePath;
                 $strCurrentAppUrl = $this->currentAppUrl();
                 if(!empty($strCurrentAppUrl)) {
@@ -100,34 +132,26 @@ class Application
     
     private function currentAppUrl() {
         $strResult = '';
-        
+        $strConfigName = '_appUrlsByEnvironment';
         
         $objRequest = Request::getInstance();
         $strRequestDomain = $objRequest->domain();
-        $arrAppUrls = Config::get('appUrls');
-        if (!empty($arrAppUrls)) {
-            foreach ($arrAppUrls as $strAppUrl) {
-                if ($strAppUrl === $strRequestDomain) {
-                    $strResult = $strRequestDomain;
-                    self::$strEnvironment = 'PRODUCTION';
-                    break;
-                }
+        foreach ($this->arrWorkingEnvironments as $numEnvironment) {
+            $strConfigKeyName = sprintf('environment::%d', $numEnvironment);
+            $arrEnvironmentUrls = Config::get($strConfigKeyName, $strConfigName);
+            if (empty($arrEnvironmentUrls)) {
+                continue;
             }
-        }
-        
-        $arrAppDevUrls = Config::get('appDevUrls');
-        if (!empty($arrAppDevUrls)) {
-            foreach ($arrAppDevUrls as $strAppUrl) {
-                if ($strAppUrl === $strRequestDomain) {
+            foreach ($arrEnvironmentUrls as $strEnvironmentUrl) {
+                if ($strEnvironmentUrl === $strRequestDomain) {
                     $strResult = $strRequestDomain;
-                    self::$strEnvironment = 'DEVELOPMENT';
+                    self::$numCurrentEnvironment = $numEnvironment;
                     break;
                 }
             }
         }
         
         return $strResult;
-        
     }
     
     public static function environment() {

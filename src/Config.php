@@ -7,6 +7,15 @@ class Config {
     
     private function __construct() {}
     
+    public static function deleteConfig ($strConfigName) {
+        if (!isset(self::$arrInstances[$strConfigName])) {
+//            echo 'config '.$strConfigName.' not exists!'.PHP_EOL;
+        } else {
+            unset(self::$arrInstances[$strConfigName]);
+        }
+        
+    }
+    
     public static function getInstance($strConfigName = 'core') {
         if (!isset(self::$arrInstances[$strConfigName])) {
             self::$arrInstances[$strConfigName] = new Config($strConfigName);
@@ -29,15 +38,15 @@ class Config {
         $objConfig->add('appDevUrls', $strUrl);
     }
     
-    public function set($strOption, $strValue) {
-        $this->arrOptions[$strOption] = $strValue;
+    public function set($strOption, $mulValue) {
+        $this->arrOptions[$strOption] = $mulValue;
     }
     
-    public function add($strOption, $strValue) {
+    public function add($strOption, $mulValue) {
         if (!isset($this->arrOptions[$strOption])) {
             $this->arrOptions[$strOption] = array();
         }
-        $this->arrOptions[$strOption][] = $strValue;
+        $this->arrOptions[$strOption][] = $mulValue;
     }
     
     public static function get($strOption, $strConfigName = 'core') {
@@ -48,6 +57,10 @@ class Config {
         }
         return $arrReturn;
         
+    }
+    
+    public function delete ($strOption) {
+        unset($this->arrOptions[$strOption]);
     }
     
 }
