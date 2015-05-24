@@ -84,10 +84,16 @@ class Router {
 //                    for ($numHit = 1; $numHit<count($arrHits); $numHit+=2) {
 //                        $arrFilteredHits[] = $arrHits[$numHit];
 //                    }
-                    array_shift($arrHits);
-//                    Request::setParams($arrFilteredHits);
-                    
-                    Request::setParams($arrHits);
+//                    array_shift($arrHits);
+////                    Request::setParams($arrFilteredHits);
+//                    
+//                    Request::setParams($arrHits);
+                    for ($numHit = 1; $numHit<count($arrHits); $numHit++) {
+                        if (substr($arrHits[$numHit], -1) !== '/') {
+                            $arrFilteredHits[] = $arrHits[$numHit];
+                        }
+                    }
+                    Request::setParams($arrFilteredHits);
 //                    echo '<pre>';
 //                    print_r($arrFilteredHits);
 //                    
