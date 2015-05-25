@@ -102,6 +102,7 @@ class Router {
                     
                 }
                 $objRecognizedRoute = $objRoute;
+                Debug::log('On route '.$objRecognizedRoute->strRouteFullName, 'core-router');
                 break;
             }
         }

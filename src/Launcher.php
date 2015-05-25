@@ -1,5 +1,6 @@
 <?php namespace webcitron\Subframe;
 
+
 class Launcher {
     public function __get($strTrash) {
         if ($strTrash === 'jsonrpc_black_magic') {
@@ -12,6 +13,10 @@ class Launcher {
             $objApp->init();
             $objResponse = $objApp->launch();
             echo $objResponse;
+            
+            if (Debug::isEnabled()) {
+                echo Debug::output();
+            }
         }
     }
 }
