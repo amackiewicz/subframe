@@ -4,9 +4,9 @@ class Subframe
 {
     private $objApp;
 
-    public function __construct()
+    public function __construct($strAppName = '')
     {
-        $this->objApp = Application::getInstance();
+        $this->objApp = Application::getInstance($strAppName);
     }
 
     public function getApp()

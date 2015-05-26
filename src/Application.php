@@ -29,10 +29,10 @@ class Application
     
     private $arrWorkingEnvironments = array();
 
-    public static function getInstance()
+    public static function getInstance($strAppName = '')
     {
         if (self::$objInstance === null) {
-            self::$objInstance = new Application();
+            self::$objInstance = new Application($strAppName);
         }
         return self::$objInstance;
     }
@@ -57,15 +57,25 @@ class Application
         $this->arrWorkingEnvironments[] = $numEnvironment;
     }
 
-    private function __construct()
+    private function __construct($strAppName = '')
     {
         Request::read();
-        $this->recognize();
+        if (!empty($strAppName)) {
+            $this->setApp($strAppName);
+        } else {
+            $this->recognize();
+        }
         $this->loadConfig();
     }
     
+    private function setApp ($strAppName) {
+        $this->strName = $strAppName;
+        $this->strDirectory = sprintf('%s/%s', APP_DIR, $this->strName);
+        $this->strApplicationClassesPrefix = '\\'.$this->strName;
+    }
+    
     private function recognize() {
-        $arrDirectoriesToSkip = array('.', '..', 'backend', 'scripts');
+        $arrDirectoriesToSkip = array('.', '..', 'backend');
         $objHandle = opendir(APP_DIR);
         if ($objHandle !== false) {
             while (false !== ($strResource = readdir($objHandle))) {
