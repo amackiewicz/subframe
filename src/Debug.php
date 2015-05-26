@@ -28,7 +28,7 @@ class Debug
     
     public static function output () {
         self::log(sprintf('current environment: %s', Application::currentEnvironment()), 'core');
-        $strContainer = "<pre style='border:1px solid #888; margin:20px; padding: 20px; background-color:#f8f8f8;'>%s</pre>";
+        $strContainer = "<pre class='container' style='border:1px solid #888; margin:20px auto; padding: 20px; background-color:#f8f8f8;'>%s</pre>";
         $strContent = join('', self::$arrMessages);
         
         $strOutput = sprintf($strContainer, $strContent);
