@@ -158,6 +158,30 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return $strBaseUrl;
     }
     
+    public static function prettyDateTime ($mulDateTime) {
+        if (intval($mulDateTime) === $mulDateTime) {
+            $numTimestamp = $mulDateTime;
+        } else {
+            $numTimestamp = strtotime($mulDateTime);
+        }
+        $numNow = time();
+        $strReturn = '';
+        
+        if ($numTimestamp >= $numNow - (60*15)) {
+            $strReturn = 'przed chwilą';
+        } else if ($numTimestamp >= $numNow - (60*30)) {
+            $strReturn = 'pół godziny temu';
+        } else if ($numTimestamp >= $numNow - (60*60)) {
+            $strReturn = 'godzinę temu';
+        } else if ($numTimestamp >= $numNow - (60*60*12)) {
+            $strReturn = 'w ciągu ostatnich 12 godz';
+        } else {
+            $strReturn = self::prettyDate($mulDateTime);
+        }
+        
+        return $strReturn;
+    }
+    
     public static function prettyDate ($mulDateTime) {
         if (intval($mulDateTime) === $mulDateTime) {
             $numTimestamp = $mulDateTime;
