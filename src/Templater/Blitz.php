@@ -20,6 +20,7 @@ class Blitz
         return self::$objInstance;
     }
     
+    
     public function getTemplateFileContent ($strFilePath, $arrViewData = array()) {
          $strTemplateFileContent = $this->objBlitz->include($strFilePath.'.tpl', $arrViewData);
         
@@ -203,6 +204,11 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     public function pagination ($strPaginationName, $boolExtended = true) {
         $objPagination = \backend\classes\Pagination::get($strPaginationName);
         return $objPagination->render($boolExtended);
+    }
+    
+    
+    public function currentEnvironment () {
+        return Application::currentEnvironment();
     }
     
 }
