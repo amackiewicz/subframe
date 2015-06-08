@@ -21,4 +21,16 @@ class Controller {
     public function viewData($arrData) {
         $this->arrViewData = $arrData;
     }
+    
+    public static final function answer ($mulResult = null, $mulError = null) {
+        $arrResponse = array();
+        if (empty($mulError)) {
+            $arrResponse['status'] = 1;
+            $arrResponse['result'] = $mulResult;
+        } else {
+            $arrResponse['status'] = 0;
+            $arrResponse['error'] = $mulError;
+        }
+        return $arrResponse;
+    }
 }

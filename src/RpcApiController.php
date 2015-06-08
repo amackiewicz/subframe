@@ -15,7 +15,7 @@ class RpcApiController {
     }
     
     public function fireMethod ($strMethodPointer, $arrParams) {
-        $arrResponse = array();
+//        $arrResponse = array();
         $objApplicationContext = \webcitron\Subframe\Application::getInstance();
         require APP_DIR.'/'.$objApplicationContext->strName.'/config/rpcapi.php';
         
@@ -25,9 +25,6 @@ class RpcApiController {
             $arrMethodPointerTokens = explode('.', $strMethodPointer);
             $strMethodName = array_pop($arrMethodPointerTokens);
             $strClassFullPath = sprintf('\\backend\\%s', join('\\', $arrMethodPointerTokens));
-//            echo $strClassFullPath.'::'.$strMethodName;
-//            echo '<pre>';
-//            print_r($arrParams);
             $objBoardMethod = new \ReflectionMethod($strClassFullPath, $strMethodName);
             $objResponse = $objBoardMethod->invokeArgs(null, $arrParams);   
 //            echo 'done';

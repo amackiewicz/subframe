@@ -35,8 +35,8 @@ class JsController {
         $objJsController->boolRunJs = true;
         $arrBacktrace = debug_backtrace();
         $arrContext = $arrBacktrace[1];
-        $arrContextTokens = explode('\\', $arrContext['class']);
-        $objJsController->arrScriptsToLoad[] = array_pop($arrContextTokens);
+        $strJsFilePath = str_replace('\\', '/', substr($arrContext['class'], strpos($arrContext['class'], 'box\\')+4));
+        $objJsController->arrScriptsToLoad[] = $strJsFilePath;
     }
     
 }
