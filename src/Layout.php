@@ -32,7 +32,7 @@ class Layout {
                 $strLayoutContent
             );
         }
-        
+        echo $strLayoutContent;exit();
         return $strLayoutContent;
     }
     
