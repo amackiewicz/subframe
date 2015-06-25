@@ -241,7 +241,7 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
                 $strCellClasses = $arrConfig[$numRowConfigIndex][1][$numItemInRowIndex];
     //            $this->block('/arrItem', $arrItem, true);
                 $strCell = $this->include($strTempalatePath, $arrItem);
-                $strHtml .= '<div class="'.$strCellClasses.'">'.$strCell.'</div>';
+                $strHtml .= '<div class="item-wrapper '.$strCellClasses.'">'.$strCell.'</div>';
                 $numItemInRowIndex++;
             }
 
