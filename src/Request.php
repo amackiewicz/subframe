@@ -83,9 +83,7 @@ class Request {
         } else {
             $strUri = $this->arrServer['REQUEST_URI'];
         }
-        if (!empty($this->arrServer['REDIRECT_URL'])) {
-            $strUri = $this->arrServer['REDIRECT_URL'];
-        }
+       
         echo '>'.$strUri;
         exit();
         return $strUri;
