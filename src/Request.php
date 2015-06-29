@@ -74,6 +74,9 @@ class Request {
     
     public function getUri() {
         $strUri = '/';
+        echo '<pre>';
+        print_r($this->arrServer);
+        exit();
         if (!empty($this->arrServer['REDIRECT_URL'])) {
             $strUri = $this->arrServer['REDIRECT_URL'];
         }
