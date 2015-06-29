@@ -74,9 +74,12 @@ class Request {
     
     public function getUri() {
         $strUri = '/';
-        echo '<pre>';
-        print_r($this->arrServer);
-        exit();
+        $numQuestPos = strpos($this->arrServer['REQUEST_URI'], '?');
+        if ($numQuestPos !== false) {
+            $strUri = substr($this->arrServer['REQUEST_URI'], $numQuestPos);
+        } else {
+            $strUri = $this->arrServer['REQUEST_URI'];
+        }
         if (!empty($this->arrServer['REDIRECT_URL'])) {
             $strUri = $this->arrServer['REDIRECT_URL'];
         }
