@@ -79,7 +79,7 @@ class Request {
         echo '</pre>';
         $numQuestPos = strpos($this->arrServer['REQUEST_URI'], '?');
         if ($numQuestPos !== false) {
-            $strUri = substr($this->arrServer['REQUEST_URI'], $numQuestPos);
+            $strUri = substr($this->arrServer['REQUEST_URI'], 0, $numQuestPos);
         } else {
             $strUri = $this->arrServer['REQUEST_URI'];
         }
