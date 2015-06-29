@@ -73,7 +73,11 @@ class Request {
     }
     
     public function getUri() {
-        return $this->arrServer['REDIRECT_URL'];
+        $strUri = '/';
+        if (!empty($this->arrServer['REDIRECT_URL'])) {
+            $strUri = $this->arrServer['REDIRECT_URL'];
+        }
+        return $strUri;
     }
     
     public function protocol() {
