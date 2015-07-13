@@ -4,12 +4,16 @@ class Box {
     
     public $boolRunJavaScript = false;
     
-    final public function render ($arrViewData = array()) {
+    final public function render ($arrViewData = array(), $strViewName = '') {
         $strBoxFullName = get_called_class();
         $arrBoxFullNameTokens = explode('\\', $strBoxFullName);
-        $strBoxName = array_pop($arrBoxFullNameTokens);
+        if (empty($strViewName)) {
+            $strViewName = array_pop($arrBoxFullNameTokens);
+        } else {
+            array_pop($arrBoxFullNameTokens);
+        }
         $strBoxViewDirectory = sprintf('%s/%s/view', APP_DIR, join('/', $arrBoxFullNameTokens));
-        $strBoxViewPath = sprintf('%s/%s', $strBoxViewDirectory, $strBoxName);
+        $strBoxViewPath = sprintf('%s/%s', $strBoxViewDirectory, $strViewName);
         
         $objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
         $strBoxContent = $objTemplater->getTemplateFileContent($strBoxViewPath, $arrViewData);
