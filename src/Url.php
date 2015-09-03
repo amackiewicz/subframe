@@ -10,4 +10,5 @@ abstract class Url {
         return $strUri;
     }
     
+    
 }

@@ -124,6 +124,11 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return \webcitron\Subframe\Url::route($strRouteName, $arrParams);
     }
     
+    public static function html ($strInput) {
+//        $strString = addslashes($strInput);
+        return $strInput;
+    }
+    
     public static function renderUserJs () {
         $objJsController = \webcitron\Subframe\JsController::getInstance();
         $objApplication = Application::getInstance();
