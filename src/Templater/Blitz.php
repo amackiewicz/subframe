@@ -235,10 +235,9 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
             $numRowConfigIndex = 0;
             $numItemInRowIndex = 0;
 
-            $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost2/box/files/view/GridItemTemplate.tpl';
-    //        $this->load('{{ include("'.$strTempalatePath.'") }}');
+            $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost2/box/artifact/view/GridItemTemplate.tpl';
             foreach ($arrItems as $arrItem) {
-    //            $strHtml .= 'current row classes count '.count($arrConfig[$numRowConfigIndex][1]).' ';
+            
                 if ($numItemInRowIndex === count($arrConfig[$numRowConfigIndex][1])) {
                     // change row
                     $numRowConfigIndex++;
@@ -249,7 +248,6 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
                     $strHtml .= '</div><div class="row stream-row">';
                 }
                 $strCellClasses = $arrConfig[$numRowConfigIndex][1][$numItemInRowIndex];
-    //            $this->block('/arrItem', $arrItem, true);
                 $strCell = $this->include($strTempalatePath, $arrItem);
                 $strHtml .= '<div class="item-wrapper '.$strCellClasses.'">'.$strCell.'</div>';
                 $numItemInRowIndex++;

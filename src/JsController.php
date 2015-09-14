@@ -21,8 +21,8 @@ class JsController {
             return;
         }
         $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
-        $strLaunchCode = sprintf('<script type="text/javascript" src="%s/js/subframe/vendor/head/dist/1.0.0/head.min.js"></script>', $strApplicationBaseUrl).PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/js/subframe/Launcher.js"></script>', $strApplicationBaseUrl).PHP_EOL;
+        $strLaunchCode = sprintf('<script type="text/javascript" src="%s/subframe/js/vendor/head/dist/1.0.0/head.min.js"></script>', $strApplicationBaseUrl).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js"></script>', $strApplicationBaseUrl).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL;
         $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", ["%s"]);', $strApplicationName, $strApplicationBaseUrl, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
         $strLaunchCode .= 'objLauncher.init();'.PHP_EOL;

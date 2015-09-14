@@ -36,8 +36,12 @@ class Layout {
         return $strLayoutContent;
     }
     
-   final public function addBoxes($strPlaceholderName, $arrBoxes) {
-       $this->arrPlaceholderBoxes[$strPlaceholderName] = $arrBoxes;
+   final public function addBoxes($strPlaceholderName, $mulBoxes) {
+       if (is_array($mulBoxes)) {
+        $this->arrPlaceholderBoxes[$strPlaceholderName] = $mulBoxes;
+       } else {
+           $this->arrPlaceholderBoxes[$strPlaceholderName][] = $mulBoxes;
+       }
    }
     
 //    public static function launch($strBoardName) {
