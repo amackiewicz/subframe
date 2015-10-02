@@ -19,9 +19,13 @@ class Launcher {
             $objApp = $objSubframe->getApp();
         } else {
             $objSubframe = new Subframe();
+            echo '1'; 
             $objApp = $objSubframe->getApp();
+            echo '2'; 
             $objApp->init();
+            echo '3'; exit();
             $objResponse = $objApp->launch();
+            echo '4'; 
             echo $objResponse;
             
             if (Debug::isEnabled()) {
