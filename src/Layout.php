@@ -16,7 +16,7 @@ class Layout {
             $arrBoxesResponseContents[$strPlaceholderName] = array();
             foreach ($arrBoxes as $objBox) {
                 $objBoxResponse = $objBox->launch();
-//                $arrBoxesResponseContents[$strPlaceholderName][] = $objBoxResponse->__toString();
+                $arrBoxesResponseContents[$strPlaceholderName][] = $objBoxResponse->__toString();
             }
         }
         echo '3'; exit();
