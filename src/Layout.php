@@ -16,12 +16,12 @@ class Layout {
                 $arrBoxesResponseContents[$strPlaceholderName][] = $objBoxResponse->__toString();
             }
         }
-        
+        echo '3'; exit();
         $strLayoutFullName = get_called_class();
         $arrLayoutFullNameTokens = explode('\\', $strLayoutFullName);
         $strLayoutName = array_pop($arrLayoutFullNameTokens);
         $strLayoutPath = sprintf('%s/layout/view/%s', Application::getInstance()->strDirectory, $strLayoutName);
-        echo '3'; exit();
+        
         $objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
         $strLayoutContent = $objTemplater->getTemplateFileContent($strLayoutPath, $arrLayoutData);
         
