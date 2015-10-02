@@ -120,9 +120,6 @@ class Application
         } else {
             $objResponse = Board::launch($objCurrentRoute->strRouteName, $objCurrentRoute->strMethodName);
         }
-        echo '<pre>';
-        print_r($objResponse);
-        exit();
 //        $objBoard->launch();
         return $objResponse;
 //        echo '<pre>';

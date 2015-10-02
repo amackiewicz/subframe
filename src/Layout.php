@@ -9,9 +9,6 @@ class Layout {
     final public function render ($arrLayoutData = array()) {
         
         $arrBoxesResponseContents = array();
-        echo '<Pre>';
-        print_r($this->arrPlaceholderBoxes);
-        echo '</pre>';
         foreach ($this->arrPlaceholderBoxes as $strPlaceholderName => $arrBoxes) {
             $arrBoxesResponseContents[$strPlaceholderName] = array();
             foreach ($arrBoxes as $objBox) {
@@ -19,7 +16,6 @@ class Layout {
                 $arrBoxesResponseContents[$strPlaceholderName][] = $objBoxResponse->__toString();
             }
         }
-        echo '3'; exit();
         $strLayoutFullName = get_called_class();
         $arrLayoutFullNameTokens = explode('\\', $strLayoutFullName);
         $strLayoutName = array_pop($arrLayoutFullNameTokens);

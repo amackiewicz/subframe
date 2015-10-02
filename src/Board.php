@@ -10,15 +10,7 @@ class Board {
         $objSpecifiedBoard = new $strBoardFullPath();
         $objBoardMethod = new \ReflectionMethod($strBoardFullPath, $strBoardMethod);
         $arrRequestParams = Request::getParams();
-        echo '<Pre>';
-        print_r($objBoardMethod);
-        print_r($arrRequestParams);
-        print_r($objSpecifiedBoard);
-        echo '</pre>';
         $objResponse = $objBoardMethod->invokeArgs($objSpecifiedBoard, $arrRequestParams);
-        echo '2:<pre>';
-        print_r($objResponse);
-        exit();
         return $objResponse;
     }
     
