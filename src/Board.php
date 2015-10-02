@@ -14,7 +14,7 @@ class Board {
         print_r($objBoardMethod);
         print_r($arrRequestParams);
         print_r($objSpecifiedBoard);
-        exit();
+        echo '</pre>';
         $objResponse = $objBoardMethod->invokeArgs($objSpecifiedBoard, $arrRequestParams);
         echo '2:<pre>';
         print_r($objResponse);
