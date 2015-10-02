@@ -9,11 +9,9 @@ class Board {
         Debug::log('Loading board '.$strBoardFullPath.'->'.$strBoardMethod.'()', 'core-board');
         echo 'Loading board '.$strBoardFullPath.'->'.$strBoardMethod.'()';
         $objSpecifiedBoard = new $strBoardFullPath();
-        echo '<pre>';
-        print_r($objSpecifiedBoard);
-        exit();
         $objBoardMethod = new \ReflectionMethod($strBoardFullPath, $strBoardMethod);
         $arrRequestParams = Request::getParams();
+        echo 's'; exit();
         $objResponse = $objBoardMethod->invokeArgs($objSpecifiedBoard, $arrRequestParams);
         return $objResponse;
     }
