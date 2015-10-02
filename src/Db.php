@@ -20,7 +20,12 @@ class Db {
             $arrConnection['auth'][1]
         );
         
-        $this->objPdo = new \PDO($strDsn);
+//        $this->objPdo = new \PDO($strDsn);
+        if (Application::currentEnvironment() !== Application::ENVIRONMENT_PRODUCTION) {
+            $this->objPdo = new LoggedPdo($strDsn);
+        } else {
+            $this->objPdo = new \PDO($strDsn);
+        }
         $this->objPdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $this->objPdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
         $this->objPdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
