@@ -114,6 +114,9 @@ class Application
         
         $objCurrentRoute = $this->objRouter->dispath();
 //        $arrRequestParams = Request::getParams();
+        echo '<pre>';
+        print_r($objCurrentRoute);
+        exit();
         if (empty($objCurrentRoute)) {
             $objResponse = Board::launch('Error', 'notFound');
         } else {
