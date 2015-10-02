@@ -7,12 +7,18 @@ class Board {
     public static function launch($strBoardName, $strBoardMethod = 'index') {
         $strBoardFullPath = sprintf('%s\\board\\%s', Application::getInstance()->strApplicationClassesPrefix, $strBoardName);
         Debug::log('Loading board '.$strBoardFullPath.'->'.$strBoardMethod.'()', 'core-board');
-        echo 'Loading board '.$strBoardFullPath.'->'.$strBoardMethod.'()';
         $objSpecifiedBoard = new $strBoardFullPath();
         $objBoardMethod = new \ReflectionMethod($strBoardFullPath, $strBoardMethod);
         $arrRequestParams = Request::getParams();
-        echo 's'; exit();
+        echo '<Pre>';
+        print_r($objBoardMethod);
+        print_r($arrRequestParams);
+        print_r($objSpecifiedBoard);
+        exit();
         $objResponse = $objBoardMethod->invokeArgs($objSpecifiedBoard, $arrRequestParams);
+        echo '2:<pre>';
+        print_r($objResponse);
+        exit();
         return $objResponse;
     }
     
