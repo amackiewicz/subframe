@@ -6,6 +6,7 @@ class Request {
     private $arrServer = array();
     private $arrArgs = array();
     public $arrParams = array();
+    private $strRequestDoman = '';
     
     public static function getInstance() {
         if (self::$objInstance === null) {
@@ -22,6 +23,10 @@ class Request {
     public static function args() {
         $objRequest = Request::getInstance();
         return $objRequest->arrArgs;
+    }
+    
+    public function setVirtualDomain ($strVirtualDomain) {
+        $this->strRequestDoman = $strVirtualDomain;
     }
     
     public static function getParams () {
@@ -66,9 +71,12 @@ class Request {
     private function __construct() {}
     
     public function domain() {
-        
-//        $strResult = sprintf('%s://%s', $this->arrServer['REQUEST_SCHEME'], $this->arrServer['SERVER_NAME']);
-        $strResult = sprintf('http://%s',$this->arrServer['SERVER_NAME']);
+        if (!empty($this->strRequestDoman)) {
+            $strResult = $this->strRequestDoman;
+        } else {
+//            $strResult = sprintf('%s://%s', $this->arrServer['REQUEST_SCHEME'], $this->arrServer['SERVER_NAME']);
+            $strResult = sprintf('http://%s',$this->arrServer['SERVER_NAME']);
+        }
         return $strResult;
     }
     

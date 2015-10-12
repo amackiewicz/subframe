@@ -29,10 +29,10 @@ class Application
     
     private $arrWorkingEnvironments = array();
 
-    public static function getInstance($strAppName = '')
+    public static function getInstance()
     {
         if (self::$objInstance === null) {
-            self::$objInstance = new Application($strAppName);
+            self::$objInstance = new Application();
         }
         return self::$objInstance;
     }
@@ -57,30 +57,32 @@ class Application
         $this->arrWorkingEnvironments[] = $numEnvironment;
     }
 
-    private function __construct($strAppName = '')
+    private function __construct()
     {
         Request::read();
-        if (!empty($strAppName)) {
-            $this->setApp($strAppName);
-        } else {
+//        if (!empty($strAppName)) {
+//            $this->setApp($strAppName);
+//        } else {
             $this->recognize();
-        }
+//        }
         $this->loadConfig();
     }
-    
-    private function setApp ($strAppName) {
-        $this->strName = $strAppName;
-        $this->strDirectory = sprintf('%s/%s', APP_DIR, $this->strName);
-        $this->strApplicationClassesPrefix = '\\'.$this->strName;
-    }
+//    
+//    private function setApp ($strAppName) {
+//        $this->strName = $strAppName;
+//        $this->strDirectory = sprintf('%s/%s', APP_DIR, $this->strName);
+//        $this->strApplicationClassesPrefix = '\\'.$this->strName;
+//    }
     
     private function recognize() {
         $arrDirectoriesToSkip = array('.', '..', 'backend');
         $objHandle = opendir(APP_DIR);
+        
         if ($objHandle !== false) {
             while (false !== ($strResource = readdir($objHandle))) {
                 $strConfigFilePath = sprintf('%s/%s/config/app.php', APP_DIR, $strResource);
-                if (in_array($strResource, $arrDirectoriesToSkip) || !is_dir(APP_DIR.'/'.$strResource) || !file_exists($strConfigFilePath)) {
+                
+                if (!is_dir(APP_DIR.'/'.$strResource) || in_array($strResource, $arrDirectoriesToSkip) || !file_exists($strConfigFilePath)) {
                     continue;
                 }
                 Config::deleteConfig('_appUrlsByEnvironment');
@@ -147,6 +149,7 @@ class Application
         
         $objRequest = Request::getInstance();
         $strRequestDomain = $objRequest->domain();
+        
         foreach ($this->arrWorkingEnvironments as $numEnvironment) {
             $strConfigKeyName = sprintf('environment::%d', $numEnvironment);
             $arrEnvironmentUrls = Config::get($strConfigKeyName, $strConfigName);
