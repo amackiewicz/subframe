@@ -1,6 +1,8 @@
 <?php namespace webcitron\Subframe;
 
-define('APP_DIR', dirname(__FILE__).'/../../../../app');
+if (!defined('APP_DIR')) {
+    define('APP_DIR', dirname(__FILE__).'/../../../../app');
+}
 
 class Launcher {
     

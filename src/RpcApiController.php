@@ -38,6 +38,7 @@ class RpcApiController {
             $strMethodName = array_pop($arrMethodPointerTokens);
             $strClassFullPath = sprintf('\\%s', join('\\', $arrMethodPointerTokens));
             $objBoardMethod = new \ReflectionMethod($strClassFullPath, $strMethodName);
+//            print_r($arrParams);
             $objResponse = $objBoardMethod->invokeArgs(null, $arrParams);   
         }
         return $objResponse;
