@@ -1,6 +1,6 @@
 <?php namespace webcitron\Subframe;
 
-use webcitron\Subframe\Templater\Blitz;
+use webcitron\Subframe\Templater;
 
 class Templater {
     
@@ -13,14 +13,23 @@ class Templater {
     }
     
     public static function createSpecifiedTemplater($strTemplaterName) {
-//        $strClassName = 'Templater'.ucfirst($strTemplaterName);
+//        echo $strTemplaterName;exit();
+        $strTemplaterName = strtolower($strTemplaterName);
+        switch ($strTemplaterName) {
+            case 'blitz':
+                $objTemplater = Templater\Blitz::getInstance();
+                break;
+            case 'twig':
+                $objTemplater = Templater\Twig::getInstance();
+                break;
+        }
 //        $strTemplaterClassName = sprintf('Templater%s', ucfirst($strTemplaterName));
 //        $fnTemplaterReflection = new \ReflectionMethod($strTemplaterClassName, 'getInstance');
 //        $objTemplater = $fnTemplaterReflection->invoke($strTemplaterClassName);
 //        echo $strTemplaterName;
 //        exit();
 //        $strTemplaterClassName = sprintf('Templater%s', ucfirst($strTemplaterName));
-        $objTemplater = Blitz::getInstance();
+//        $objTemplater = Templater\$strClassName::getInstance();
         return $objTemplater;
     }
     

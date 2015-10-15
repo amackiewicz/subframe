@@ -22,7 +22,7 @@ class Blitz
     
     
     public function getTemplateFileContent ($strFilePath, $arrViewData = array()) {
-         $strTemplateFileContent = $this->objBlitz->include($strFilePath.'.tpl', $arrViewData);
+         $strTemplateFileContent = $this->objBlitz->include($strFilePath.'.blitz.tpl', $arrViewData);
         
         return $strTemplateFileContent;
     }
@@ -235,7 +235,7 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
             $numRowConfigIndex = 0;
             $numItemInRowIndex = 0;
 
-            $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost2/box/artifact/view/GridItemTemplate.tpl';
+            $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost2/box/artifact/view/GridItemTemplate.blitz.tpl';
             foreach ($arrItems as $arrItem) {
             
                 if ($numItemInRowIndex === count($arrConfig[$numRowConfigIndex][1])) {
