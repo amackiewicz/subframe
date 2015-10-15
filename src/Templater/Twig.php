@@ -60,8 +60,8 @@ class Twig implements \webcitron\Subframe\ITemplaterHelper {
         
         
         $objFunction = new \Twig_SimpleFunction('metaData', function ($strKey, $strWrapper = '', $boolNeedEscaping = true) {
-            $objTemplaterBlitz = Blitz::getInstance();
-            $strReturn = $objTemplaterBlitz->getMetaData($strKey);
+//            $objTemplaterBlitz = Blitz::getInstance();
+//            $strReturn = $objTemplaterBlitz->getMetaData($strKey);
             if (!empty($strWrapper)) {
                 if (empty($strReturn)) {
                     $strReturn = '';
@@ -159,7 +159,7 @@ class Twig implements \webcitron\Subframe\ITemplaterHelper {
                 $numRowConfigIndex = 0;
                 $numItemInRowIndex = 0;
 
-                $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost2/box/artifact/view/GridItemTemplate.blitz.tpl';
+                $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost2/box/artifact/view/GridItemTemplate.twig.tpl';
                 foreach ($arrItems as $arrItem) {
 
                     if ($numItemInRowIndex === count($arrConfig[$numRowConfigIndex][1])) {
