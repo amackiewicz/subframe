@@ -20,7 +20,7 @@ class RpcApiController {
         $this->arrAllowedMethods[] = $strMethodPointer;
     }
     
-    public function fireMethod ($strMethodPointer, $arrParams) {
+    public function fireMethod ($strMethodPointer, $arrParams, $strRawMethodPath) {
         $objApplicationContext = \webcitron\Subframe\Application::getInstance();
         require APP_DIR.'/'.$objApplicationContext->strName.'/config/rpcapi.php';
         
@@ -29,9 +29,14 @@ class RpcApiController {
             $strInfo = $strMethodPointer .' - that rpc method is not allowed do use remotely';
             $objResponse['error'] = $strInfo;
             if (!empty($this->strErrorHandlerFunction)) {
+                $arrCall = array(
+                    'strMethodPointer' => $strMethodPointer, 
+                    'strMethodRawPath' => $strRawMethodPath, 
+                    'arrParams' => $arrParams
+                );
                 $arrErrorHandlerTokens = explode('::', $this->strErrorHandlerFunction);
                 $objErrorHandlerReflection = new \ReflectionMethod($arrErrorHandlerTokens[0], $arrErrorHandlerTokens[1]);
-                $objErrorHandlerReflection->invoke(null, $strInfo);
+                $objErrorHandlerReflection->invoke(null, $strInfo, $arrCall);
             }
         } else {
             $arrMethodPointerTokens = explode('.', $strMethodPointer);
