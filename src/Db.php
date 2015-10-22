@@ -13,24 +13,23 @@ class Db {
         require $objApplication->strDirectory.'/config/database.php';
         $arrConnection = self::$arrConnections[$strConnectionName];
         $strDsn = sprintf(
-//            "pgsql:host=%s;dbname=%s;user=%s;password=%s",
             "pgsql:host=%s;dbname=%s",
             $arrConnection['server'],
-            $arrConnection['db']//,
-//            $arrConnection['auth'][0],
-//            $arrConnection['auth'][1]
+            $arrConnection['db']
         );
-        
-//        $this->objPdo = new \PDO($strDsn);
-        $arrDefaultOptions = array();
         $numCurrentEnv = Application::currentEnvironment();
         try {
             switch ($numCurrentEnv) {
 
                 case Application::ENVIRONMENT_DEV:
-                    $this->objPdo = new LoggedPdo($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
-                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION  
-                    ));
+                    try {
+                        $this->objPdo = new LoggedPdo($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
+                            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION  
+                        ));
+                    } catch (\PDOException $e) {
+                        echo $e->getMessage().'<br />';
+                        throw new \PDOException();
+                    }
                     break;
 
                 case Application::ENVIRONMENT_RC:

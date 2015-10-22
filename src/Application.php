@@ -60,19 +60,18 @@ class Application
     private function __construct()
     {
         Request::read();
-//        if (!empty($strAppName)) {
-//            $this->setApp($strAppName);
-//        } else {
-            $this->recognize();
-//        }
+        $this->recognize();
+        $this->setErrorReporting();
         $this->loadConfig();
     }
-//    
-//    private function setApp ($strAppName) {
-//        $this->strName = $strAppName;
-//        $this->strDirectory = sprintf('%s/%s', APP_DIR, $this->strName);
-//        $this->strApplicationClassesPrefix = '\\'.$this->strName;
-//    }
+    
+    private function setErrorReporting () {
+        if ($this->currentEnvironment() === self::ENVIRONMENT_PRODUCTION || $this->currentEnvironment() === self::ENVIRONMENT_RC) {
+            error_reporting('E_NONE');
+        } else {
+            error_reporting('E_ALL');
+        }
+    }
     
     private function recognize() {
         $arrDirectoriesToSkip = array('.', '..', 'backend');
