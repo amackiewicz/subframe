@@ -24,7 +24,7 @@ class Db {
 //        $this->objPdo = new \PDO($strDsn);
         $arrDefaultOptions = array();
         $numCurrentEnv = Application::currentEnvironment();
-        
+        echo $numCurrentEnv.' '. Application::ENVIRONMENT_RC;
         try {
             switch ($numCurrentEnv) {
 
