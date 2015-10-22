@@ -66,10 +66,8 @@ class Application
     }
     
     private function setErrorReporting () {
-        if ($this->currentEnvironment() === self::ENVIRONMENT_PRODUCTION || $this->currentEnvironment() === self::ENVIRONMENT_RC) {
-            error_reporting('E_NONE');
-        } else {
-            error_reporting('E_ALL');
+        if ($this->currentEnvironment() === self::ENVIRONMENT_DEV) {
+            error_reporting(\E_ALL);
         }
     }
     
