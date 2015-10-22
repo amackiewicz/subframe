@@ -13,20 +13,49 @@ class Db {
         require $objApplication->strDirectory.'/config/database.php';
         $arrConnection = self::$arrConnections[$strConnectionName];
         $strDsn = sprintf(
-            "pgsql:host=%s;dbname=%s;user=%s;password=%s",
+//            "pgsql:host=%s;dbname=%s;user=%s;password=%s",
+            "pgsql:host=%s;dbname=%s",
             $arrConnection['server'],
-            $arrConnection['db'],
-            $arrConnection['auth'][0],
-            $arrConnection['auth'][1]
+            $arrConnection['db']//,
+//            $arrConnection['auth'][0],
+//            $arrConnection['auth'][1]
         );
         
 //        $this->objPdo = new \PDO($strDsn);
-        if (Application::currentEnvironment() !== Application::ENVIRONMENT_PRODUCTION) {
-            $this->objPdo = new LoggedPdo($strDsn);
-        } else {
-            $this->objPdo = new \PDO($strDsn);
+        $arrDefaultOptions = array();
+        $numCurrentEnv = Application::currentEnvironment();
+        
+        try {
+            switch ($numCurrentEnv) {
+
+                case Application::ENVIRONMENT_DEV:
+                    $this->objPdo = new LoggedPdo($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
+                        \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION  
+                    ));
+                    break;
+
+                case Application::ENVIRONMENT_RC:
+                    $this->objPdo = new LoggedPdo($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
+                            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_SILENT
+                        ));
+                    break;
+
+                case Application::ENVIRONMENT_PRODUCTION:
+
+                        $this->objPdo = new \PDO($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
+                            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_SILENT
+                        ));
+                    
+                    break;
+
+                default:
+                    exit('unknown envorinment');
+                    break;
+            }
+        } catch (\PDOException $e) {
+            exit('database error');
         }
-        $this->objPdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        
         $this->objPdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
         $this->objPdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
     }
