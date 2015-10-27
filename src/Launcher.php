@@ -37,31 +37,6 @@ class Launcher {
             echo Debug::output();
         }
     }
-//    
-//    public function __get($strTrash) {
-//        if ($strTrash === 'jsonrpc_black_magic') {
-//            $objSubframe = new Subframe();
-//            $objApp = $objSubframe->getApp();
-//            $objApp->init();
-//        } else if ($strTrash === 'cron_standalone_red_button') {
-//            $objRequest = Request::getInstance();
-//            $objRequest->setVirtualDomain($this->strVirtualDomain);
-//            $objSubframe = new Subframe();
-//            $objApp = $objSubframe->getApp();
-//            $objApp->init();
-//            echo 's'; exit();
-//            
-//        } else {
-//            $objSubframe = new Subframe();
-//            $objApp = $objSubframe->getApp();
-//            $objApp->init();
-//            $objResponse = $objApp->launch();
-//            echo $objResponse;
-//            
-//            if (Debug::isEnabled()) {
-//                echo Debug::output();
-//            }
-//        }
-//    }
+
 }
 

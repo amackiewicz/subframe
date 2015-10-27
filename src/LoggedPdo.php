@@ -5,8 +5,8 @@ class LoggedPdo extends \PDO {
     
     private $arrAlreadyLogged = array();
     
-    public function __construct($dsn, $username = null, $password = null) {
-        parent::__construct($dsn, $username, $password);
+    public function __construct($dsn, $username = null, $password = null, $arrOptions = array()) {
+        parent::__construct($dsn, $username, $password, $arrOptions);
     }
     
     public function prepare($query, $options = array()) {

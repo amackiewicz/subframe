@@ -18,42 +18,18 @@ class Db {
             $arrConnection['db']
         );
         $numCurrentEnv = Application::currentEnvironment();
-        try {
-            switch ($numCurrentEnv) {
-
-                case Application::ENVIRONMENT_DEV:
-                    try {
-                        $this->objPdo = new LoggedPdo($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
-                            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION  
-                        ));
-                    } catch (\PDOException $e) {
-                        echo $e->getMessage().'<br />';
-                        throw new \PDOException();
-                    }
-                    break;
-
-                case Application::ENVIRONMENT_RC:
-                    $this->objPdo = new LoggedPdo($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
-                            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_SILENT
-                        ));
-                    break;
-
-                case Application::ENVIRONMENT_PRODUCTION:
-
-                        $this->objPdo = new \PDO($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
-                            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_SILENT
-                        ));
-                    
-                    break;
-
-                default:
-                    exit('unknown envorinment');
-                    break;
-            }
-        } catch (\PDOException $e) {
-            exit('database error');
+        switch ($numCurrentEnv) {
+            case Application::ENVIRONMENT_PRODUCTION:
+                $this->objPdo = new \PDO($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING
+                ));
+                break;
+            default:
+                $this->objPdo = new LoggedPdo($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
+                    \PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING
+                ));
+                break;
         }
-        
         $this->objPdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
         $this->objPdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
     }
@@ -78,55 +54,5 @@ class Db {
         
         return self::$arrInstances[$strConnectionName]->objPdo;
     }
-    
-//    public function loadRoutes () {
-//        require APP_DIR.'/config/routes.php';
-//    }
-//    
-//    public static function addRoute ($strRouteName, $strUri, $strControllerAction) {
-//        $objRouter = self::getInstance();
-//        $arrControllerActionTokens = explode('/', $strControllerAction);
-//        
-//        $objRoute = new Route($arrControllerActionTokens[0], $arrControllerActionTokens[1], $strRouteName);
-//        $objRoute->setUri($strUri);
-//        $objRoute->recognizeSetParams($strUri);
-//        $objRouter->arrRoutes[$strRouteName] = $objRoute;
-//    }
-//    
-//    
-//    public function dispath () {
-//        $objRequest = Request::getInstance();
-//        $strCurrentUri = $objRequest->getUri();
-//        $objCurrentRoute = $this->findRoute($strCurrentUri);
-//        return $objCurrentRoute;
-//    }
-//    
-//    private function findRoute ($strUri) {
-//        $objRoute = null;
-//        $arrHits = array();
-//        foreach ($this->arrRoutes as $objRoute) {
-//            $strPattern = sprintf('%s', preg_replace('/\{[^}]+\}/', '([^\/]+)', $objRoute->strUri)); 
-////            echo $strUri .' -> '.$strPattern.'<br />';
-//            
-//            if (@preg_match_all($strPattern, $strUri, $arrHits) === 1) {
-//                if (!empty($arrHits)) {
-//                    Request::setParams($arrHits[0]);
-//                }
-//                break;
-//            }
-//        }
-//        
-//        if (empty($objRoute)) {
-//            echo "ERROR! ".__FILE__.'::'.__FUNCTION__.'#'.__LINE__;
-//            exit();
-//        }
-//        return $objRoute;
-//    }
-//    
-//    
-//    public function getRouteByName($strRouteName) {
-//        return $this->arrRoutes[$strRouteName];
-//    }
-    
     
 }

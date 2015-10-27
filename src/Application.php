@@ -28,6 +28,8 @@ class Application
     public $strApplicationClassesPrefix = '';
     
     private $arrWorkingEnvironments = array();
+    
+    public $objErrorHandler = null;
 
     public static function getInstance()
     {
@@ -61,20 +63,29 @@ class Application
     {
         Request::read();
         $this->recognize();
-        $this->setErrorReporting();
+        $this->setErrorHandler();
         $this->loadConfig();
     }
     
-    private function setErrorReporting () {
-        if ($this->currentEnvironment() === self::ENVIRONMENT_DEV) {
-            error_reporting(\E_ALL);
+    private function setErrorHandler () {
+        $numCurrentEnv = $this->currentEnvironment();
+        switch ($numCurrentEnv) {
+            case self::ENVIRONMENT_DEV:
+            case self::ENVIRONMENT_NIGHTLY:
+            case self::ENVIRONMENT_RC:
+                $this->objErrorHandler = new ErrorHandler\DevErrorHandler();
+                break;
+            default:
+                $this->objErrorHandler = new ErrorHandler\ProductionErrorHandler();
+                break;
+            
         }
     }
     
     private function recognize() {
         $arrDirectoriesToSkip = array('.', '..', 'backend');
         $objHandle = opendir(APP_DIR);
-        
+        $boolRecognized = false;
         if ($objHandle !== false) {
             while (false !== ($strResource = readdir($objHandle))) {
                 $strConfigFilePath = sprintf('%s/%s/config/app.php', APP_DIR, $strResource);
@@ -87,6 +98,7 @@ class Application
                 require $strConfigFilePath;
                 $strCurrentAppUrl = $this->currentAppUrl();
                 if(!empty($strCurrentAppUrl)) {
+                    $boolRecognized = true;
                     $this->strName = $strResource;
                     $this->strDirectory = sprintf('%s/%s', APP_DIR, $this->strName);
                     $this->strApplicationClassesPrefix = '\\'.$this->strName;
@@ -94,6 +106,9 @@ class Application
                 }
             }
             closedir($objHandle);
+        }
+        if ($boolRecognized === false) {
+            exit('Host cant be recognized. Any application URL not match');
         }
     }
 
