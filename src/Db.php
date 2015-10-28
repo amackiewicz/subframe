@@ -32,6 +32,7 @@ class Db {
         }
         $this->objPdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
         $this->objPdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
+        $this->objPdo->exec("SET NAMES 'UTF8'");
     }
     
     public static function addConnection($strType, $strServer, $strDbName, $arrAuth, $strConnectionName = '') {
