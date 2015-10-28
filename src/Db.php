@@ -20,6 +20,7 @@ class Db {
         $numCurrentEnv = Application::currentEnvironment();
         switch ($numCurrentEnv) {
             case Application::ENVIRONMENT_PRODUCTION:
+            case Application::ENVIRONMENT_RC:
                 $this->objPdo = new \PDO($strDsn, $arrConnection['auth'][0], $arrConnection['auth'][1], array(
                     \PDO::ATTR_ERRMODE => \PDO::ERRMODE_WARNING
                 ));
