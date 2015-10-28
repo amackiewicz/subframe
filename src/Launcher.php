@@ -4,6 +4,8 @@ if (!defined('APP_DIR')) {
     define('APP_DIR', dirname(__FILE__).'/../../../../app');
 }
 
+mb_internal_encoding("UTF-8");
+
 class Launcher {
     
     private $strVirtualDomain = '';
