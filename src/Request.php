@@ -51,10 +51,15 @@ class Request {
     }
     
     public static function read() {
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
         $objRequest = Request::getInstance();
         $objRequest->arrServer = filter_input_array(INPUT_SERVER);
         $objRequest->arrArgs = filter_input_array(INPUT_POST);
-        
+        echo '<pre>';
+        print_r($objRequest->arrArgs);
+        echo '</pre>';
         if (!empty($objRequest->arrArgs)) {
             $objRequest->arrArgs = array_map(function($mulElement) {
                 $mulOutput = $mulElement;
@@ -64,7 +69,9 @@ class Request {
                 return $mulOutput;
             }, $objRequest->arrArgs);
         }
-        
+        echo '<pre>';
+        print_r($objRequest->arrArgs);
+        echo '</pre>';
         $_POST = $_SERVER = array();
     }
     
