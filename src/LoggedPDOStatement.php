@@ -29,11 +29,23 @@ class LoggedPDOStatement {
 //        print_r($this);
 //        print_r($arrParams);
 //        echo '</pre>';
+//        echo '<pre>';
+//        print_r( debug_backtrace()) ;
+//        echo '</pre>';
         $start = $this->microtime_float();
         $objRes = $this->statement->execute($arrParams);
         $time = $this->microtime_float() - $start;
         if (!in_array($this->statement->queryString, self::$arrAlreadyLogged)) {
-            Debug::log($this->statement->queryString .' (time: <span style="color:red;">'.$time.' s.</span>)', 'db-stmt-execute');
+            $strClass = 'unknown';
+            $strMethod = 'unknown';
+            $arrDebug = debug_backtrace();
+            if (!empty($arrDebug[1])) {
+                $strClass = $arrDebug[1]['class'];
+                $strMethod = $arrDebug[1]['function'];
+            }
+            unset($arrDebug);
+            $strDebugString = sprintf("%s \n\tfrom %s::%s() \n\ttime: <span style='color:red;'>%s s.</span>\n", $this->statement->queryString, $strClass, $strMethod, $time);
+            Debug::log($strDebugString, 'db-stmt-execute');
             self::$arrAlreadyLogged[] = $this->statement->queryString;
         }
         

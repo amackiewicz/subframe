@@ -31,6 +31,11 @@ class Layout {
                 $strLayoutContent
             );
         }
+        
+        
+        // removing unused placeholders
+        $strLayoutContent = preg_replace('[placeholder:([a-z]+)]', '', $strLayoutContent);
+//        echo $strLayoutContent;exit();
 //        echo $strLayoutContent;exit();
         return $strLayoutContent;
     }

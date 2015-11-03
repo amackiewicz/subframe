@@ -21,7 +21,7 @@ class Debug
     
     public static function log ($strContent, $strPrefix = '') {
         if (!empty($strPrefix)) {
-            $strContent = sprintf("[%s]\t%s", $strPrefix, $strContent);
+            $strContent = sprintf("<strong>[%s]</strong>\t%s", $strPrefix, $strContent);
         }
         self::$arrMessages[] = $strContent.PHP_EOL;
     }
