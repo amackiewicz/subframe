@@ -22,7 +22,7 @@ class Debug
     public static function top () {
         if (Application::currentEnvironment() === Application::ENVIRONMENT_DEV) {
             $strGitHead = file_get_contents(APP_DIR.'/../.git/HEAD');
-            $strContainer = "<pre class='container' style='border:1px solid #888; margin:20px auto; padding: 20px; background-color:#f8f8f8;'>%s</pre>";
+            $strContainer = "<pre style='display: inline; border:1px solid #888; margin:20px auto; padding: 20px; background-color:#f8f8f8;z-index:99999; position:fixed; top:0; left:0; opacity:.5'>%s</pre>";
             $strContent = 'GIT HEAD: <strong>'.$strGitHead.'</strong>';
             echo sprintf($strContainer, $strContent);
         }
