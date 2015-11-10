@@ -225,8 +225,8 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     
     public function makeGrid ($arrItems) {
         $strHtml = '';
-        if (!empty($arrItems)) {
-            $strHtml .= '<div class="row stream-row">';
+        if (!empty($arrItems)) {  
+            $strHtml .= '<div class="stream-row">';
             $arrConfig = array();
             $arrConfig[] = array(3, array('col-md-6 col-sm-4', 'col-md-3 col-sm-4', 'col-md-3 col-sm-4'));
             $arrConfig[] = array(3, array('col-md-4 col-sm-6', 'col-md-4 col-sm-3', 'col-md-4 col-sm-3'));
@@ -235,7 +235,7 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
             $numRowConfigIndex = 0;
             $numItemInRowIndex = 0;
 
-            $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost2/box/artifact/view/GridItemTemplate.blitz.tpl';
+            $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost3/box/artifact/view/GridItemTemplate.blitz.tpl';
             foreach ($arrItems as $arrItem) {
             
                 if ($numItemInRowIndex === count($arrConfig[$numRowConfigIndex][1])) {
