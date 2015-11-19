@@ -20,6 +20,7 @@ class JsController {
         if ($this->boolRunJs !== true) {
             return;
         }
+        $this->arrScriptsToLoad = array_unique($this->arrScriptsToLoad);
         $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
         $strLaunchCode = sprintf('<script type="text/javascript" src="%s/subframe/js/vendor/head/dist/1.0.0/head.min.js"></script>', $strApplicationBaseUrl).PHP_EOL;
         $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js"></script>', $strApplicationBaseUrl).PHP_EOL;
