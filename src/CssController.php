@@ -6,6 +6,8 @@ class CssController {
     public static $objInstance = null;
     public $arrStylesheetsToLoad = array();
     
+    public $strForceCssFile = '';
+    
     public static function getInstance () {
         if (self::$objInstance === null) {
             self::$objInstance = new CssController();
@@ -13,16 +15,22 @@ class CssController {
         return self::$objInstance;
     }
     
+    public function forceCssFile ($strFile) {
+        $this->strForceCssFile = $strFile;
+    }
+    
     private function __construct () {}
     
     public function render ($strApplicationName) {
-        $arrHtmlTags = array();
-        if (!empty($this->arrStylesheetsToLoad)) {
-            foreach ($this->arrStylesheetsToLoad as $strCssFile) {
-                $arrHtmlTags[] = sprintf('<link rel="stylesheet" href="/%s/css/%s.css" />', $strApplicationName, $strCssFile);
-            }
+        if (!empty($this->strForceCssFile)) {
+            $strCssFile = $this->strForceCssFile;
+        } else {
+            $objRouter = Router::getInstance();
+            $objCurrentRoute = $objRouter->getCurrentRoute();
+            $strCssFile = $objCurrentRoute->strRouteName.'_'.$objCurrentRoute->strMethodName;
         }
-        $strCssHhtml = join(PHP_EOL, $arrHtmlTags);
+        $strCssHhtml = sprintf('<link rel="stylesheet" href="/%s/css/%s.css" />', $strApplicationName, $strCssFile);
+        
         return $strCssHhtml;
     }
     
