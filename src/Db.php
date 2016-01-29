@@ -8,10 +8,11 @@ class Db {
     public $objPdo = null;
     private static $arrConnections = [];
     
-    private function __construct($strConnectionName) {
+    private function __construct($strConnectionName, $numCurrentEnvironment) {
         $objApplication = Application::getInstance();
         require $objApplication->strDirectory.'/config/database.php';
-        $arrConnection = self::$arrConnections[$strConnectionName];
+        
+        $arrConnection = self::$arrConnections[$strConnectionName][$numCurrentEnvironment];
         $strDsn = sprintf(
             "pgsql:host=%s;dbname=%s",
             $arrConnection['server'],
@@ -35,11 +36,9 @@ class Db {
         $this->objPdo->exec("SET NAMES 'UTF8'");
     }
     
-    public static function addConnection($strType, $strServer, $strDbName, $arrAuth, $strConnectionName = '') {
-        if (empty($strConnectionName)) {
-            $strConnectionName = 'default';
-        }
-        self::$arrConnections[$strConnectionName] = array(
+    public static function addConnection($strConnectionName, $numEnvironment, $strType, $strServer, $strDbName, $arrAuth) {
+
+        self::$arrConnections[$strConnectionName][$numEnvironment] = array(
             'type' => $strType, 
             'server' => $strServer, 
             'db' => $strDbName, 
@@ -49,8 +48,9 @@ class Db {
     
     public static function getInstance($strConnectionName = 'default') {
         if (!isset(self::$arrInstances[$strConnectionName])) {
+            $numCurrentEnvironment = Application::currentEnvironment();
             \webcitron\Subframe\Debug::log('Connect to DB '.$strConnectionName, 'core-db');
-            self::$arrInstances[$strConnectionName] = new Db($strConnectionName);
+            self::$arrInstances[$strConnectionName] = new Db($strConnectionName, $numCurrentEnvironment);
         }
         
         return self::$arrInstances[$strConnectionName]->objPdo;

@@ -252,7 +252,6 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
 
             $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost3/box/artifact/view/GridItemTemplate.blitz.tpl';
             foreach ($arrItems as $arrItem) {
-            
                 if ($numItemInRowIndex === count($arrConfig[$numRowConfigIndex][1])) {
                     // change row
                     $numRowConfigIndex++;
