@@ -1,6 +1,7 @@
 <?php namespace webcitron\Subframe;
 
 use \webcitron\Subframe\Application;
+use webcitron\Subframe\Debug;
 
 class StorageMemcache {
     
@@ -35,6 +36,7 @@ class StorageMemcache {
             $arrConfig = self::$arrServers[$numCurrentEnvironment][$strServerName];
             $objMemcache = new \Memcache();
             $objMemcache->connect('localhost', $arrConfig['numPort']);
+            Debug::log('Connected to localhost:'.$arrConfig['numPort'], 'memcache');
 //            $objMemcache->addServer('localhost', $arrConfig['numPort']);
 //            print_r($objMemcached);
 //            exit('s');
