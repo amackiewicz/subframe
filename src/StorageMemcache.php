@@ -33,15 +33,16 @@ class StorageMemcache {
         
         if (!isset(self::$arrRunningInstances[$numCurrentEnvironment][$strServerName])) {
             $arrConfig = self::$arrServers[$numCurrentEnvironment][$strServerName];
-            $objMemcached = new \Memcached();
-            $objMemcached->addServer('localhost', $arrConfig['numPort']);
+            $objMemcache = new \Memcache();
+            $objMemcache->connect('localhost', $arrConfig['numPort']);
+//            $objMemcache->addServer('localhost', $arrConfig['numPort']);
 //            print_r($objMemcached);
 //            exit('s');
 //            self::$arrRunningInstances[$numCurrentEnvironment][$strServerName]->connect('localhost', $arrConfig['numPort']);
-            self::$arrRunningInstances[$numCurrentEnvironment][$strServerName] = $objMemcached;
+            self::$arrRunningInstances[$numCurrentEnvironment][$strServerName] = $objMemcache;
             $this->arrCurrentConfig = $arrConfig;
         }
-        $this->objMemcached = self::$arrRunningInstances[$numCurrentEnvironment][$strServerName];
+        $this->objMemcache = self::$arrRunningInstances[$numCurrentEnvironment][$strServerName];
     }
     
 //    
@@ -55,22 +56,22 @@ class StorageMemcache {
 //        }
 //    }
     
-    public function stats () {
-//        $arrStats = $this->objMemcached->get('artifact_14129159_shows');
-        $this->objMemcached->setOption(\Memcached::OPT_BINARY_PROTOCOL, true);
-        var_dump($this->objMemcached->getAllKeys());
-//        var_dump($this->objMemcached->getServerList());
-//        var_dump($this->objMemcached->getAllKeys());
-//        var_dump($this->objMemcached->getResultCode().":".$this->objMemcached->getResultMessage());
-//        var_dump();
-//        echo '<Pre>';
-//        print_r($arrStats);
-        exit();
-    }
+//    public function stats () {
+////        $arrStats = $this->objMemcached->get('artifact_14129159_shows');
+//        $this->objMemcached->setOption(\Memcached::OPT_BINARY_PROTOCOL, true);
+//        var_dump($this->objMemcache->getAllKeys());
+////        var_dump($this->objMemcached->getServerList());
+////        var_dump($this->objMemcached->getAllKeys());
+////        var_dump($this->objMemcached->getResultCode().":".$this->objMemcached->getResultMessage());
+////        var_dump();
+////        echo '<Pre>';
+////        print_r($arrStats);
+//        exit();
+//    }
     
     public function get ($strKeyName, $mulDefaultValue = null) {
         $strMemcacheKey = sprintf($this->arrCurrentConfig['strKeyPattern'], $strKeyName);
-        $mulValue = $this->objMemcached->get($strMemcacheKey);
+        $mulValue = $this->objMemcache->get($strMemcacheKey);
 //        echo 'get: '.$strMemcacheKey;
 //        var_dump($mulValue);
 //        echo '</pre>';
@@ -82,12 +83,12 @@ class StorageMemcache {
     }
     
     public function clear () {
-        $this->objMemcached->flush();
+        $this->objMemcache->flush();
     }
     
     public function set ($strKeyName, $mulValue, $numLifetime = 0) {
         $strMemcacheKey = sprintf($this->arrCurrentConfig['strKeyPattern'], $strKeyName);
-        $boolReturn = $this->objMemcached->set($strMemcacheKey, $mulValue, 0, $numLifetime);
+        $boolReturn = $this->objMemcache->set($strMemcacheKey, $mulValue, 0, $numLifetime);
 //        echo 'set: '.$strMemcacheKey.'<pre>';
 //        var_dump($mulValue);
 //        echo '</pre>';
