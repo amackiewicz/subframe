@@ -127,8 +127,7 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     public static function currentUrl () {
         $objCurrentRoute = \webcitron\Subframe\Router::getCurrentRoute();
         $arrRequestParams = \webcitron\Subframe\Request::getParams();
-        $strUrl = \webcitron\Subframe\Url::route($objCurrentRoute->strRouteName, $arrRequestParams);
-        
+        $strUrl = \webcitron\Subframe\Url::route($objCurrentRoute->strRouteFullName, $arrRequestParams);
         return $strUrl;
     }
     
