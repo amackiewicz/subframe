@@ -13,6 +13,10 @@ class Blitz
         $this->objBlitz = new SubBlitz();
     }
     
+    public function parse ($strTemplateFilePath, $arrData = array()) {
+        return $this->objBlitz->include($strTemplateFilePath, $arrData);
+    }
+    
     public static function getInstance() {
         if (self::$objInstance === null) {
             self::$objInstance = new Blitz();
