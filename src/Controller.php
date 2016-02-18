@@ -22,7 +22,7 @@ class Controller {
         $this->arrViewData = $arrData;
     }
     
-    public static final function answer ($mulResult = null, $mulError = null) {
+    public static final function answer ($mulResult = null, $mulError = null, $boolDebug = false) {
         $arrResponse = array();
         if (empty($mulError)) {
             $arrResponse['status'] = 1;
@@ -30,6 +30,11 @@ class Controller {
         } else {
             $arrResponse['status'] = 0;
             $arrResponse['error'] = $mulError;
+        }
+        if ($boolDebug === true) {
+            echo '<pre>';
+            print_r($arrResponse);
+            echo '</pre>';
         }
         return $arrResponse;
     }
