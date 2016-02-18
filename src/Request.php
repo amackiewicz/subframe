@@ -78,6 +78,11 @@ class Request {
         return $strResult;
     }
     
+    public static function getClientIp () {
+        $objRequest = self::getInstance();
+        return $objRequest->arrServer['REMOTE_ADDR'];
+    }
+    
     public function getUri() {
         $strUri = '/';
         $numQuestPos = strpos($this->arrServer['REQUEST_URI'], '?');
