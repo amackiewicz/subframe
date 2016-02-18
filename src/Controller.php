@@ -35,6 +35,7 @@ class Controller {
             echo '<pre>';
             print_r($arrResponse);
             echo '</pre>';
+            echo 'response length: '.strlen(json_encode($arrResponse));
         }
         return $arrResponse;
     }
