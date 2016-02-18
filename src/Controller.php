@@ -32,9 +32,9 @@ class Controller {
             $arrResponse['error'] = $mulError;
         }
         if ($boolDebug === true) {
-            echo '<pre>';
-            print_r($arrResponse);
-            echo '</pre>';
+//            echo '<pre>';
+//            print_r($arrResponse);
+//            echo '</pre>';
             echo json_encode($arrResponse);
             echo 'response length: '.strlen(json_encode($arrResponse));
         }
