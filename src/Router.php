@@ -1,5 +1,6 @@
 <?php namespace webcitron\Subframe;
 
+use webcitron\Subframe\Application;
 
 class Router {
     
@@ -116,16 +117,17 @@ class Router {
     
     
     public function getRouteByName($strRouteName) {
-//        echo $strRouteName.'<pre>';
-//        print_r($this->arrRoutes);
-//        exit();
-        if (empty($this->arrRoutes[$strRouteName])) {
+        $objRoute = null;
+        
+        if (!empty($this->arrRoutes[$strRouteName])) {
+            $objRoute = $this->arrRoutes[$strRouteName];
+        } else if (Application::currentEnvironment() !== Application::ENVIRONMENT_PRODUCTION) {
             echo '<pre>';
             print_r(debug_backtrace());
             echo '</pre>';
             exit('Nie zdefiniowana ścieżka '.$strRouteName);
         } 
-        return $this->arrRoutes[$strRouteName];
+        return $objRoute;
     }
     
     
