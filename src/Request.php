@@ -8,6 +8,9 @@ class Request {
     public $arrParams = array();
     private $strRequestDoman = '';
     
+    /**
+     * @return Request
+     */
     public static function getInstance() {
         if (self::$objInstance === null) {
             self::$objInstance = new Request();
@@ -27,6 +30,10 @@ class Request {
     
     public function setVirtualDomain ($strVirtualDomain) {
         $this->strRequestDoman = $strVirtualDomain;
+    }
+    
+    public function getServerInfo () {
+        return $this->arrServer;
     }
     
     public static function getParams () {
