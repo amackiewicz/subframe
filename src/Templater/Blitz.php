@@ -241,14 +241,30 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return Application::currentEnvironment();
     }
     
-    public function makeGrid ($arrItems) {
+    public function makeGrid ($arrItems, $arrViewLayout) {
         $strHtml = '';
+//        echo '<Pre>';
+//        print_r($strStreamOptionsSerialized);
+//        exit();
         if (!empty($arrItems)) {  
             $strHtml .= '<div class="stream-row">';
             $arrConfig = array();
-            $arrConfig[] = array(3, array('col-md-6 col-sm-4', 'col-md-3 col-sm-4', 'col-md-3 col-sm-4'));
-            $arrConfig[] = array(3, array('col-md-4 col-sm-6', 'col-md-4 col-sm-3', 'col-md-4 col-sm-3'));
-            $arrConfig[] = array(4, array('col-md-2 col-sm-3', 'col-md-3 col-sm-3', 'col-md-5 col-sm-3', 'col-md-2 col-sm-3'));
+            foreach ($arrViewLayout as $arrViewRow) {
+                $arrConfigRow = array();
+                foreach ($arrViewRow as $arrViewCell) {
+                    $numColNormal = $arrViewCell[0];
+                    $numColMobile = $arrViewCell[1];
+                    $arrConfigRow[] = sprintf('col-md-%d col-sm-%d', $numColNormal, $numColMobile);
+                }
+                $arrConfig[] = array(
+                    count($arrConfigRow), 
+                    $arrConfigRow
+                );
+            }
+            
+//            $arrConfig[] = array(3, array('col-md-6 col-sm-4', 'col-md-3 col-sm-4', 'col-md-3 col-sm-4'));
+//            $arrConfig[] = array(3, array('col-md-4 col-sm-6', 'col-md-4 col-sm-3', 'col-md-4 col-sm-3'));
+//            $arrConfig[] = array(4, array('col-md-2 col-sm-3', 'col-md-3 col-sm-3', 'col-md-5 col-sm-3', 'col-md-2 col-sm-3'));
 
             $numRowConfigIndex = 0;
             $numItemInRowIndex = 0;
