@@ -1,6 +1,7 @@
 <?php namespace webcitron\Subframe;
 
 use webcitron\Subframe\Application;
+use webcitron\Subframe\Debug;
 
 class Db {
     
@@ -54,6 +55,24 @@ class Db {
         }
         
         return self::$arrInstances[$strConnectionName]->objPdo;
+    }
+    
+    public function __destruct() {
+        if (is_object($this->objPdo)) {
+            Debug::log('Disconnect main DB ', 'core-db');
+            unset($this->objPdo);
+            $this->objPdo = null;
+        }
+        if (!empty(self::$arrInstances)) {
+            foreach (self::$arrInstances as $strConnectionName => $objInstance) {
+                Debug::log('Disconnect DB '.$strConnectionName, 'core-db');
+                unset($objInstance);
+                $objInstance = null;
+            }
+            Debug::log('Destroing instances array', 'core-db');
+            self::$arrInstances = array();
+        }
+        
     }
     
 }
