@@ -281,6 +281,8 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
                     $strHtml .= '</div><div class="row stream-row">';
                 }
                 $strCellClasses = $arrConfig[$numRowConfigIndex][1][$numItemInRowIndex];
+                $arrItem['title'] = stripslashes($arrItem['title']);
+                $arrItem['description'] = stripslashes($arrItem['description']);
                 $arrItem['strAlt'] = strip_tags(trim($arrItem['title'], '. ').'. '.trim($arrItem['description']));
                 if (strlen($arrItem['strAlt']) > 200) {
                     $arrItem['strAlt'] = mb_substr($arrItem['strAlt'], 0, 200, 'UTF-8').'...';
