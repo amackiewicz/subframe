@@ -21,6 +21,19 @@ class CssController {
     
     private function __construct () {}
     
+    public function renderAsync ($strApplicationName) {
+        if (!empty($this->strForceCssFile)) {
+            $strCssFile = $this->strForceCssFile;
+        } else {
+            $objRouter = Router::getInstance();
+            $objCurrentRoute = $objRouter->getCurrentRoute();
+            $strCssFile = $objCurrentRoute->strRouteName.'_'.$objCurrentRoute->strMethodName;
+        }
+        $strCssHhtml = sprintf("<script>\nvar arrSubframeCssToLoad = ['/%s/css/%s.css'];\n</script>", $strApplicationName, $strCssFile);
+        
+        return $strCssHhtml;
+    }
+    
     public function render ($strApplicationName) {
         if (!empty($this->strForceCssFile)) {
             $strCssFile = $this->strForceCssFile;

@@ -152,10 +152,14 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return $strUserJs;
     }
     
-    public static function cssControllerRender () {
+    public static function cssControllerRender ($boolIsAsync = false) {
         $objCssController = \webcitron\Subframe\CssController::getInstance();
         $objApplication = Application::getInstance();
-        $strCssTags = $objCssController->render($objApplication->strName);
+        if ($boolIsAsync === true) {
+            $strCssTags = $objCssController->renderAsync($objApplication->strName);
+        } else {
+            $strCssTags = $objCssController->render($objApplication->strName);
+        }
         return $strCssTags;
     }
     
