@@ -1,6 +1,8 @@
 <?php namespace webcitron\Subframe;
 
+
 use webcitron\Subframe\Application;
+use webcitron\Subframe\Router;
 
 class Layout {
     
@@ -22,6 +24,12 @@ class Layout {
         $strLayoutPath = sprintf('%s/layout/view/%s', Application::getInstance()->strDirectory, $strLayoutName);
         
         $objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
+        
+        $objCurrentRoute = Router::getCurrentRoute();
+        $arrLayoutData['route'] = array(
+            'name' => $objCurrentRoute->strRouteName, 
+            'action' => $objCurrentRoute->strMethodName
+        );
         $strLayoutContent = $objTemplater->getTemplateFileContent($strLayoutPath, $arrLayoutData);
         
         foreach ($this->arrPlaceholderBoxes as $strPlaceholderName => $arrBoxes) {
