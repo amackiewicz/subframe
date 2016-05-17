@@ -90,6 +90,11 @@ class Request {
         return $objRequest->arrServer['REMOTE_ADDR'];
     }
     
+    public static function getReferer () {
+        $objRequest = self::getInstance();
+        return $objRequest->arrServer['HTTP_REFERER'];
+    }
+    
     public function getUri() {
         $strUri = '/';
         $numQuestPos = strpos($this->arrServer['REQUEST_URI'], '?');
