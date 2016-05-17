@@ -92,7 +92,11 @@ class Request {
     
     public static function getReferer () {
         $objRequest = self::getInstance();
-        return $objRequest->arrServer['HTTP_REFERER'];
+        $strReferer = '';
+        if (isset($objRequest->arrServer['HTTP_REFERER'])) {
+            $strReferer = $objRequest->arrServer['HTTP_REFERER'];
+        }
+        return $strReferer;
     }
     
     public function getUri() {
