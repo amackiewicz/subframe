@@ -245,11 +245,8 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return Application::currentEnvironment();
     }
     
-    public function makeGrid ($arrItems, $arrViewLayout) {
+    public function makeGrid ($arrItems, $arrViewLayout, $arrAdverts) {
         $strHtml = '';
-//        echo '<Pre>';
-//        print_r($strStreamOptionsSerialized);
-//        exit();
         if (!empty($arrItems)) {  
             $strHtml .= '<div class="stream-row">';
             $arrConfig = array();
@@ -265,15 +262,18 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
                     $arrConfigRow
                 );
             }
-            
-//            $arrConfig[] = array(3, array('col-md-6 col-sm-4', 'col-md-3 col-sm-4', 'col-md-3 col-sm-4'));
-//            $arrConfig[] = array(3, array('col-md-4 col-sm-6', 'col-md-4 col-sm-3', 'col-md-4 col-sm-3'));
-//            $arrConfig[] = array(4, array('col-md-2 col-sm-3', 'col-md-3 col-sm-3', 'col-md-5 col-sm-3', 'col-md-2 col-sm-3'));
-
             $numRowConfigIndex = 0;
             $numItemInRowIndex = 0;
+            $numItemListingIndex = 0;
 
             $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost3/box/artifact/view/GridItemTemplate.blitz.tpl';
+            
+            // put advert
+            if (!empty($arrAdverts)) {
+                $numInsertBefore = rand(0, count($arrItems)-1);
+                array_splice($arrItems, $numInsertBefore, 0, array(array('isAdvert' => true, 'code' => $arrAdverts[0])));
+            }
+            
             foreach ($arrItems as $arrItem) {
                 if ($numItemInRowIndex === count($arrConfig[$numRowConfigIndex][1])) {
                     // change row
@@ -284,16 +284,23 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
                     $numItemInRowIndex = 0;
                     $strHtml .= '</div><div class="row stream-row">';
                 }
+                
                 $strCellClasses = $arrConfig[$numRowConfigIndex][1][$numItemInRowIndex];
-                $arrItem['title'] = stripslashes($arrItem['title']);
-                $arrItem['description'] = stripslashes($arrItem['description']);
-                $arrItem['strAlt'] = strip_tags(trim($arrItem['title'], '. ').'. '.trim($arrItem['description']));
-                if (strlen($arrItem['strAlt']) > 200) {
-                    $arrItem['strAlt'] = mb_substr($arrItem['strAlt'], 0, 200, 'UTF-8').'...';
+                
+                if (isset($arrItem['isAdvert']) && $arrItem['isAdvert'] === true) {
+                    $strCell = $arrItem['code'];
+                } else {
+                    $arrItem['title'] = stripslashes($arrItem['title']);
+                    $arrItem['description'] = stripslashes($arrItem['description']);
+                    $arrItem['strAlt'] = strip_tags(trim($arrItem['title'], '. ').'. '.trim($arrItem['description']));
+                    if (strlen($arrItem['strAlt']) > 200) {
+                        $arrItem['strAlt'] = mb_substr($arrItem['strAlt'], 0, 200, 'UTF-8').'...';
+                    }
+                    $strCell = $this->include($strTempalatePath, $arrItem);
                 }
-                $strCell = $this->include($strTempalatePath, $arrItem);
                 $strHtml .= '<div class="item-wrapper '.$strCellClasses.'">'.$strCell.'</div>';
                 $numItemInRowIndex++;
+                $numItemListingIndex++;
             }
 
             $strHtml .= '</div>';
