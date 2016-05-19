@@ -245,7 +245,7 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return Application::currentEnvironment();
     }
     
-    public function makeGrid ($arrItems, $arrViewLayout, $arrAdverts) {
+    public function makeGrid ($arrItems, $arrViewLayout, $arrAdverts = array()) {
         $strHtml = '';
         if (!empty($arrItems)) {  
             $strHtml .= '<div class="stream-row">';
