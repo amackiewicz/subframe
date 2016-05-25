@@ -217,6 +217,16 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return $strReturn;
     }
     
+    public static function formatDateTime ($mulDateTime, $strFormat) {
+        if (intval($mulDateTime) === $mulDateTime) {
+            $numTimestamp = $mulDateTime;
+        } else {
+            $numTimestamp = strtotime($mulDateTime);
+        }
+        
+        return date($strFormat, $numTimestamp);
+    }
+    
     public static function prettyDate ($mulDateTime) {
         if (intval($mulDateTime) === $mulDateTime) {
             $numTimestamp = $mulDateTime;
