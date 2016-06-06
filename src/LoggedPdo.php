@@ -13,6 +13,13 @@ class LoggedPdo extends \PDO {
         return new LoggedPDOStatement(parent::prepare($query, $options));
     }
     
+    public function exec ($strQ) {
+//        echo 'EXECUTING <Pre>';
+//        print_r($strQ);
+//        echo '</pre>';
+        return parent::exec($strQ);
+    }
+    
     private function microtime_float()
 {
         list($usec, $sec) = explode(" ", microtime());
