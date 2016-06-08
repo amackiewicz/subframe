@@ -2,13 +2,13 @@
 
 abstract class Url {
     
-    public static function route($strRouteName, $arrParams = array()) {
+    public static function route($strLanguage, $strRouteName, $arrParams = array()) {
         $strUri = '';
         if (strpos($strRouteName, '::') === false) {
             $strRouteName .= '::index';
         }
         $objRouter = Router::getInstance();
-        $objRoute = $objRouter->getRouteByName($strRouteName);
+        $objRoute = $objRouter->getRouteByNameAndLang($strRouteName, $strLanguage);
         if (empty($objRoute)) {
             $objRoute = $objRouter->getRouteByName('Homepage');
         }

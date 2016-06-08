@@ -31,11 +31,13 @@ class Router {
     public function dispath () {
         $objRequest = Request::getInstance();
         $strCurrentUri = $objRequest->getUri();
-        self::$objCurrentRoute = $this->findRoute($strCurrentUri);
+        $objLanguages = Languages::getInstance();
+        $strCurrentLanguage = $objLanguages->getCurrentLanguage();
+        self::$objCurrentRoute = $this->findRoute($strCurrentUri, $strCurrentLanguage);
         return self::$objCurrentRoute;
     }
     
-    public function findRoute ($strUri, $boolDebug = false) {
+    public function findRoute ($strUri, $strCurrentLanguage, $boolDebug = false) {
         $objRoute = null;
         $arrHits = array();
         
@@ -55,7 +57,7 @@ class Router {
 //        print_r($h);
 //        exit();
         $objRecognizedRoute = null;
-        foreach ($this->arrRoutes as $objRoute) {
+        foreach ($this->arrRoutes[$strCurrentLanguage] as $objRoute) {
             $strPattern = $objRoute->strUri;
             $strPattern = str_replace('/', '\/', $strPattern);
             $strPattern = str_replace('.', '\.', $strPattern);
@@ -126,6 +128,19 @@ class Router {
             print_r(debug_backtrace());
             echo '</pre>';
             exit('Nie zdefiniowana ścieżka '.$strRouteName);
+        } 
+        return $objRoute;
+    }
+    
+    public function getRouteByNameAndLang($strRouteName, $strLanguage) {
+        $objRoute = null;
+        if (!empty($this->arrRoutes[$strLanguage][$strRouteName])) {
+            $objRoute = $this->arrRoutes[$strLanguage][$strRouteName];
+        } else if (Application::currentEnvironment() !== Application::ENVIRONMENT_PRODUCTION) {
+            echo '<pre>';
+            print_r(debug_backtrace());
+            echo '</pre>';
+            exit('Nie zdefiniowana ścieżka '.$strLanguage.'/'.$strRouteName);
         } 
         return $objRoute;
     }

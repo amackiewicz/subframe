@@ -8,6 +8,7 @@ class Route {
 //    public $strControllerName  = '';
 //    public $strActionName = '';
     public $strUri = '';
+    public $strLanguage = '';
     public $strRouteFullName = '';
     public $strRouteName = '';
     public $strMethodName = '';
@@ -20,6 +21,30 @@ class Route {
 //        $this->strRouteFullName = $strRouteName;
     }
     
+    
+    public static function addLang($strRouteFullName, $arrLangUris) {
+        $objRouter = Router::getInstance();
+//        $arrControllerActionTokens = explode('/', $strControllerAction);
+        
+        $arrRouteMethod = explode('::', $strRouteFullName);
+        if (count($arrRouteMethod) == 2) {
+            $strRouteName = $arrRouteMethod[0];
+            $strRouteMethod = $arrRouteMethod[1];
+        } else {
+            $strRouteName = $arrRouteMethod[0];
+            $strRouteMethod = 'index';
+        }
+        foreach ($arrLangUris as $strLanguage => $strUri) {
+            $objRoute = new Route($strRouteName);
+            $objRoute->setUri($strUri);
+            $objRoute->setLanguage($strLanguage);
+            $objRoute->setMethod($strRouteMethod);
+            $objRoute->recognizeSetParams($strUri);
+            $objRoute->strRouteFullName = $strRouteFullName;
+            
+            $objRouter->arrRoutes[$strLanguage][$strRouteFullName] = $objRoute;
+        }
+    }
     
     public static function add($strRouteFullName, $strUri) {
         $objRouter = Router::getInstance();
@@ -122,6 +147,10 @@ class Route {
     
     public function setUri($strUri) {
         $this->strUri = $strUri;
+    }
+    
+    public function setLanguage($strLanguage) {
+        $this->strLanguage = $strLanguage;
     }
     
     public function setMethod($strMethodName) {

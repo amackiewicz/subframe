@@ -82,7 +82,7 @@ class Languages
         if (file_exists($strFile)) {
             $arrTranslationLines = file($strFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             foreach ($arrTranslationLines as $strLine) {
-                $arrTranslationLine = array_map('trim', str_getcsv($strLine));
+                $arrTranslationLine = array_map('trim', str_getcsv($strLine, ';'));
                 $strKey = array_shift($arrTranslationLine);
                 $arrPatterns[$strKey] = $arrTranslationLine;
             }
