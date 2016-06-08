@@ -15,6 +15,9 @@ class Box {
         $strBoxViewDirectory = sprintf('%s/%s/view', APP_DIR, join('/', $arrBoxFullNameTokens));
         $strBoxViewPath = sprintf('%s/%s', $strBoxViewDirectory, $strViewName);
         
+        $objApp = Application::getInstance();
+        $objApp->objLanguages->loadPhrases($strBoxFullName);
+        
         $objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
         $strBoxContent = $objTemplater->getTemplateFileContent($strBoxViewPath, $arrViewData);
         return $strBoxContent;

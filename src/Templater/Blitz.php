@@ -1,6 +1,7 @@
 <?php namespace webcitron\Subframe\Templater;
 
 use webcitron\Subframe\Application;
+use webcitron\Subframe\Languages;
 
 class Blitz
 {
@@ -115,6 +116,27 @@ class Blitz
 
 class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     
+    public static function __ () {
+        // $strKey, $numVariation = 1, $arrVariables ...
+        $arrParams = func_get_args();
+        $strKey = array_shift($arrParams); // param 1
+        
+        if (count($arrParams) === 0) {
+            $strTranslation = Languages::__($strKey);
+        } else {
+            $numVariety = array_shift($arrParams); // param 2
+            $arrVariables = $arrParams; // other patams
+            $strTranslation = Languages::__($strKey, $arrVariables, $numVariety);
+        }
+        
+        return $strTranslation;
+//        $objLanguages = Languages::getInstance();
+//        $objLanguages->getCurrentLanguagePhraseTranslation($strKey, $arrVariables, $numVariation-1);
+//        echo '<Pre>';
+//        print_r($objLanguages);
+//        exit();
+//        return $strKey;
+    }
     
     /**
      * @return string

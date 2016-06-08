@@ -16,6 +16,7 @@ class Application
     
     public static $objInstance = null;
     private $objRouter = null;
+    public $objLanguages = null;
     public $objTemplater = null;
     
     private static $numCurrentEnvironment = 0;
@@ -43,25 +44,30 @@ class Application
         return self::$numCurrentEnvironment;
     }
     
-    public function addEnvironment ($numEnvironment, $mulUrls) {
+    public function addEnvironment ($numEnvironment, $mulUrls, $strLanguage = 'en') {
         if (is_array($mulUrls)) {
             $arrUrls = $mulUrls;
         } else if (is_string($mulUrls)) {
             $arrUrls = array($mulUrls);
         }
         
+        $objConfigLangs = Config::getInstance('_languageByUrl');
         $objConfig = Config::getInstance('_appUrlsByEnvironment');
         $strConfigIndex = sprintf('environment::%d', $numEnvironment);
 //        $objConfig->delete($strConfigIndex);
         foreach ($arrUrls as $strUrl) {
-            $objConfig->add($strConfigIndex, $strUrl);
+            $strValue = $strUrl;
+            $objConfig->add($strConfigIndex, $strValue);
+            $objConfigLangs->add($strUrl, $strLanguage);
         }
+        
         $this->arrWorkingEnvironments[] = $numEnvironment;
     }
 
     private function __construct()
     {
         Request::read();
+        $this->objLanguages = Languages::getInstance();
         $this->recognize();
         $this->setErrorHandler();
         $this->loadConfig();
@@ -102,6 +108,9 @@ class Application
                     $this->strName = $strResource;
                     $this->strDirectory = sprintf('%s/%s', APP_DIR, $this->strName);
                     $this->strApplicationClassesPrefix = '\\'.$this->strName;
+                    
+                    $arrConfigLanguage = Config::get($strCurrentAppUrl, '_languageByUrl');
+                    $this->objLanguages->setCurrentLanguage($arrConfigLanguage[0]);
                     break;
                 }
             }

@@ -1,5 +1,6 @@
 <?php namespace webcitron\Subframe;
 
+use webcitron\Subframe\Languages;
 
 class JsController {
     
@@ -22,6 +23,10 @@ class JsController {
         }
         $this->arrScriptsToLoad = array_unique($this->arrScriptsToLoad);
         $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
+        
+        $objLanguages = Languages::getInstance();
+        $strCurrentLanguage = $objLanguages->getCurrentLanguage();
+        
         $strLaunchCode = '<script>'.PHP_EOL;
         $strLaunchCode .= 'var boolIsPuppiesBlocked = true;'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
@@ -29,7 +34,7 @@ class JsController {
         $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/vendor/head/dist/1.0.0/head.min.js"></script>', $strApplicationBaseUrl).PHP_EOL;
         $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js"></script>', $strApplicationBaseUrl).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL; 
-        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", ["%s"]);', $strApplicationName, $strApplicationBaseUrl, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
+        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
         $strLaunchCode .= 'objLauncher.init();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
         return $strLaunchCode;
