@@ -20,6 +20,9 @@ class Box {
         
         $objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
         $strBoxContent = $objTemplater->getTemplateFileContent($strBoxViewPath, $arrViewData);
+        
+        $objApp->objLanguages->clearLoadedPhrases();
+        
         return $strBoxContent;
     }
     

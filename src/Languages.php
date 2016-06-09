@@ -17,6 +17,9 @@ class Languages
         
     }
     
+    /**
+     * @return Languages
+     */
     public static function getInstance()
     {
         if (self::$objInstance === null) {
@@ -50,11 +53,15 @@ class Languages
         $this->arrPhrasesBuffor = $this->loadTranslationsFile($strTranslationFile);
     }
     
+    public function clearLoadedPhrases () {
+        $this->arrPhrasesBuffor = array();
+        $this->strCurrentLoadedElementTranslation = '';
+    }
+    
     public static function __ ($strKey, $arrVariables = array(), $numVariety = 1) {
         $objLanguages = Languages::getInstance();
         $numVarietyIndex = $numVariety - 1;
 //        $strTranslation = $objLanguages->translatePattern($strKey, $arrVariables);
-        
         
         if (empty($objLanguages->arrPhrasesBuffor[$strKey])) {
             $strPattern = $strKey;
@@ -72,6 +79,10 @@ class Languages
     }
     
     public function translatePattern ($strPattern, $arrVariables = array()) {
+//        echo $strPattern.'<br />';
+//        echo '<pre>';
+//        print_r($arrVariables);
+//        echo '</pre>';
         $strTranslation = vsprintf($strPattern, $arrVariables);
         return $strTranslation;
     }

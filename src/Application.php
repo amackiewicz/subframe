@@ -44,7 +44,7 @@ class Application
         return self::$numCurrentEnvironment;
     }
     
-    public function addEnvironment ($numEnvironment, $mulUrls, $strLanguage = 'en') {
+    public function addEnvironment ($numEnvironment, $mulUrls, $strLanguage = 'en_US') {
         if (is_array($mulUrls)) {
             $arrUrls = $mulUrls;
         } else if (is_string($mulUrls)) {

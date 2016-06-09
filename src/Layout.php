@@ -30,6 +30,10 @@ class Layout {
             'name' => $objCurrentRoute->strRouteName, 
             'action' => $objCurrentRoute->strMethodName
         );
+        
+        if (method_exists($this, 'launch')) {
+            $arrLayoutData = array_merge($this->launch(), $arrLayoutData);
+        }
         $strLayoutContent = $objTemplater->getTemplateFileContent($strLayoutPath, $arrLayoutData);
         
         foreach ($this->arrPlaceholderBoxes as $strPlaceholderName => $arrBoxes) {

@@ -116,6 +116,17 @@ class Blitz
 
 class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     
+    public static function getCurrentLanguage ($strReplace = '') {
+        $objLanguages = Languages::getInstance();
+        
+        $strLanguage = $objLanguages->getCurrentLanguage();
+        if (!empty($strReplace)) {
+            $strLanguage = str_replace('_', $strReplace, $strLanguage);
+        }
+        
+        return $strLanguage;
+    }
+    
     public static function __ () {
         // $strKey, $numVariation = 1, $arrVariables ...
         $arrParams = func_get_args();
@@ -148,7 +159,7 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         $arrParams = func_get_args();
         $strRouteName = array_shift($arrParams);
         $objLanguages = Languages::getInstance();
-        return \webcitron\Subframe\Url::route($objLanguages->getCurrentLanguage(), $strRouteName, $arrParams);
+        return \webcitron\Subframe\Url::route($strRouteName, $arrParams, $objLanguages->getCurrentLanguage());
     }
     
     public static function currentUrl () {
