@@ -1,6 +1,6 @@
 <?php namespace webcitron\Subframe\ErrorHandler;
 
-class DevErrorHandler
+class RcErrorHandler
 {
     
     private $arrErrors = array(
