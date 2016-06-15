@@ -78,8 +78,10 @@ class Application
         switch ($numCurrentEnv) {
             case self::ENVIRONMENT_DEV:
             case self::ENVIRONMENT_NIGHTLY:
-            case self::ENVIRONMENT_RC:
                 $this->objErrorHandler = new ErrorHandler\DevErrorHandler();
+                break;
+            case self::ENVIRONMENT_RC:
+                $this->objErrorHandler = new ErrorHandler\RcErrorHandler();
                 break;
             default:
                 $this->objErrorHandler = new ErrorHandler\ProductionErrorHandler();
