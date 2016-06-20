@@ -35,6 +35,13 @@ class Languages
 //        $objConfig->set('enabled', true);
 //    }
     
+    public function getCurrentLanguageName () {
+        switch ($this->strCurrentLanguage) {
+            case 'pl_PL': return 'polish';
+            case 'en_US': return 'english';
+        }
+    }
+    
     public function setCurrentLanguage ($strLanguage) {
         $this->strCurrentLanguage = $strLanguage;
     }

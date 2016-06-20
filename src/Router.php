@@ -57,7 +57,12 @@ class Router {
 //        print_r($h);
 //        exit();
         $objRecognizedRoute = null;
-        foreach ($this->arrRoutes[$strCurrentLanguage] as $objRoute) {
+        if (!empty($this->arrRoutes[$strCurrentLanguage])) {
+            $arrRoutesToCheck = $this->arrRoutes[$strCurrentLanguage];
+        } else {
+            $arrRoutesToCheck = $this->arrRoutes;
+        }
+        foreach ($arrRoutesToCheck as $objRoute) {
             $strPattern = $objRoute->strUri;
             $strPattern = str_replace('/', '\/', $strPattern);
             $strPattern = str_replace('.', '\.', $strPattern);
@@ -136,6 +141,8 @@ class Router {
         $objRoute = null;
         if (!empty($this->arrRoutes[$strLanguage][$strRouteName])) {
             $objRoute = $this->arrRoutes[$strLanguage][$strRouteName];
+        } else if (!empty($this->arrRoutes[$strRouteName])) {
+            $objRoute = $this->arrRoutes[$strRouteName];
         } else if (Application::currentEnvironment() !== Application::ENVIRONMENT_PRODUCTION) {
             echo '<pre>';
             print_r(debug_backtrace());
