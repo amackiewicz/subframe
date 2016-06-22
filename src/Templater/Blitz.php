@@ -226,8 +226,15 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     }
     
     public static function prettyDateTime ($mulDateTime) {
+        $objLanguages = Languages::getInstance();
+        $strCurrentlanguage = $objLanguages->getCurrentLanguage();
+        
         if (empty($mulDateTime)) {
-            return '<i>nie określono</i>';
+            if ($strCurrentlanguage === 'pl_PL') {
+                return '<i>nie określono</i>';
+            } else {
+                return '<i>unknown</i>';
+            }
         } else if (intval($mulDateTime) === $mulDateTime) {
             $numTimestamp = $mulDateTime;
         } else {
@@ -237,13 +244,29 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         $strReturn = '';
         
         if ($numTimestamp >= $numNow - (60*15)) {
-            $strReturn = 'przed chwilą';
+            if ($strCurrentlanguage === 'pl_PL') {
+                $strReturn = 'przed chwilą';
+            } else {
+                $strReturn = 'just now';
+            }
         } else if ($numTimestamp >= $numNow - (60*30)) {
-            $strReturn = 'pół godziny temu';
+            if ($strCurrentlanguage === 'pl_PL') {
+                $strReturn = 'pół godziny temu';
+            } else {
+                $strReturn = 'half hour ago';
+            }
         } else if ($numTimestamp >= $numNow - (60*60)) {
-            $strReturn = 'godzinę temu';
+            if ($strCurrentlanguage === 'pl_PL') {
+                $strReturn = 'godzinę temu';
+            } else {
+                $strReturn = 'one hour ago';
+            }
         } else if ($numTimestamp >= $numNow - (60*60*12)) {
-            $strReturn = 'w ciągu ostatnich 12 godz';
+            if ($strCurrentlanguage === 'pl_PL') {
+                $strReturn = 'w ciągu ostatnich 12 godz';
+            } else {
+                $strReturn = 'today';
+            }
         } else {
             $strReturn = self::prettyDate($mulDateTime);
         }
