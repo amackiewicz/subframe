@@ -35,6 +35,13 @@ class Languages
 //        $objConfig->set('enabled', true);
 //    }
     
+    public static function getLanguage() {
+        $objLanguages = self::getInstance();
+        $strCurrent = $objLanguages->getCurrentLanguage();
+        
+        return $strCurrent;
+    }
+    
     public function getCurrentLanguageName () {
         switch ($this->strCurrentLanguage) {
             case 'pl_PL': return 'polish';
