@@ -285,6 +285,9 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     }
     
     public static function prettyDate ($mulDateTime) {
+        $objLanguages = Languages::getInstance();
+        $strCurrentLanguage = $objLanguages->getCurrentLanguage();
+        
         if (intval($mulDateTime) === $mulDateTime) {
             $numTimestamp = $mulDateTime;
         } else {
@@ -293,9 +296,17 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         $numNow = time();
         $strReturn = '';
         if (date('Ymd', $numTimestamp) === date('Ymd', $numNow)) {
-            $strReturn = 'dzisiaj';
+            if ($strCurrentLanguage === 'pl_PL') {
+                $strReturn = 'dzisiaj';
+            } else {
+                $strReturn = 'today';
+            }
         } else if (date('Ymd', $numTimestamp) === date('Ymd', $numNow-(60*60*24))) {
-            $strReturn = 'wczoraj';
+            if ($strCurrentLanguage === 'pl_PL') {
+                $strReturn = 'wczoraj';
+            } else {
+                $strReturn = 'yesterday';
+            }
         } else {
             $strReturn = date('d.m.Y', $numTimestamp);
         }
