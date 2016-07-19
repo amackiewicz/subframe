@@ -326,6 +326,10 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     public function makeGrid ($arrItems, $arrViewLayout, $arrAdverts = array()) {
         $strHtml = '';
         if (!empty($arrItems)) {  
+            $strCurrentLanguage = Languages::getInstance()->getCurrentLanguage();
+            $strAddedWord = ($strCurrentLanguage === 'pl_PL') ? 'dodano' : 'added';
+            $strSeeWord = ($strCurrentLanguage === 'pl_PL') ? 'Zobacz' : 'Details';
+            
             $strHtml .= '<div class="stream-row">';
             $arrConfig = array();
             foreach ($arrViewLayout as $arrViewRow) {
@@ -368,9 +372,11 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
                 if (isset($arrItem['isAdvert']) && $arrItem['isAdvert'] === true) {
                     $strCell = $arrItem['code'];
                 } else {
-                    $arrItem['title'] = stripslashes($arrItem['title']);
+                    $arrItem['title'] = ucfirst(stripslashes($arrItem['title']));
                     $arrItem['description'] = stripslashes($arrItem['description']);
                     $arrItem['strAlt'] = strip_tags(trim($arrItem['title'], '. ').'. '.trim($arrItem['description']));
+                    $arrItem['added_word'] = $strAddedWord;
+                    $arrItem['see_word'] = $strSeeWord;
                     if (strlen($arrItem['strAlt']) > 200) {
                         $arrItem['strAlt'] = mb_substr($arrItem['strAlt'], 0, 200, 'UTF-8').'...';
                     }
