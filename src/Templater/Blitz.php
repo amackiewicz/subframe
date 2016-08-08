@@ -243,6 +243,7 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         $numNow = time();
         $strReturn = '';
         
+//        echo $numTimestamp .'('.date('Y-m-d H:i:s', $numTimestamp).') '.$numNow.'('.date('Y-m-d H:i:s', $numNow).')<br />';
         if ($numTimestamp >= $numNow - (60*15)) {
             if ($strCurrentlanguage === 'pl_PL') {
                 $strReturn = 'przed chwilą';
@@ -323,7 +324,7 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return Application::currentEnvironment();
     }
     
-    public function makeGrid ($arrItems, $arrViewLayout, $arrAdverts = array()) {
+    public function makeGrid ($arrItems, $arrViewLayout, $arrAdverts = array(), $numPerPage = 0) {
         $strHtml = '';
         if (!empty($arrItems)) {  
             $strCurrentLanguage = Languages::getInstance()->getCurrentLanguage();
@@ -351,11 +352,22 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
             $strTempalatePath = dirname(__FILE__).'/../../../../../app/imagehost3/box/artifact/view/GridItemTemplate.blitz.tpl';
             
             // put advert
+//            echo count($arrItems);
+//            exit();
             if (!empty($arrAdverts)) {
-                $numInsertBefore = rand(0, count($arrItems)-1);
-                array_splice($arrItems, $numInsertBefore, 0, array(array('isAdvert' => true, 'code' => $arrAdverts[0])));
+                foreach ($arrAdverts as $numAdvertNo => $strAdvert) {
+                    $numRandFrom = $numAdvertNo * $numPerPage;
+                    $numRandTo = $numRandFrom + $numPerPage;
+                    $numInsertBefore = rand($numRandFrom, $numRandTo);
+                    array_splice($arrItems, $numInsertBefore, 0, array(array('isAdvert' => true, 'code' => $strAdvert)));
+//                    echo $numAdvertNo .' -> '.$strAdvert.'<br />';
+//                    exit();
+                }
+//                exit();
+//                $numInsertBefore = rand(0, count($arrItems)-1);
+//                array_splice($arrItems, $numInsertBefore, 0, array(array('isAdvert' => true, 'code' => $arrAdverts[0])));
             }
-            
+//            
             foreach ($arrItems as $arrItem) {
                 if ($numItemInRowIndex === count($arrConfig[$numRowConfigIndex][1])) {
                     // change row
@@ -381,6 +393,9 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
                         $arrItem['strAlt'] = mb_substr($arrItem['strAlt'], 0, 200, 'UTF-8').'...';
                     }
                     $strCell = $this->include($strTempalatePath, $arrItem);
+                }
+                if ($numItemListingIndex+1 > $numPerPage) {
+                    $strCellClasses .= ' loaded-buffor';
                 }
                 $strHtml .= '<div class="item-wrapper '.$strCellClasses.'">'.$strCell.'</div>';
                 $numItemInRowIndex++;
