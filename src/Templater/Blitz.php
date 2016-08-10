@@ -116,6 +116,10 @@ class Blitz
 
 class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     
+    public static function escapeQuotes ($strInput) {
+        return htmlspecialchars($strInput, ENT_QUOTES);
+    }
+    
     public static function getCurrentLanguage ($strReplace = '') {
         $objLanguages = Languages::getInstance();
         
