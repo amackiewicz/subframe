@@ -7,6 +7,7 @@ class JsController {
     public static $objInstance = null;
     public $boolRunJs = false;
     public $arrScriptsToLoad = array();
+    private $strCurrentCommit = '';
     
     public static function getInstance () {
         if (self::$objInstance === null) {
@@ -15,7 +16,9 @@ class JsController {
         return self::$objInstance;
     }
     
-    private function __construct () {}
+    private function __construct () {
+        $this->strCurrentCommit = trim(file_get_contents(APP_DIR.'/../current-commit'));
+    }
     
     public function render ($strApplicationName) {
         if ($this->boolRunJs !== true) {
@@ -30,11 +33,12 @@ class JsController {
         $strLaunchCode = '<script>'.PHP_EOL;
         $strLaunchCode .= 'var boolIsPuppiesBlocked = true;'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/adblock-advertisement.js"></script>', $strApplicationBaseUrl).PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/vendor/head/dist/1.0.0/head.min.js"></script>', $strApplicationBaseUrl).PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js"></script>', $strApplicationBaseUrl).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/adblock-advertisement.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/vendor/head/dist/1.0.0/head.min.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL; 
-        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
+        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", "%s", ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->strCurrentCommit, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
         $strLaunchCode .= 'objLauncher.init();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
         return $strLaunchCode;

@@ -5,8 +5,9 @@ class CssController {
     
     public static $objInstance = null;
     public $arrStylesheetsToLoad = array();
-    
     public $strForceCssFile = '';
+    
+    private $strCurrentCommit = '';
     
     public static function getInstance () {
         if (self::$objInstance === null) {
@@ -19,7 +20,9 @@ class CssController {
         $this->strForceCssFile = $strFile;
     }
     
-    private function __construct () {}
+    private function __construct () {
+        $this->strCurrentCommit = trim(file_get_contents(APP_DIR.'/../current-commit'));
+    }
     
     public function renderAsync ($strApplicationName) {
         if (!empty($this->strForceCssFile)) {
@@ -42,7 +45,7 @@ class CssController {
             $objCurrentRoute = $objRouter->getCurrentRoute();
             $strCssFile = $objCurrentRoute->strRouteName.'_'.$objCurrentRoute->strMethodName;
         }
-        $strCssHhtml = sprintf('<link rel="stylesheet" href="/%s/css/%s.css" />', $strApplicationName, $strCssFile);
+        $strCssHhtml = sprintf('<link rel="stylesheet" href="/%s/css/%s.css?%s" />', $strApplicationName, $strCssFile, $this->strCurrentCommit);
         
         return $strCssHhtml;
     }
