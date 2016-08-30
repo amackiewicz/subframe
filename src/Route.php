@@ -34,12 +34,15 @@ class Route {
             $strRouteName = $arrRouteMethod[0];
             $strRouteMethod = 'index';
         }
-        foreach ($arrLangUris as $strLanguage => $strUri) {
+        foreach ($arrLangUris as $strLanguage => $arrUris) {
+            if (!is_array($arrUris)) {
+                $arrUris = array($arrUris);
+            }
             $objRoute = new Route($strRouteName);
-            $objRoute->setUri($strUri);
+            $objRoute->addUris($arrUris);
             $objRoute->setLanguage($strLanguage);
             $objRoute->setMethod($strRouteMethod);
-            $objRoute->recognizeSetParams($strUri);
+            $objRoute->recognizeSetParams($arrUris);
             $objRoute->strRouteFullName = $strRouteFullName;
             
             $objRouter->arrRoutes[$strLanguage][$strRouteFullName] = $objRoute;
@@ -102,42 +105,57 @@ class Route {
 //        print_r($arrParams);
 ////        print_r($arrParams);
 //        echo '</pre>';
-        $strResult = '';
+//        $strResult = '';
         if (empty($this->arrParams)) {
             $strResult = $this->strUri;
         } else {
+//            echo '<Pre>';
+//            print_r($this);
+//            print_r($arrParams);
+//            echo '</pre>';
+            
+            $numSetIndex = 0;
+            for ($numSetIndex; $numSetIndex<count($this->arrUris); $numSetIndex++) { 
+                if (count($arrParams) === count($this->arrParams[$numSetIndex])) {
+                    break;
+                }
+            }
+            
+            
+//            echo $numSetIndex;
             $arrPatterns = array_map(function ($strParamName) {
                 return sprintf('{%s}', $strParamName);
                 
-            }, $this->arrParams);
+            }, $this->arrParams[$numSetIndex]);
             $arrReplaces = $arrParams;
 
-            $strCurrentUri = $this->strUri;
-            if (count($arrPatterns) > count($arrReplaces)) {
-                
-                $numStartRemovingFrom = count($arrPatterns) + (count($arrReplaces) - count($arrPatterns));
-                for ($numPatternNo=$numStartRemovingFrom; $numPatternNo<count($arrPatterns); $numPatternNo++) {
-//                    echo sprintf('(%s/)?', $arrPatterns[$numPatternNo]) .'->'.$strCurrentUri.'<br />';
-                    $strCurrentUri = str_replace(
-                        sprintf('(%s/)?', $arrPatterns[$numPatternNo]), 
-                        '', 
-                        $strCurrentUri
-                    );
-                }
-                
-            } else if (count($arrPatterns) === count($arrReplaces)) {
+//            $strCurrentUri = $this->arrUris[$numSetIndex];
+//            if (count($arrPatterns) > count($arrReplaces)) {
+//                
+//                $numStartRemovingFrom = count($arrPatterns) + (count($arrReplaces) - count($arrPatterns));
+//                for ($numPatternNo=$numStartRemovingFrom; $numPatternNo<count($arrPatterns); $numPatternNo++) {
+//                    $strCurrentUri = str_replace(
+//                        sprintf('(%s/)?', $arrPatterns[$numPatternNo]), 
+//                        '', 
+//                        $strCurrentUri
+//                    );
+//                }
+//                
+//            } else if (count($arrPatterns) === count($arrReplaces)) {
                 $strCurrentUri = str_replace(
                     array('(', ')', '?'), 
                     '', 
-                    $strCurrentUri
+                    $this->arrUris[$numSetIndex]
                 );
 
-            }
+//            }
 //            echo '<pre>';
 //            print_r($arrPatterns);
 //            print_r($arrReplaces);
-//            echo $strCurrentUri.'x';
 //            echo '</pre>';
+            
+//            echo $strCurrentUri;
+            
             $strResult = str_replace($arrPatterns, $arrReplaces, $strCurrentUri);
         }
         
@@ -145,6 +163,9 @@ class Route {
         return $strResult;
     }
     
+    public function addUris ($arrUris) {
+        $this->arrUris = $arrUris;
+    }
     public function setUri($strUri) {
         $this->strUri = $strUri;
     }
@@ -157,13 +178,17 @@ class Route {
         $this->strMethodName = $strMethodName;
     }
     
-    public function recognizeSetParams($strUri) {
-        $arrParams= array();
-        preg_match_all("/{[^}]*}/", $strUri, $arrParams);
-        if (!empty($arrParams[0])) {
-            foreach ($arrParams[0] as $strParam) {
-                $this->arrParams[] = substr($strParam, 1, -1);
+    public function recognizeSetParams($arrUris) {
+        $numUriIndex = 0;
+        foreach ($arrUris as $strUri) {
+            $arrParams= array();
+            preg_match_all("/{[^}]*}/", $strUri, $arrParams);
+            if (!empty($arrParams[0])) {
+                foreach ($arrParams[0] as $strParam) {
+                    $this->arrParams[$numUriIndex][] = substr($strParam, 1, -1);
+                }
             }
+            $numUriIndex++;
         }
     }
 }

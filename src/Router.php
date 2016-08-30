@@ -63,55 +63,57 @@ class Router {
             $arrRoutesToCheck = $this->arrRoutes;
         }
         foreach ($arrRoutesToCheck as $objRoute) {
-            $strPattern = $objRoute->strUri;
-            $strPattern = str_replace('/', '\/', $strPattern);
-            $strPattern = str_replace('.', '\.', $strPattern);
-            $strPattern = str_replace('-', '\-', $strPattern);
-//            echo str_replace(array('\/', '\-', '\.'), array('/', '-', '.'), $strPattern) .' -> ';
-            $strPattern = sprintf('^%s$', preg_replace('/\{[^}]+\}/', '([^\/]+)', $strPattern)); 
-//            echo str_replace(array('\/', '\-', '/.'), array('/', '-', '.'), $strPattern).'<br />';
-            $strPattern = '/'.$strPattern.'/';
-//            echo $strUri .' -> '.$strPattern.'<br />';
-            $numPregMatchResult = @preg_match($strPattern, $strUri, $arrHits);
-            if ($boolDebug === true) {
-                echo '<pre>'.$numPregMatchResult;
-                print_r($arrHits);
-                echo '</pre>';
-            }
-            if ($numPregMatchResult === 1) {
-             
-//                exit();
-                if (!empty($arrHits)) {
-                    $arrFilteredHits = array();
-                    if ($boolDebug === true) {
-                        echo '<pre>';
-                        print_r($arrHits);
-                        echo '</pre>';
-                    }
-                    
-//                    for ($numHit = 1; $numHit<count($arrHits); $numHit+=2) {
-//                        $arrFilteredHits[] = $arrHits[$numHit];
-//                    }
-//                    array_shift($arrHits);
-////                    Request::setParams($arrFilteredHits);
-//                    
-//                    Request::setParams($arrHits);
-                    for ($numHit = 1; $numHit<count($arrHits); $numHit++) {
-                        if (substr($arrHits[$numHit], -1) !== '/') {
-                            $arrFilteredHits[] = $arrHits[$numHit];
-                        }
-                    }
-                    Request::setParams($arrFilteredHits);
-//                    echo '<pre>';
-//                    print_r($arrFilteredHits);
-//                    
-//                    print_r($arrHits);
-//                    exit();
-                    
+//            $strPattern = $objRoute->strUri;
+            foreach ($objRoute->arrUris as $strPattern) {
+                $strPattern = str_replace('/', '\/', $strPattern);
+                $strPattern = str_replace('.', '\.', $strPattern);
+                $strPattern = str_replace('-', '\-', $strPattern);
+    //            echo str_replace(array('\/', '\-', '\.'), array('/', '-', '.'), $strPattern) .' -> ';
+                $strPattern = sprintf('^%s$', preg_replace('/\{[^}]+\}/', '([^\/]+)', $strPattern)); 
+    //            echo str_replace(array('\/', '\-', '/.'), array('/', '-', '.'), $strPattern).'<br />';
+                $strPattern = '/'.$strPattern.'/';
+    //            echo $strUri .' -> '.$strPattern.'<br />';
+                $numPregMatchResult = @preg_match($strPattern, $strUri, $arrHits);
+                if ($boolDebug === true) {
+                    echo '<pre>'.$numPregMatchResult;
+                    print_r($arrHits);
+                    echo '</pre>';
                 }
-                $objRecognizedRoute = $objRoute;
-                Debug::log('On route '.$objRecognizedRoute->strRouteFullName, 'core-router');
-                break;
+                if ($numPregMatchResult === 1) {
+
+    //                exit();
+                    if (!empty($arrHits)) {
+                        $arrFilteredHits = array();
+                        if ($boolDebug === true) {
+                            echo '<pre>';
+                            print_r($arrHits);
+                            echo '</pre>';
+                        }
+
+    //                    for ($numHit = 1; $numHit<count($arrHits); $numHit+=2) {
+    //                        $arrFilteredHits[] = $arrHits[$numHit];
+    //                    }
+    //                    array_shift($arrHits);
+    ////                    Request::setParams($arrFilteredHits);
+    //                    
+    //                    Request::setParams($arrHits);
+                        for ($numHit = 1; $numHit<count($arrHits); $numHit++) {
+                            if (substr($arrHits[$numHit], -1) !== '/') {
+                                $arrFilteredHits[] = $arrHits[$numHit];
+                            }
+                        }
+                        Request::setParams($arrFilteredHits);
+    //                    echo '<pre>';
+    //                    print_r($arrFilteredHits);
+    //                    
+    //                    print_r($arrHits);
+    //                    exit();
+
+                    }
+                    $objRecognizedRoute = $objRoute;
+                    Debug::log('On route '.$objRecognizedRoute->strRouteFullName, 'core-router');
+                    break;
+                }
             }
         }
         
@@ -119,6 +121,10 @@ class Router {
 //            echo "ERROR! ".__FILE__.'::'.__FUNCTION__.'#'.__LINE__;
 //            exit();
 //        }
+//        echo 's'; 
+//        echo '<pre>';
+//        print_r($objRecognizedRoute);
+//        exit();
         return $objRecognizedRoute;
     }
     
