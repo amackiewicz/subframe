@@ -99,63 +99,33 @@ class Route {
     }
     
     public function buildUri($arrParams = array()) {
-        
-        
-//        echo '<pre>';
-//        print_r($arrParams);
-////        print_r($arrParams);
-//        echo '</pre>';
-//        $strResult = '';
-        if (empty($this->arrParams)) {
-            $strResult = $this->strUri;
-        } else {
-//            echo '<Pre>';
-//            print_r($this);
-//            print_r($arrParams);
-//            echo '</pre>';
-            
-            $numSetIndex = 0;
-            for ($numSetIndex; $numSetIndex<count($this->arrUris); $numSetIndex++) { 
-                if (count($arrParams) === count($this->arrParams[$numSetIndex])) {
-                    break;
-                }
+        $numSetIndex = 0;
+        for ($numSetIndex; $numSetIndex<count($this->arrUris); $numSetIndex++) { 
+            $numThisSetParamsCount = 0;
+            if (!empty($this->arrParams[$numSetIndex])) {
+                $numThisSetParamsCount = count($this->arrParams[$numSetIndex]);
             }
-            
-            
-//            echo $numSetIndex;
+            if (count($arrParams) === $numThisSetParamsCount) {
+                break;
+            }
+        }
+
+        if ($numThisSetParamsCount === 0) {
+            $strResult = $this->arrUris[$numSetIndex];
+        } else {
+
             $arrPatterns = array_map(function ($strParamName) {
                 return sprintf('{%s}', $strParamName);
-                
+
             }, $this->arrParams[$numSetIndex]);
             $arrReplaces = $arrParams;
 
-//            $strCurrentUri = $this->arrUris[$numSetIndex];
-//            if (count($arrPatterns) > count($arrReplaces)) {
-//                
-//                $numStartRemovingFrom = count($arrPatterns) + (count($arrReplaces) - count($arrPatterns));
-//                for ($numPatternNo=$numStartRemovingFrom; $numPatternNo<count($arrPatterns); $numPatternNo++) {
-//                    $strCurrentUri = str_replace(
-//                        sprintf('(%s/)?', $arrPatterns[$numPatternNo]), 
-//                        '', 
-//                        $strCurrentUri
-//                    );
-//                }
-//                
-//            } else if (count($arrPatterns) === count($arrReplaces)) {
-                $strCurrentUri = str_replace(
-                    array('(', ')', '?'), 
-                    '', 
-                    $this->arrUris[$numSetIndex]
-                );
+            $strCurrentUri = str_replace(
+                array('(', ')', '?'), 
+                '', 
+                $this->arrUris[$numSetIndex]
+            );
 
-//            }
-//            echo '<pre>';
-//            print_r($arrPatterns);
-//            print_r($arrReplaces);
-//            echo '</pre>';
-            
-//            echo $strCurrentUri;
-            
             $strResult = str_replace($arrPatterns, $arrReplaces, $strCurrentUri);
         }
         

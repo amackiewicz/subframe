@@ -14,7 +14,9 @@ abstract class Url {
             $strRouteName .= '::index';
         }
         $objRouter = Router::getInstance();
+        
         $objRoute = $objRouter->getRouteByNameAndLang($strRouteName, $strLanguage);
+       
         if (empty($objRoute)) {
             $objRoute = $objRouter->getRouteByName('Homepage');
         }
@@ -22,7 +24,6 @@ abstract class Url {
         if (!empty($objRoute)) {
             $strUri = $objRoute->buildUri($arrParams);
         }
-        
         return $strUri;
     }
     
