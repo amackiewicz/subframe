@@ -41,21 +41,6 @@ class Router {
         $objRoute = null;
         $arrHits = array();
         
-//        $m = array();
-//        @preg_match_all("/p/([^\/]+)/([^\/]+).jpg", '/p/again-the-duty-is-assigned-by-the-queen-and/65.jpg', $m);
-//        @preg_match_all("/\/p\/([^\/]+)\/([^\/]+)\.jpg/", '/p/again-the-duty-is-assigned-by-the-queen-and/65.jpg', $m);
-//        echo '<pre>';
-//        print_r($m);
-//        
-//        
-//        
-//        echo '</pre>';
-//        $pat = "/^\/([^\/]+)\/$/";
-//        $a = preg_match($pat, "/test/", $h);
-//        echo '<Pre>';
-//        print_r($a);
-//        print_r($h);
-//        exit();
         $objRecognizedRoute = null;
         if (!empty($this->arrRoutes[$strCurrentLanguage])) {
             $arrRoutesToCheck = $this->arrRoutes[$strCurrentLanguage];
@@ -74,18 +59,18 @@ class Router {
                 $strPattern = '/'.$strPattern.'/';
     //            echo $strUri .' -> '.$strPattern.'<br />';
                 $numPregMatchResult = @preg_match($strPattern, $strUri, $arrHits);
-                if ($boolDebug === true) {
-                    echo '<pre>'.$numPregMatchResult;
-                    print_r($arrHits);
-                    echo '</pre>';
-                }
+//                if ($boolDebug === true) {
+//                    echo '<pre>'.$numPregMatchResult;
+//                    print_r($arrHits);
+//                    echo '</pre> ('.$numPregMatchResult.')';
+//                }
                 if ($numPregMatchResult === 1) {
 
     //                exit();
                     if (!empty($arrHits)) {
                         $arrFilteredHits = array();
                         if ($boolDebug === true) {
-                            echo '<pre>';
+                            echo '1) "'.$numPregMatchResult.'"<pre>';
                             print_r($arrHits);
                             echo '</pre>';
                         }
@@ -114,6 +99,9 @@ class Router {
                     Debug::log('On route '.$objRecognizedRoute->strRouteFullName, 'core-router');
                     break;
                 }
+            }
+            if (!empty($objRecognizedRoute)) {
+                break;
             }
         }
         
