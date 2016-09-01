@@ -49,7 +49,7 @@ class Route {
         }
     }
     
-    public static function add($strRouteFullName, $strUri) {
+    public static function add($strRouteFullName, $arrUris) {
         $objRouter = Router::getInstance();
 //        $arrControllerActionTokens = explode('/', $strControllerAction);
         
@@ -62,10 +62,14 @@ class Route {
             $strRouteMethod = 'index';
         }
         
+         if (!is_array($arrUris)) {
+            $arrUris = array($arrUris);
+        }
+
         $objRoute = new Route($strRouteName);
-        $objRoute->setUri($strUri);
+        $objRoute->addUris($arrUris);
         $objRoute->setMethod($strRouteMethod);
-        $objRoute->recognizeSetParams($strUri);
+        $objRoute->recognizeSetParams($arrUris);
         $objRoute->strRouteFullName = $strRouteFullName;
         
         $objRouter->arrRoutes[$strRouteFullName] = $objRoute;
