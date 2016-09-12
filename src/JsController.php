@@ -20,7 +20,7 @@ class JsController {
         $this->strCurrentCommit = trim(file_get_contents(APP_DIR.'/../current-commit'));
     }
     
-    public function render ($strApplicationName) {
+    public function render ($strApplicationName, $numEnableCaching = 1) {
         if ($this->boolRunJs !== true) {
             return;
         }
@@ -30,16 +30,21 @@ class JsController {
         $objLanguages = Languages::getInstance();
         $strCurrentLanguage = $objLanguages->getCurrentLanguage();
         
+        $strPostfixCache = '';
+        if ($numEnableCaching === 0) {
+            $strPostfixCache = '&_='.time();
+        }
+        
         $strLaunchCode = '<script>'.PHP_EOL;
         $strLaunchCode .= 'var boolIsPuppiesBlocked = true;'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/adblock-advertisement.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/adblock-advertisement.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
 //        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/vendor/head/dist/1.0.0/head.min.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/bower_components/jquery/dist/jquery.min.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/bower_components/jquery/dist/jquery.min.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL; 
-        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", "%s", ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->strCurrentCommit, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
+        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", "%s", %s, ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->strCurrentCommit, $numEnableCaching, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
         $strLaunchCode .= 'objLauncher.init();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
         return $strLaunchCode;

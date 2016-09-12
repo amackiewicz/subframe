@@ -183,10 +183,10 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return $strInput;
     }
     
-    public static function renderUserJs () {
+    public static function renderUserJs ($numEnableCaching = 1) {
         $objJsController = \webcitron\Subframe\JsController::getInstance();
         $objApplication = Application::getInstance();
-        $strUserJs = $objJsController->render($objApplication->strName);
+        $strUserJs = $objJsController->render($objApplication->strName, $numEnableCaching);
         return $strUserJs;
     }
     
