@@ -208,6 +208,12 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return $strHeadAddons;
     }
     
+    public static function renderCommentAttachments ($arrAttachments) {
+        $objBox = new \imagehost3\box\comments\artifact\Attachments($arrAttachments);
+        $objResponse = $objBox->launch();
+        return $objResponse;
+    }
+    
     public static function metaData($strKey, $strWrapper = '', $boolNeedEscaping = true) {
         $objTemplaterBlitz = Blitz::getInstance();
         $strReturn = $objTemplaterBlitz->getMetaData($strKey);
