@@ -105,6 +105,7 @@ class Application
 //                echo $strConfigFilePath.PHP_EOL;
                 require $strConfigFilePath;
                 $strCurrentAppUrl = $this->currentAppUrl();
+                echo $strCurrentAppUrl.'<br />';
                 if(!empty($strCurrentAppUrl)) {
                     $boolRecognized = true;
                     $this->strName = $strResource;
