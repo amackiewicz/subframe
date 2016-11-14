@@ -79,8 +79,7 @@ class Request {
         if (!empty($this->strRequestDoman)) {
             $strResult = $this->strRequestDoman;
         } else {
-//            $strResult = sprintf('%s://%s', $this->arrServer['REQUEST_SCHEME'], $this->arrServer['SERVER_NAME']);
-            $strResult = sprintf('http://%s',$this->arrServer['SERVER_NAME']);
+            $strResult = sprintf('%s://%s', $this->arrServer['REQUEST_SCHEME'], $this->arrServer['SERVER_NAME']);
         }
         return $strResult;
     }

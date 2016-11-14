@@ -176,7 +176,8 @@ class Application
         
         $objRequest = Request::getInstance();
         $strRequestDomain = $objRequest->domain();
-        
+//        echo $strRequestDomain;
+//        exit();
         foreach ($this->arrWorkingEnvironments as $numEnvironment) {
             $strConfigKeyName = sprintf('environment::%d', $numEnvironment);
             $arrEnvironmentUrls = Config::get($strConfigKeyName, $strConfigName);

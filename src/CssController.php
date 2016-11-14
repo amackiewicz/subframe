@@ -45,8 +45,8 @@ class CssController {
             $objCurrentRoute = $objRouter->getCurrentRoute();
             $strCssFile = $objCurrentRoute->strRouteName.'_'.$objCurrentRoute->strMethodName;
         }
-        $strApplicationBaseUrl = \webcitron\Subframe\Application::url(false);
-        $strCssHhtml = sprintf('<link rel="stylesheet" href="//%s/%s/css/%s.css?%s" />', $strApplicationBaseUrl, $strApplicationName, $strCssFile, $this->strCurrentCommit);
+        $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
+        $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/%s/css/%s.css?%s" />', $strApplicationBaseUrl, $strApplicationName, $strCssFile, $this->strCurrentCommit);
         
         return $strCssHhtml;
     }
