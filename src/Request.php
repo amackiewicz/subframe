@@ -78,14 +78,8 @@ class Request {
     public function domain() {
         
         if (!empty($this->strRequestDoman)) {
-            echo '1<br />';
-            echo $this->strRequestDoman.'<br />';
             $strResult = $this->strRequestDoman;
         } else {
-            echo '2<br />';
-            echo '<pre>';
-            print_r($this->arrServer);
-            echo '</pre>';
             $strResult = sprintf('%s://%s', $this->getScheme(), $this->arrServer['SERVER_NAME']);
         }
         return $strResult;
