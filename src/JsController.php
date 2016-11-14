@@ -44,7 +44,7 @@ class JsController {
         $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
         $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL; 
-        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", "%s", %s, ["%s"]);', $strApplicationName, '//'.$strApplicationBaseUrl, $strCurrentLanguage, $this->strCurrentCommit, $numEnableCaching, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
+        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", "%s", %s, ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->strCurrentCommit, $numEnableCaching, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
         $strLaunchCode .= 'objLauncher.init();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
         return $strLaunchCode;
