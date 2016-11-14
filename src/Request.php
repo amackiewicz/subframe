@@ -59,9 +59,6 @@ class Request {
     
     public static function read() {
         $objRequest = Request::getInstance();
-        echo '0:<pre>';
-        print_r($_SERVER);
-        echo '</pre>';
         $objRequest->arrServer = filter_input_array(INPUT_SERVER);
         $objRequest->arrArgs = filter_input_array(INPUT_POST);
         if (!empty($objRequest->arrArgs)) {
@@ -89,9 +86,17 @@ class Request {
             echo '<pre>';
             print_r($this->arrServer);
             echo '</pre>';
-            $strResult = sprintf('%s://%s', $this->arrServer['REQUEST_SCHEME'], $this->arrServer['SERVER_NAME']);
+            $strResult = sprintf('%s://%s', $this->getScheme(), $this->arrServer['SERVER_NAME']);
         }
         return $strResult;
+    }
+    
+    public function getScheme () {
+        if (isset($this->arrServer['HTTP_X_FORWARDED_PROTO'])) {
+            return $this->arrServer['HTTP_X_FORWARDED_PROTO'];
+        } else {
+            return $this->arrServer['REQUEST_SCHEME'];
+        }
     }
     
     public static function getClientIp () {
