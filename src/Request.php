@@ -59,6 +59,9 @@ class Request {
     
     public static function read() {
         $objRequest = Request::getInstance();
+        echo '0:<pre>';
+        print_r($_SERVER);
+        echo '</pre>';
         $objRequest->arrServer = filter_input_array(INPUT_SERVER);
         $objRequest->arrArgs = filter_input_array(INPUT_POST);
         if (!empty($objRequest->arrArgs)) {
