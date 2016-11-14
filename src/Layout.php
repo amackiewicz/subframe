@@ -26,10 +26,12 @@ class Layout {
         $objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
         
         $objCurrentRoute = Router::getCurrentRoute();
-        $arrLayoutData['route'] = array(
-            'name' => $objCurrentRoute->strRouteName, 
-            'action' => $objCurrentRoute->strMethodName
-        );
+        if (!empty($objCurrentRoute)) {
+            $arrLayoutData['route'] = array(
+                'name' => $objCurrentRoute->strRouteName, 
+                'action' => $objCurrentRoute->strMethodName
+            );
+        }
         
         if (method_exists($this, 'launch')) {
             $arrLayoutData = array_merge($this->launch(), $arrLayoutData);

@@ -162,8 +162,12 @@ class Application
 //        return $objResponse;
     }
     
-    public static function url() {
-        return self::$strCurrentAppUrl;
+    public static function url($boolWithPrefix = true) {
+        if ($boolWithPrefix === true) {
+            return self::$strCurrentAppUrl;
+        }
+        $arrTokens = explode('//', self::$strCurrentAppUrl);
+        return $arrTokens[1];
     }
     
     private function currentAppUrl() {
