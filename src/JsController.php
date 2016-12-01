@@ -40,7 +40,7 @@ class JsController {
         $strLaunchCode .= '</script>'.PHP_EOL;
         $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/adblock-advertisement.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
 //        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/vendor/head/dist/1.0.0/head.min.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/bower_components/jquery/dist/jquery.min.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
+//        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/bower_components/jquery/dist/jquery.min.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
         $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
         $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL; 

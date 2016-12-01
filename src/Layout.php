@@ -8,7 +8,7 @@ class Layout {
     
     public $arrPlaceholderBoxes = array();
     
-    final public function render ($arrLayoutData = array()) {
+    public function render ($arrLayoutData = array()) {
         
         $arrBoxesResponseContents = array();
         foreach ($this->arrPlaceholderBoxes as $strPlaceholderName => $arrBoxes) {
