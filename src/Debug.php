@@ -12,7 +12,7 @@ class Debug
     
     public static function isEnabled () {
         if (self::$boolIsEnabled === null) {
-            if (Application::currentEnvironment() !== Application::ENVIRONMENT_PRODUCTION && self::$boolManuallyDisabled  !== true) {
+            if (!empty(filter_input(\INPUT_COOKIE, 'imged-developer')) || (Application::currentEnvironment() !== Application::ENVIRONMENT_PRODUCTION && self::$boolManuallyDisabled  !== true)) {
                 self::$boolIsEnabled = true;
             } else {
                 self::$boolIsEnabled = false;

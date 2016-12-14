@@ -30,6 +30,9 @@ class Launcher {
     }
     
     public function goBabyGo () {
+        list($usec, $sec) = explode(" ", microtime());
+        $numStart = ((float)$usec + (float)$sec);
+        Debug::log('Loading start at '.$numStart, 'timing');
         $objSubframe = new Subframe();
         $objApp = $objSubframe->getApp();
         $objApp->init();
@@ -39,6 +42,10 @@ class Launcher {
         }
         echo $objResponse;
         if (Debug::isEnabled()) {
+            list($usec, $sec) = explode(" ", microtime());
+            $numEnd = ((float)$usec + (float)$sec);
+            Debug::log('Loading end at '.$numStart, 'timing');
+            Debug::log('Backend load time is '.($numEnd-$numStart).'s.', 'timing');
             echo Debug::output();
         }
     }
