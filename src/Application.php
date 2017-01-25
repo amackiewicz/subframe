@@ -135,12 +135,12 @@ class Application
     
     public function launch()
     {
-        exit();
         $this->objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
         
         $objCurrentRoute = $this->objRouter->dispath();
 //        $arrRequestParams = Request::getParams();
-        
+     
+        exit();
         if (empty($objCurrentRoute)) {
             $objResponse = Board::launch('Error', 'notFound');
         } else {
