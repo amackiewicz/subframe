@@ -32,7 +32,7 @@ class Response {
         $objResponse = new Response\Html();
         $objResponse->setContent($strHtmlContent);
         $objResponse->setData($arrViewData);
-        exit();
+//        exit();
         return $objResponse;
     }
     
