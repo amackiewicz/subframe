@@ -8,6 +8,7 @@ class Board {
         $strBoardFullPath = sprintf('%s\\board\\%s', Application::getInstance()->strApplicationClassesPrefix, $strBoardName);
         Debug::log('Loading board '.$strBoardFullPath.'->'.$strBoardMethod.'()', 'core-board');
         $objSpecifiedBoard = new $strBoardFullPath();
+        exit();
         $objBoardMethod = new \ReflectionMethod($strBoardFullPath, $strBoardMethod);
         $arrRequestParams = Request::getParams();
         $objResponse = $objBoardMethod->invokeArgs($objSpecifiedBoard, $arrRequestParams);
