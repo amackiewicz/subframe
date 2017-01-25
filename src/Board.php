@@ -10,8 +10,8 @@ class Board {
         $objSpecifiedBoard = new $strBoardFullPath();
         $objBoardMethod = new \ReflectionMethod($strBoardFullPath, $strBoardMethod);
         $arrRequestParams = Request::getParams();
-        exit();
         $objResponse = $objBoardMethod->invokeArgs($objSpecifiedBoard, $arrRequestParams);
+        exit();
         return $objResponse;
     }
     
