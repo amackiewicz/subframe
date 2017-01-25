@@ -11,7 +11,7 @@ class Board {
         $objBoardMethod = new \ReflectionMethod($strBoardFullPath, $strBoardMethod);
         $arrRequestParams = Request::getParams();
         $objResponse = $objBoardMethod->invokeArgs($objSpecifiedBoard, $arrRequestParams);
-        exit('board::launch');
+//        exit('board::launch');
         return $objResponse;
     }
     

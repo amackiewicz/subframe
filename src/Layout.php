@@ -13,11 +13,13 @@ class Layout {
         $arrBoxesResponseContents = array();
         foreach ($this->arrPlaceholderBoxes as $strPlaceholderName => $arrBoxes) {
             $arrBoxesResponseContents[$strPlaceholderName] = array();
+            
             foreach ($arrBoxes as $objBox) {
                 $objBoxResponse = $objBox->launch();
                 $arrBoxesResponseContents[$strPlaceholderName][] = $objBoxResponse->__toString();
             }
         }
+        
         $strLayoutFullName = get_called_class();
         $arrLayoutFullNameTokens = explode('\\', $strLayoutFullName);
         $strLayoutName = array_pop($arrLayoutFullNameTokens);
