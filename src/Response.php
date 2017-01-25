@@ -29,10 +29,10 @@ class Response {
     }
         
     public static function html($strHtmlContent, $arrViewData = array()) {
-        exit();
         $objResponse = new Response\Html();
         $objResponse->setContent($strHtmlContent);
         $objResponse->setData($arrViewData);
+        exit();
         return $objResponse;
     }
     
