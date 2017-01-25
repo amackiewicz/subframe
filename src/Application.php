@@ -135,6 +135,7 @@ class Application
     
     public function launch()
     {
+        exit();
         $this->objTemplater = Templater::createSpecifiedTemplater(Config::get('templater'));
         
         $objCurrentRoute = $this->objRouter->dispath();
@@ -146,7 +147,6 @@ class Application
             $objResponse = Board::launch($objCurrentRoute->strRouteName, $objCurrentRoute->strMethodName);
         }
 //        $objBoard->launch();
-        exit();
         return $objResponse;
 //        echo '<pre>';
 //        print_r($objResponse);
