@@ -7,7 +7,7 @@ class CssController {
     public $arrStylesheetsToLoad = array();
     public $strForceCssFile = '';
     
-    private $strCurrentCommit = '';
+    private $numDeployVersion = 0;
     
     public static function getInstance () {
         if (self::$objInstance === null) {
@@ -21,7 +21,10 @@ class CssController {
     }
     
     private function __construct () {
-        $this->strCurrentCommit = trim(file_get_contents(APP_DIR.'/../current-commit'));
+        include APP_DIR.'/../deploy-version.php';
+        if (!empty($numDeployVersionNumber)) {
+            $this->numDeployVersion = $numDeployVersionNumber;
+        }
     }
     
     public function renderAsync ($strApplicationName) {
@@ -46,7 +49,7 @@ class CssController {
             $strCssFile = $objCurrentRoute->strRouteName.'_'.$objCurrentRoute->strMethodName;
         }
         $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
-        $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/%s/css/%s.css?%s" />', $strApplicationBaseUrl, $strApplicationName, $strCssFile, $this->strCurrentCommit);
+        $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/%s/css/cacheversion-%d/%s.css" />', $strApplicationBaseUrl, $strApplicationName, $this->numDeployVersion, $strCssFile);
         
         return $strCssHhtml;
     }

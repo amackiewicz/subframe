@@ -8,7 +8,7 @@ class JsController {
     public $boolRunJs = false;
     public $arrScriptsToLoad = array();
     public $arrCustomToLoad = array();
-    private $strCurrentCommit = '';
+    private $numDeployVersion = 0;
     
     public static function getInstance () {
         if (self::$objInstance === null) {
@@ -18,7 +18,10 @@ class JsController {
     }
     
     private function __construct () {
-        $this->strCurrentCommit = trim(file_get_contents(APP_DIR.'/../current-commit'));
+        include APP_DIR.'/../deploy-version.php';
+        if (!empty($numDeployVersionNumber)) {
+            $this->numDeployVersion = $numDeployVersionNumber;
+        }
     }
     
     public function render ($strApplicationName, $numEnableCaching = 1) {
@@ -57,7 +60,7 @@ class JsController {
         if (!empty($this->arrCustomToLoad)) {
             $strCustoms = '"'.join('", "', $this->arrCustomToLoad).'"';
         }
-        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", "%s", %s, ["%s"], [%s]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->strCurrentCommit, $numEnableCaching, join('", "', $this->arrScriptsToLoad), $strCustoms).PHP_EOL;
+        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", "%s", %s, ["%s"], [%s]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->numDeployVersion, $numEnableCaching, join('", "', $this->arrScriptsToLoad), $strCustoms).PHP_EOL;
         $strLaunchCode .= 'objLauncher.init();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
         return $strLaunchCode;
