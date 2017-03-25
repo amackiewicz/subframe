@@ -31,6 +31,8 @@ class JsController {
         $this->arrScriptsToLoad = array_unique($this->arrScriptsToLoad);
         $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
         
+        $objApp = \webcitron\Subframe\Application::getInstance();
+
         $objLanguages = Languages::getInstance();
         $strCurrentLanguage = $objLanguages->getCurrentLanguage();
         
@@ -54,7 +56,7 @@ class JsController {
 //1        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js"></script>', $strApplicationBaseUrl).PHP_EOL;
 //2       $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js"></script>', $strApplicationBaseUrl).PHP_EOL;
         
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/imagehost3/js/cacheversion-%d/app.min.js"></script>', $strApplicationBaseUrl, $this->numDeployVersion).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/%s/js/cacheversion-%d/app.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL; 
         
         $strCustoms = '';
