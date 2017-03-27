@@ -14,11 +14,20 @@ class Db {
         require $objApplication->strDirectory.'/config/database.php';
         
         $arrConnection = self::$arrConnections[$strConnectionName][$numCurrentEnvironment];
-        $strDsn = sprintf(
-            "pgsql:host=%s;dbname=%s",
-            $arrConnection['server'],
-            $arrConnection['db']
-        );
+        if (!empty($arrConnection['port'])) {
+            $strDsn = sprintf(
+                "pgsql:host=%s;port=%d;dbname=%s",
+                $arrConnection['server'],
+                $arrConnection['port'],
+                $arrConnection['db']
+            );
+        } else {
+            $strDsn = sprintf(
+                "pgsql:host=%s;dbname=%s",
+                $arrConnection['server'],
+                $arrConnection['db']
+            );
+        }
         $numCurrentEnv = Application::currentEnvironment();
         switch ($numCurrentEnv) {
             case Application::ENVIRONMENT_PRODUCTION:
@@ -37,13 +46,14 @@ class Db {
         $this->objPdo->exec("SET NAMES 'UTF8'");
     }
     
-    public static function addConnection($strConnectionName, $numEnvironment, $strType, $strServer, $strDbName, $arrAuth) {
+    public static function addConnection($strConnectionName, $numEnvironment, $strType, $strServer, $strDbName, $arrAuth, $numPort = null) {
 
         self::$arrConnections[$strConnectionName][$numEnvironment] = array(
             'type' => $strType, 
             'server' => $strServer, 
             'db' => $strDbName, 
-            'auth' => $arrAuth
+            'auth' => $arrAuth, 
+            'port' => $numPort
         );
     }
     
