@@ -20,6 +20,10 @@ class StorageMemcache {
             'strKeyPattern' => $strKeyPattern
         );
     }
+
+    public function isEnabled () {
+        return $this->boolEnabled;
+    }
     
     private static function loadConfig () {
         $objApplication = Application::getInstance();
