@@ -104,6 +104,7 @@ class Languages
     
     public function loadTranslationsFile ($strFile) {
         $arrPatterns = array();
+        // echo 'loading '.$strFile."\n";
         if (file_exists($strFile)) {
             $arrTranslationLines = file($strFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             foreach ($arrTranslationLines as $strLine) {
