@@ -76,7 +76,11 @@ class Languages
         $objLanguages = Languages::getInstance();
         $numVarietyIndex = $numVariety - 1;
 //        $strTranslation = $objLanguages->translatePattern($strKey, $arrVariables);
-        
+        $strKey = trim($strKey);
+        // echo '*'.$strKey.'*';
+        // echo '<pre>';
+        // print_r($objLanguages->arrPhrasesBuffor);
+        // echo '</pre>';
         if (empty($objLanguages->arrPhrasesBuffor[$strKey])) {
             $strPattern = $strKey;
         } else {
@@ -87,7 +91,7 @@ class Languages
                 $strPattern = $objLanguages->arrPhrasesBuffor[$strKey][$numVarietyIndex];
             }
         }
-        
+        // echo '>'.$strPattern.'<<br /><br />';
         $strTranslation = $objLanguages->translatePattern($strPattern, $arrVariables);
         return $strTranslation;
     }
@@ -109,7 +113,7 @@ class Languages
             $arrTranslationLines = file($strFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
             foreach ($arrTranslationLines as $strLine) {
                 $arrTranslationLine = array_map('trim', str_getcsv($strLine, ';'));
-                $strKey = array_shift($arrTranslationLine);
+                $strKey = trim(array_shift($arrTranslationLine));
                 $arrPatterns[$strKey] = $arrTranslationLine;
             }
         }
