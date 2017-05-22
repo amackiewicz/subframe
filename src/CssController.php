@@ -48,8 +48,21 @@ class CssController {
             $objCurrentRoute = $objRouter->getCurrentRoute();
             $strCssFile = $objCurrentRoute->strRouteName.'_'.$objCurrentRoute->strMethodName;
         }
-        $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
-        $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/%s/css/cacheversion-%d/%s.css" />', $strApplicationBaseUrl, $strApplicationName, $this->numDeployVersion, $strCssFile);
+        $numEnvironment = Application::currentEnvironment();
+        if ($numEnvironment === Application::ENVIRONMENT_PRODUCTION) {
+            $objLanguages = Languages::getInstance();
+            if ($objLanguages->getCurrentLanguage() === 'pl_PL') {
+                $strStaticDomain = '//static.imged.pl';
+            } else if ($objLanguages->getCurrentLanguage() === 'es_ES') {
+                $strStaticDomain = '//static.imged.es';
+            } else {
+                $strStaticDomain = '//static.imged.com';
+            }
+            $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/assets/css/v%d/%s.css" />', $strStaticDomain, $this->numDeployVersion, $strCssFile);
+        } else {
+            $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
+            $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/%s/css/cacheversion-%d/%s.css" />', $strApplicationBaseUrl, $strApplicationName, $this->numDeployVersion, $strCssFile);
+        }
         
         return $strCssHhtml;
     }
