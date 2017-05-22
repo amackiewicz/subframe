@@ -49,7 +49,7 @@ class CssController {
             $strCssFile = $objCurrentRoute->strRouteName.'_'.$objCurrentRoute->strMethodName;
         }
         $numEnvironment = Application::currentEnvironment();
-        if ($numEnvironment === Application::ENVIRONMENT_PRODUCTION) {
+        if (false/*$numEnvironment === Application::ENVIRONMENT_PRODUCTION*/) {
             $objLanguages = Languages::getInstance();
             if ($objLanguages->getCurrentLanguage() === 'pl_PL') {
                 $strStaticDomain = '//static.imged.pl';
