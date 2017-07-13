@@ -177,6 +177,8 @@ class Application
         
         $objRequest = Request::getInstance();
         $strRequestDomain = $objRequest->domain();
+        // echo $strRequestDomain;
+// exit();
 //        echo $strRequestDomain;
 //        exit();
         foreach ($this->arrWorkingEnvironments as $numEnvironment) {
