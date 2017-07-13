@@ -181,6 +181,8 @@ class Application
 // exit();
 //        echo $strRequestDomain;
 //        exit();
+        $numCookieVal = filter_input(INPUT_COOKIE, 'imged-developer', FILTER_VALIDATE_INT);
+
         foreach ($this->arrWorkingEnvironments as $numEnvironment) {
             $strConfigKeyName = sprintf('environment::%d', $numEnvironment);
             $arrEnvironmentUrls = Config::get($strConfigKeyName, $strConfigName);
@@ -188,6 +190,9 @@ class Application
                 continue;
             }
             foreach ($arrEnvironmentUrls as $strEnvironmentUrl) {
+                if (!empty($numCookieVal) && intval($numCookieVal) === 6) {
+                    echo $strEnvironmentUrl.' - '.$strRequestDomain.'<br />'; 
+                }
                 if ($strEnvironmentUrl === $strRequestDomain) {
                     $strResult = $strRequestDomain;
                     self::$numCurrentEnvironment = $numEnvironment;
