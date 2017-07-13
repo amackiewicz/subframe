@@ -29,7 +29,7 @@ class JsController {
             return;
         }
         $this->arrScriptsToLoad = array_unique($this->arrScriptsToLoad);
-        $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
+        $strApplicationBaseUrl = \webcitron\Subframe\Application::url(false);
         
         $objApp = \webcitron\Subframe\Application::getInstance();
 
@@ -51,12 +51,12 @@ class JsController {
 //        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
 //        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
         
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/cacheversion-%d/adblock-advertisement.js"></script>', $strApplicationBaseUrl, $this->numDeployVersion).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="//%s/subframe/js/cacheversion-%d/adblock-advertisement.js"></script>', $strApplicationBaseUrl, $this->numDeployVersion).PHP_EOL;
  //2       $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/bower_components/jquery/dist/jquery.min.js"></script>', $strApplicationBaseUrl).PHP_EOL;
 //1        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js"></script>', $strApplicationBaseUrl).PHP_EOL;
 //2       $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js"></script>', $strApplicationBaseUrl).PHP_EOL;
         
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/%s/js/cacheversion-%d/app.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="//%s/%s/js/cacheversion-%d/app.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL; 
         
         $strCustoms = '';

@@ -60,8 +60,10 @@ class CssController {
             }
             $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/assets/css/v%d/%s.css" />', $strStaticDomain, $this->numDeployVersion, $strCssFile);
         } else {
-            $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
-            $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/%s/css/cacheversion-%d/%s.css" />', $strApplicationBaseUrl, $strApplicationName, $this->numDeployVersion, $strCssFile);
+            $strApplicationBaseUrl = \webcitron\Subframe\Application::url(false);
+            // echo $strApplicationBaseUrl;
+            // exit();
+            $strCssHhtml = sprintf('<link rel="stylesheet" href="//%s/%s/css/cacheversion-%d/%s.css" />', $strApplicationBaseUrl, $strApplicationName, $this->numDeployVersion, $strCssFile);
         }
         
         return $strCssHhtml;
