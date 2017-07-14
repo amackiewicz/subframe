@@ -177,11 +177,7 @@ class Application
         
         $objRequest = Request::getInstance();
         $strRequestDomain = $objRequest->domain();
-        // echo $strRequestDomain;
-// exit();
-//        echo $strRequestDomain;
-//        exit();
-        $numCookieVal = filter_input(INPUT_COOKIE, 'imged-developer', FILTER_VALIDATE_INT);
+        // $numCookieVal = filter_input(INPUT_COOKIE, 'imged-developer', FILTER_VALIDATE_INT);
 
         foreach ($this->arrWorkingEnvironments as $numEnvironment) {
             $strConfigKeyName = sprintf('environment::%d', $numEnvironment);
@@ -190,9 +186,9 @@ class Application
                 continue;
             }
             foreach ($arrEnvironmentUrls as $strEnvironmentUrl) {
-                if (!empty($numCookieVal) && intval($numCookieVal) === 6) {
-                    echo $strEnvironmentUrl.' - '.$strRequestDomain.'<br />'; 
-                }
+                // if (!empty($numCookieVal) && intval($numCookieVal) === 6) {
+                //     echo $strEnvironmentUrl.' - '.$strRequestDomain.'<br />'; 
+                // }
                 if ($strEnvironmentUrl === $strRequestDomain) {
                     $strResult = $strRequestDomain;
                     self::$numCurrentEnvironment = $numEnvironment;

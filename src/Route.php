@@ -133,7 +133,7 @@ class Route {
             $strResult = str_replace($arrPatterns, $arrReplaces, $strCurrentUri);
         }
         
-        $strResult = sprintf('%s%s', Application::url(), $strResult);
+        $strResult = sprintf('//%s%s', Application::url(false), $strResult);
         return $strResult;
     }
     
