@@ -243,8 +243,8 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         return $strReturn;
     }
     
-    public static function baseUrl() {
-        $strBaseUrl = Application::url();
+    public static function baseUrl($boolWithScheme = true) {
+        $strBaseUrl = Application::url($boolWithScheme);
         return $strBaseUrl;
     }
     
