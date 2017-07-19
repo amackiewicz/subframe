@@ -4,7 +4,7 @@ use webcitron\Subframe\Languages;
 
 abstract class Url {
     
-    public static function route($strRouteName, $arrParams = array(), $strLanguage = null) {
+    public static function route($strRouteName, $arrParams = array(), $strLanguage = null, $boolWithScheme = false) {
         $strUri = '';
         if (empty($strLanguage)) {
             $objLanguages = Languages::getInstance();
@@ -22,7 +22,7 @@ abstract class Url {
         }
         
         if (!empty($objRoute)) {
-            $strUri = $objRoute->buildUri($arrParams);
+            $strUri = $objRoute->buildUri($arrParams, $boolWithScheme);
         }
         return $strUri;
     }
