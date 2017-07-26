@@ -322,12 +322,18 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         if (date('Ymd', $numTimestamp) === date('Ymd', $numNow)) {
             if ($strCurrentLanguage === 'pl_PL') {
                 $strReturn = 'dzisiaj';
+            } else if ($strCurrentLanguage === 'es_ES') {
+                $strReturn = 'hoy';
             } else {
                 $strReturn = 'today';
             }
+
+
         } else if (date('Ymd', $numTimestamp) === date('Ymd', $numNow-(60*60*24))) {
             if ($strCurrentLanguage === 'pl_PL') {
                 $strReturn = 'wczoraj';
+            } else if ($strCurrentLanguage === 'es_ES') {
+                $strReturn = 'ayer';
             } else {
                 $strReturn = 'yesterday';
             }
@@ -351,8 +357,21 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         $strHtml = '';
         if (!empty($arrItems)) {  
             $strCurrentLanguage = Languages::getInstance()->getCurrentLanguage();
-            $strAddedWord = ($strCurrentLanguage === 'pl_PL') ? 'dodano' : 'added';
-            $strSeeWord = ($strCurrentLanguage === 'pl_PL') ? 'Zobacz' : 'Details';
+            switch ($strCurrentLanguage) {
+                case 'pl_PL':
+                    $strAddedWord = 'dodano';
+                    $strSeeWord = 'Zobacz';
+                    break;
+                case 'es_ES':
+                    $strAddedWord = 'sumado';
+                    $strSeeWord = 'Vista';
+                    break;
+                case 'en_US':
+                default:
+                    $strAddedWord = 'added';
+                    $strSeeWord = 'Details';
+                    break;
+            }
             
             $strHtml .= '<div class="stream-row">';
             $arrConfig = array();
