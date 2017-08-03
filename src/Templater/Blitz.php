@@ -255,6 +255,8 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         if (empty($mulDateTime)) {
             if ($strCurrentlanguage === 'pl_PL') {
                 return '<i>nie określono</i>';
+            } else if ($strCurrentlanguage === 'es_ES') {
+                return '<i>desconocido</i>';
             } else {
                 return '<i>unknown</i>';
             }
@@ -270,24 +272,32 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         if ($numTimestamp >= $numNow - (60*15)) {
             if ($strCurrentlanguage === 'pl_PL') {
                 $strReturn = 'przed chwilą';
+            } else if ($strCurrentlanguage === 'es_ES') {
+                $strReturn = 'justo ahora';
             } else {
                 $strReturn = 'just now';
             }
         } else if ($numTimestamp >= $numNow - (60*30)) {
             if ($strCurrentlanguage === 'pl_PL') {
                 $strReturn = 'pół godziny temu';
+            } else if ($strCurrentlanguage === 'es_ES') {
+                $strReturn = 'hace media hora';
             } else {
                 $strReturn = 'half hour ago';
             }
         } else if ($numTimestamp >= $numNow - (60*60)) {
             if ($strCurrentlanguage === 'pl_PL') {
                 $strReturn = 'godzinę temu';
+            } else if ($strCurrentlanguage === 'es_ES') {
+                $strReturn = 'hace una hora';
             } else {
                 $strReturn = 'one hour ago';
             }
         } else if ($numTimestamp >= $numNow - (60*60*12)) {
             if ($strCurrentlanguage === 'pl_PL') {
                 $strReturn = 'w ciągu ostatnich 12 godz';
+            } else if ($strCurrentlanguage === 'es_ES') {
+                $strReturn = 'hoy';
             } else {
                 $strReturn = 'today';
             }
