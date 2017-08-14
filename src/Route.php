@@ -102,7 +102,7 @@ class Route {
         return $objResponse;
     }
     
-    public function buildUri($arrParams = array(), $boolWithScheme = false) {
+    public function buildUri($arrParams = array(), $mulScheme = false) {
         $numSetIndex = 0;
         for ($numSetIndex; $numSetIndex<count($this->arrUris); $numSetIndex++) { 
             $numThisSetParamsCount = 0;
@@ -132,10 +132,12 @@ class Route {
 
             $strResult = str_replace($arrPatterns, $arrReplaces, $strCurrentUri);
         }
-        if ($boolWithScheme === true) {
+        if ($mulScheme === true) {
             $strResult = sprintf('%s%s', Application::url(), $strResult);
-        } else {
+        } elseif ($mulScheme === false) {
             $strResult = sprintf('//%s%s', Application::url(false), $strResult);
+        } else {
+            $strResult = sprintf('%s://%s%s', $mulScheme, Application::url(false), $strResult);
         }
         return $strResult;
     }

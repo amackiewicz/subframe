@@ -173,7 +173,12 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
         $arrParams = func_get_args();
         $strRouteName = array_shift($arrParams);
         $objLanguages = Languages::getInstance();
-        return \webcitron\Subframe\Url::route($strRouteName, $arrParams, $objLanguages->getCurrentLanguage());
+        if (Application::currentEnvironment() === Application::ENVIRONMENT_DEV) {
+            $strUrl = \webcitron\Subframe\Url::route($strRouteName, $arrParams, $objLanguages->getCurrentLanguage());
+        } else {
+            $strUrl = \webcitron\Subframe\Url::route($strRouteName, $arrParams, $objLanguages->getCurrentLanguage(), 'https');
+        }
+        return $strUrl;
     }
     
     public static function currentUrl () {
