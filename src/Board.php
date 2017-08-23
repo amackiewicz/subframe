@@ -14,5 +14,4 @@ class Board {
         return $objResponse;
     }
     
-    
 }

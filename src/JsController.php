@@ -7,7 +7,7 @@ class JsController {
     public static $objInstance = null;
     public $boolRunJs = false;
     public $arrScriptsToLoad = array();
-    public $arrCustomToLoad = array();
+    // public $arrCustomToLoad = array();
     private $numDeployVersion = 0;
     
     public static function getInstance () {
@@ -41,40 +41,38 @@ class JsController {
         if ($numEnableCaching === 0) {
             $strPostfixCache = '&_='.time();
         }
-        
-        $strLaunchCode = '<script>'.PHP_EOL;
+         
+        $strLaunchCode = '';
+        $strLaunchCode .= '<script>'.PHP_EOL;
         $strLaunchCode .= 'var boolIsPuppiesBlocked = true;'.PHP_EOL; 
         $strLaunchCode .= 'var d = new Date();var numJsPointTimestamp = d.getTime();'.PHP_EOL;
-       $strLaunchCode .= '</script>'.PHP_EOL;
-//        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/adblock-advertisement.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
-////        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/vendor/head/dist/1.0.0/head.min.js?%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit).PHP_EOL;
-//        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/bower_components/jquery/dist/jquery.min.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
-//        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
-//        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js?%s%s"></script>', $strApplicationBaseUrl, $this->strCurrentCommit, $strPostfixCache).PHP_EOL;
-        
+        $strLaunchCode .= '</script>'.PHP_EOL;
         $strLaunchCode .= sprintf('<script type="text/javascript" src="//%s/subframe/js/cacheversion-%d/adblock-advertisement.js"></script>', $strApplicationBaseUrl, $this->numDeployVersion).PHP_EOL;
- //2       $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/bower_components/jquery/dist/jquery.min.js"></script>', $strApplicationBaseUrl).PHP_EOL;
-//1        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/AssetLoader.js"></script>', $strApplicationBaseUrl).PHP_EOL;
-//2       $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/Launcher.js"></script>', $strApplicationBaseUrl).PHP_EOL;
+        $objRoute = Router::getCurrentRoute();
+        $strBoardJsFilename = str_replace('::', '_', $objRoute->strRouteFullName);
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="//%s/%s/js/cacheversion-%d/board_min/%s.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion, $strBoardJsFilename).PHP_EOL;
         
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="//%s/%s/js/cacheversion-%d/app.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion).PHP_EOL;
+        
+        
+        
+        // $strLaunchCode .= sprintf('<script type="text/javascript" src="//%s/%s/js/cacheversion-%d/app.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL; 
         
-        $strCustoms = '';
-        if (!empty($this->arrCustomToLoad)) {
-            $strCustoms = '"'.join('", "', $this->arrCustomToLoad).'"';
-        }
-        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "//%s", "%s", "%s", %s, ["%s"], [%s]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->numDeployVersion, $numEnableCaching, join('", "', $this->arrScriptsToLoad), $strCustoms).PHP_EOL;
+        // $strCustoms = '';
+        // if (!empty($this->arrCustomToLoad)) {
+        //     $strCustoms = '"'.join('", "', $this->arrCustomToLoad).'"';
+        // }
+        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "//%s", "%s", "%s", %s, ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->numDeployVersion, $numEnableCaching, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
         $strLaunchCode .= 'objLauncher.init();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
         return $strLaunchCode;
     }
     
-    public static function addCustomJs ($strFile) {
-        $objJsController = self::getInstance();
-        $objJsController->boolRunJs = true;
-        $objJsController->arrCustomToLoad[] = $strFile;
-    }
+    // public static function addCustomJs ($strFile) {
+    //     $objJsController = self::getInstance();
+    //     $objJsController->boolRunJs = true;
+    //     $objJsController->arrCustomToLoad[] = $strFile;
+    // }
     
     public static function runJs () {
         $objJsController = self::getInstance();

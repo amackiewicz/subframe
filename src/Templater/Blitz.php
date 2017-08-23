@@ -200,7 +200,7 @@ class SubBlitz extends \Blitz implements \webcitron\Subframe\ITemplaterHelper {
     public static function html ($strInput) {
 //        $strString = addslashes($strInput);
         return $strInput;
-    }
+    } 
     
     public static function renderUserJs ($numEnableCaching = 1) {
         $objJsController = \webcitron\Subframe\JsController::getInstance();

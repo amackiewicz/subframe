@@ -43,7 +43,7 @@ class Route {
             $objRoute->setLanguage($strLanguage);
             $objRoute->setMethod($strRouteMethod);
             $objRoute->recognizeSetParams($arrUris);
-            $objRoute->strRouteFullName = $strRouteFullName;
+            $objRoute->strRouteFullName = $strRouteName.'::'.$strRouteMethod;
             
             $objRouter->arrRoutes[$strLanguage][$strRouteFullName] = $objRoute;
         }
