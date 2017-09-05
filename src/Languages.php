@@ -46,6 +46,7 @@ class Languages
         switch ($this->strCurrentLanguage) {
             case 'pl_PL': return 'polish';
             case 'en_US': return 'english';
+            case 'es_ES': return 'spanish';
         }
     }
     
@@ -78,9 +79,6 @@ class Languages
 //        $strTranslation = $objLanguages->translatePattern($strKey, $arrVariables);
         $strKey = trim($strKey);
         // echo '*'.$strKey.'*';
-        // echo '<pre>';
-        // print_r($objLanguages->arrPhrasesBuffor);
-        // echo '</pre>';
         if (empty($objLanguages->arrPhrasesBuffor[$strKey])) {
             $strPattern = $strKey;
         } else {
