@@ -29,7 +29,7 @@ class JsController {
             return;
         }
         $this->arrScriptsToLoad = array_unique($this->arrScriptsToLoad);
-        $strApplicationBaseUrl = \webcitron\Subframe\Application::url(false);
+        $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
         // echo $strApplicationBaseUrl;
         // exit();
         $objApp = \webcitron\Subframe\Application::getInstance();
@@ -47,10 +47,10 @@ class JsController {
         $strLaunchCode .= 'var boolIsPuppiesBlocked = true;'.PHP_EOL; 
         $strLaunchCode .= 'var d = new Date();var numJsPointTimestamp = d.getTime();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="//%s/subframe/js/cacheversion-%d/adblock-advertisement.js"></script>', $strApplicationBaseUrl, $this->numDeployVersion).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/cacheversion-%d/adblock-advertisement.js"></script>', $strApplicationBaseUrl, $this->numDeployVersion).PHP_EOL;
         $objRoute = Router::getCurrentRoute();
         $strBoardJsFilename = str_replace('::', '_', $objRoute->strRouteFullName);
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="//%s/%s/js/cacheversion-%d/board_min/%s.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion, $strBoardJsFilename).PHP_EOL;
+        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/%s/js/cacheversion-%d/board_min/%s.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion, $strBoardJsFilename).PHP_EOL;
         
         
         
@@ -62,7 +62,7 @@ class JsController {
         // if (!empty($this->arrCustomToLoad)) {
         //     $strCustoms = '"'.join('", "', $this->arrCustomToLoad).'"';
         // }
-        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "//%s", "%s", "%s", %s, ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->numDeployVersion, $numEnableCaching, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
+        $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", "%s", %s, ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->numDeployVersion, $numEnableCaching, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
         $strLaunchCode .= 'objLauncher.init();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
         return $strLaunchCode;

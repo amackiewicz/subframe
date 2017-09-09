@@ -140,6 +140,8 @@ class Application
         $objCurrentRoute = $this->objRouter->dispath();
 //        $arrRequestParams = Request::getParams();
      
+        $objReflectionLauncher = new \ReflectionMethod(sprintf('\%s\%s', $this->strName, $this->strName), 'launch');
+        $objReflectionLauncher->invoke(null);
         
         if (empty($objCurrentRoute)) {
             $objResponse = Board::launch('Error', 'notFound');
