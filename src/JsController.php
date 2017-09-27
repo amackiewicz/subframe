@@ -31,8 +31,9 @@ class JsController {
         $this->arrScriptsToLoad = array_unique($this->arrScriptsToLoad);
 
         $numEnvironment = Application::currentEnvironment();
+        $objApp = Application::getInstance();
         
-        if ($numEnvironment === Application::ENVIRONMENT_PRODUCTION) {
+        if ($numEnvironment === Application::ENVIRONMENT_PRODUCTION && $objApp->strName !== 'admin') {
             $strApplicationBaseUrl = 'https://'.\webcitron\Subframe\Application::url(false);
         } else {
             $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
