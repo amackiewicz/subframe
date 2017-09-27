@@ -29,7 +29,16 @@ class JsController {
             return;
         }
         $this->arrScriptsToLoad = array_unique($this->arrScriptsToLoad);
-        $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
+
+        $numEnvironment = Application::currentEnvironment();
+        
+        if ($numEnvironment === Application::ENVIRONMENT_PRODUCTION) {
+            $strApplicationBaseUrl = 'https://'.\webcitron\Subframe\Application::url(false);
+        } else {
+            $strApplicationBaseUrl = \webcitron\Subframe\Application::url();
+        }
+
+        
         // echo $strApplicationBaseUrl;
         // exit();
         $objApp = \webcitron\Subframe\Application::getInstance();
