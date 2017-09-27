@@ -25,7 +25,8 @@ class Html extends \webcitron\Subframe\Response{
                     break;
             }
         }
-        return trim(preg_replace('/\s\s+/', ' ', $this->strContent));
+        return $this->strContent;
+        // return trim(preg_replace('/\s\s+/', ' ', $this->strContent));
         // return ;
     }
     
