@@ -20,7 +20,10 @@ class Router {
         return self::$objInstance;
     }
     
-    public static function getCurrentRoute () {
+    public static function getCurrentRoute ($boolDebug = false) {
+        // if ($boolDebug === true) {
+        //     echo 'route: '.self::$objCurrentRoute."<br />\n";
+        // }
         return self::$objCurrentRoute;
     }
     
@@ -33,6 +36,7 @@ class Router {
         $strCurrentUri = $objRequest->getUri();
         $objLanguages = Languages::getInstance();
         $strCurrentLanguage = $objLanguages->getCurrentLanguage();
+
         self::$objCurrentRoute = $this->findRoute($strCurrentUri, $strCurrentLanguage);
         return self::$objCurrentRoute;
     }
@@ -50,15 +54,20 @@ class Router {
         foreach ($arrRoutesToCheck as $objRoute) {
 //            $strPattern = $objRoute->strUri;
             foreach ($objRoute->arrUris as $strPattern) {
-                $strPattern = str_replace('/', '\/', $strPattern);
-                $strPattern = str_replace('.', '\.', $strPattern);
-                $strPattern = str_replace('-', '\-', $strPattern);
-    //            echo str_replace(array('\/', '\-', '\.'), array('/', '-', '.'), $strPattern) .' -> ';
-                $strPattern = sprintf('^%s$', preg_replace('/\{[^}]+\}/', '([^\/]+)', $strPattern)); 
-    //            echo str_replace(array('\/', '\-', '/.'), array('/', '-', '.'), $strPattern).'<br />';
+                if (!empty($strPattern)) {
+                    $strPattern = str_replace('/', '\/', $strPattern);
+                    $strPattern = str_replace('.', '\.', $strPattern);
+                    $strPattern = str_replace('-', '\-', $strPattern);
+        //            echo str_replace(array('\/', '\-', '\.'), array('/', '-', '.'), $strPattern) .' -> ';
+                    $strPattern = sprintf('^%s$', preg_replace('/\{[^}]+\}/', '([^\/]+)', $strPattern)); 
+        //            echo str_replace(array('\/', '\-', '/.'), array('/', '-', '.'), $strPattern).'<br />';
+                } else {
+                    $strPattern = '.*+';
+                }
                 $strPattern = '/'.$strPattern.'/';
-    //            echo $strUri .' -> '.$strPattern.'<br />';
+               // echo $strUri .' -> '.$strPattern.'<br />';
                 $numPregMatchResult = @preg_match($strPattern, $strUri, $arrHits);
+                // echo $numPregMatchResult."<br />";
 //                if ($boolDebug === true) {
 //                    echo '<pre>'.$numPregMatchResult;
 //                    print_r($arrHits);
@@ -110,9 +119,9 @@ class Router {
 //            exit();
 //        }
 //        echo 's'; 
-//        echo '<pre>';
-//        print_r($objRecognizedRoute);
-//        exit();
+       // echo '<pre>';
+       // print_r($objRecognizedRoute);
+       // exit();
         return $objRecognizedRoute;
     }
     
