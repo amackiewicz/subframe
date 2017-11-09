@@ -73,7 +73,7 @@ class JsController {
             $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/assets/adblock-advertisement.js"></script>', 
                 $strJsPrefix
             );
-            $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/assets/v%s/js/%s.js"></script>', 
+            $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/assets/v%s/js/%s_min.js"></script>', 
                 $strJsPrefix, 
                 $this->numDeployVersion, 
                 $strBoardJsFilename
