@@ -65,13 +65,15 @@ class JsController {
         if ($numEnvironment === Application::ENVIRONMENT_DEV) {
             $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/adblock-advertisement.js"></script>', $strApplicationBaseUrl).PHP_EOL;
             $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/%s/js/board_min/%s.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $strBoardJsFilename).PHP_EOL;
-
         } else {
             $strJsPrefix = $this->strJsHost;
             if ($numEnvironment === Application::ENVIRONMENT_RC) {
                 $strJsPrefix .= '/rc';
             }
-            $strCssFullPath = sprintf('%s/assets/v%s/js/%s.js', 
+            $strLaunchCode .= sprintf('%s/assets/adblock-advertisement.js', 
+                $strJsPrefix
+            );
+            $strLaunchCode .= sprintf('%s/assets/v%s/js/%s.js', 
                 $strJsPrefix, 
                 $this->numDeployVersion, 
                 $strBoardJsFilename
