@@ -62,7 +62,7 @@ class CssController {
             );
 
         } else {
-            $strCssPreix = $this->strCssHost;
+            $strCssPrefix = $this->strCssHost;
             if ($numEnvironment === Application::ENVIRONMENT_RC) {
                 $strCssPrefix .= '/rc';
             }
