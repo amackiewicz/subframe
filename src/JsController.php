@@ -9,6 +9,7 @@ class JsController {
     public $arrScriptsToLoad = array();
     // public $arrCustomToLoad = array();
     private $numDeployVersion = 0;
+    private $strJsHost = 'https://static.imged.pl';
     
     public static function getInstance () {
         if (self::$objInstance === null) {
@@ -18,9 +19,9 @@ class JsController {
     }
     
     private function __construct () {
-        include APP_DIR.'/../deploy-version.php';
+        $numDeployVersionNumber = file_get_contents(APP_DIR.'/../deploy-version.php');
         if (!empty($numDeployVersionNumber)) {
-            $this->numDeployVersion = $numDeployVersionNumber;
+            $this->numDeployVersion = trim($numDeployVersionNumber);
         }
     }
     
@@ -55,23 +56,34 @@ class JsController {
         $strLaunchCode = '';
         $strLaunchCode .= '<script>'.PHP_EOL;
         $strLaunchCode .= 'var boolIsPuppiesBlocked = true;'.PHP_EOL; 
-        $strLaunchCode .= 'var d = new Date();var numJsPointTimestamp = d.getTime();'.PHP_EOL;
+        // $strLaunchCode .= 'var d = new Date();var numJsPointTimestamp = d.getTime();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/cacheversion-%d/adblock-advertisement.js"></script>', $strApplicationBaseUrl, $this->numDeployVersion).PHP_EOL;
+
         $objRoute = Router::getCurrentRoute();
         $strBoardJsFilename = str_replace('::', '_', $objRoute->strRouteFullName);
-        $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/%s/js/cacheversion-%d/board_min/%s.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion, $strBoardJsFilename).PHP_EOL;
+
+        if ($numEnvironment === Application::ENVIRONMENT_DEV) {
+            $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/subframe/js/adblock-advertisement.js"></script>', $strApplicationBaseUrl).PHP_EOL;
+            $strLaunchCode .= sprintf('<script type="text/javascript" src="%s/%s/js/board_min/%s.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $strBoardJsFilename).PHP_EOL;
+
+        } else {
+            $strJsPrefix = $this->strJsHost;
+            if ($numEnvironment === Application::ENVIRONMENT_RC) {
+                $strJsPrefix .= '/rc';
+            }
+            $strCssFullPath = sprintf('%s/assets/v%d/js/%s.js', 
+                $strJsPrefix, 
+                $this->numDeployVersion, 
+                $strBoardJsFilename
+            );
+        }
+
         
         
         
         
-        // $strLaunchCode .= sprintf('<script type="text/javascript" src="//%s/%s/js/cacheversion-%d/app.min.js"></script>', $strApplicationBaseUrl, $objApp->strName, $this->numDeployVersion).PHP_EOL;
         $strLaunchCode .= '<script>'.PHP_EOL; 
         
-        // $strCustoms = '';
-        // if (!empty($this->arrCustomToLoad)) {
-        //     $strCustoms = '"'.join('", "', $this->arrCustomToLoad).'"';
-        // }
         $strLaunchCode .= sprintf('var objLauncher = new Subframe.Lib.Launcher("%s", "%s", "%s", "%s", %s, ["%s"]);', $strApplicationName, $strApplicationBaseUrl, $strCurrentLanguage, $this->numDeployVersion, $numEnableCaching, join('", "', $this->arrScriptsToLoad)).PHP_EOL;
         $strLaunchCode .= 'objLauncher.init();'.PHP_EOL;
         $strLaunchCode .= '</script>'.PHP_EOL;

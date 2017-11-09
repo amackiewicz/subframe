@@ -6,6 +6,7 @@ class CssController {
     public static $objInstance = null;
     public $arrStylesheetsToLoad = array();
     public $strForceCssFile = '';
+    private $strCssHost = 'https://static.imged.pl';
     
     private $numDeployVersion = 0;
     
@@ -21,9 +22,9 @@ class CssController {
     }
     
     private function __construct () {
-        include APP_DIR.'/../deploy-version.php';
+        $numDeployVersionNumber = file_get_contents(APP_DIR.'/../deploy-version.php');
         if (!empty($numDeployVersionNumber)) {
-            $this->numDeployVersion = $numDeployVersionNumber;
+            $this->numDeployVersion = trim($numDeployVersionNumber);
         }
     }
     
@@ -41,6 +42,7 @@ class CssController {
     }
     
     public function render ($strApplicationName) {
+        $strCssFullPath = '';
         if (!empty($this->strForceCssFile)) {
             $strCssFile = $this->strForceCssFile;
         } else {
@@ -49,27 +51,45 @@ class CssController {
             $strCssFile = $objCurrentRoute->strRouteName.'_'.$objCurrentRoute->strMethodName;
         }
         $numEnvironment = Application::currentEnvironment();
-        if (false/*$numEnvironment === Application::ENVIRONMENT_PRODUCTION*/) {
-            $objLanguages = Languages::getInstance();
-            if ($objLanguages->getCurrentLanguage() === 'pl_PL') {
-                $strStaticDomain = '//static.imged.pl';
-            } else if ($objLanguages->getCurrentLanguage() === 'es_ES') {
-                $strStaticDomain = '//static.imged.es';
-            } else {
-                $strStaticDomain = '//static.imged.com';
-            }
-            $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/assets/css/v%d/%s.css" />', $strStaticDomain, $this->numDeployVersion, $strCssFile);
+
+        if ($numEnvironment === Application::ENVIRONMENT_DEV) {
+            $strApplicationBaseUrl = \webcitron\Subframe\Application::url(); 
+            $strCssFullPath = sprintf('%s/%s/css/%s.css', 
+                $strApplicationBaseUrl, 
+                $strApplicationName, 
+                // $this->numDeployVersion, 
+                $strCssFile
+            );
+
         } else {
-            if ($numEnvironment === Application::ENVIRONMENT_PRODUCTION) {
-                $strApplicationBaseUrl = 'https://'.\webcitron\Subframe\Application::url(false);
-            } else {
-                $strApplicationBaseUrl = \webcitron\Subframe\Application::url();    
+            $strCssPreix = $this->strCssHost;
+            if ($numEnvironment === Application::ENVIRONMENT_RC) {
+                $strCssPrefix .= '/rc';
             }
+            $strCssFullPath = sprintf('%s/assets/v%d/css/%s.css', 
+                $strCssPrefix, 
+                $this->numDeployVersion, 
+                $strCssFile
+            );
+        }
+
+        $strCssHhtml = '';
+        if (!empty($strCssFullPath)) {
+            $strCssHhtml = '<link rel="stylesheet" href="'.$strCssFullPath.'" />';
+        }
+        
+
+
+            // if ($numEnvironment === Application::ENVIRONMENT_PRODUCTION) {
+            //     $strApplicationBaseUrl = 'https://'.\webcitron\Subframe\Application::url(false);
+            // } else {
+            //     $strApplicationBaseUrl = \webcitron\Subframe\Application::url();    
+            // }
             
             // echo $strApplicationBaseUrl;
             // exit();
-            $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/%s/css/cacheversion-%d/%s.css" />', $strApplicationBaseUrl, $strApplicationName, $this->numDeployVersion, $strCssFile);
-        }
+            // $strCssHhtml = sprintf('<link rel="stylesheet" href="%s/%s/css/cacheversion-%d/%s.css" />', $strApplicationBaseUrl, $strApplicationName, $this->numDeployVersion, $strCssFile);
+            //$strCssHhtml = sprintf('<link rel="stylesheet" href="%s/rc/assets/css/v%d/%s.css" />', $this->strCssHost, $this->numDeployVersion, $strCssFile);
         
         return $strCssHhtml;
     }
