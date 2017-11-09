@@ -66,7 +66,7 @@ class CssController {
             if ($numEnvironment === Application::ENVIRONMENT_RC) {
                 $strCssPrefix .= '/rc';
             }
-            $strCssFullPath = sprintf('%s/assets/v%d/css/%s.css', 
+            $strCssFullPath = sprintf('%s/assets/v%s/css/%s.css', 
                 $strCssPrefix, 
                 $this->numDeployVersion, 
                 $strCssFile

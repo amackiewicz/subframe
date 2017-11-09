@@ -71,7 +71,7 @@ class JsController {
             if ($numEnvironment === Application::ENVIRONMENT_RC) {
                 $strJsPrefix .= '/rc';
             }
-            $strCssFullPath = sprintf('%s/assets/v%d/js/%s.js', 
+            $strCssFullPath = sprintf('%s/assets/v%s/js/%s.js', 
                 $strJsPrefix, 
                 $this->numDeployVersion, 
                 $strBoardJsFilename
